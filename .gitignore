@@ -1,0 +1,19 @@
+# Node.js
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# IDE
+.idea/
+.settings/
+.project
+.classpsath
+.c9/
+*.launch
+*.sublime-workspace
