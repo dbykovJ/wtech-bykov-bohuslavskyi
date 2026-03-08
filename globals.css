@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+    --font-heading: "Black Han Sans", sans-serif;
+    --font-body: "Nunito Sans", sans-serif;
+    --grid-template-columns-brands: 180px 1fr 180px;
+    --grid-template-columns-footer: 1.4fr 1fr 1fr 1fr;
+    --grid-template-rows-brands-inner: 1fr 1fr;
+}
+
+@layer base {
+    body { @apply font-body text-[#111] bg-white m-0; }
+    a    { @apply no-underline text-inherit; }
+}
+
+@layer components {
+    .heading                { @apply font-heading font-black; }
+    .placeholder            { @apply bg-[#d9d9d9] rounded-[10px]; }
+    .star-filled            { @apply text-[#FFC633] text-[12px]; }
+    .star-empty             { @apply text-[#d9d9d9] text-[12px]; }
+    .badge-red              { @apply bg-[#FF3333] text-white text-[10px] font-bold px-[7px] py-[2px] rounded-full; }
+    .nav-link               { @apply text-[13.5px] font-semibold text-[#111] no-underline; }
+    .product-name           { @apply font-bold text-sm mb-[5px]; }
+    .product-rating         { @apply flex items-center gap-1 mb-[5px]; }
+    .product-rating-count   { @apply text-[11px] text-[#999]; }
+    .product-price-row      { @apply flex items-center gap-[6px]; }
+    .product-price          { @apply font-extrabold text-sm; }
+    .product-price-original { @apply line-through text-[#aaa] text-[13px]; }
+    .section-heading        { @apply font-heading font-black text-center text-[34px] mb-7; }
+    .footer-col-title       { @apply text-[11px] font-extrabold tracking-[2px] uppercase mb-4; }
+    .footer-link            { @apply text-[13px] text-[#555]; }
+    .payment-badge          { @apply bg-[#f5f5f5] border border-[#e0e0e0] rounded-[5px] px-[10px] py-1 text-[10px] font-extrabold text-[#333]; }
+    .social-icon            { @apply w-7 h-7 border border-[#ddd] rounded-full flex items-center justify-center; }
+}
