@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^4.2.1",
+    "@tailwindcss/cli": "^4.2.1"
+  },
+  "scripts": {
+    "tw:build": "@tailwindcss -i ./globals.css -o ./output.css",
+    "tw:watch": "@tailwindcss -i ./globals.css -o ./output.css --watch"
+  }
+}
