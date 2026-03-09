@@ -25,9 +25,10 @@
     </div>
 
     <div class="flex-1 mx-3">
+
       <div class="bg-[#f0f0f0] rounded-full flex items-center gap-2 py-2 px-4">
         <svg width="13" height="13" fill="none" stroke="#999" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-linecap="round"/></svg>
-        <span class="text-[12.5px] text-[#aaa]">Search for products...</span>
+        <input type="search" placeholder="Search for Products" class="bg-transparent border-none text-[#000] text-[13px] w-full font-body outline-none placeholder:text-[#888] select-none" />
       </div>
     </div>
 
@@ -50,7 +51,7 @@
       <p class="text-[13px] text-[#666] leading-[1.75] max-w-[340px] mb-7">
         Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.
       </p>
-      <a href="#" class="inline-block bg-[#111] text-white text-sm font-bold py-[13px] px-10 rounded-full">
+      <a href="#" class="inline-block bg-[#111] text-white text-sm font-bold py-[13px] px-10 rounded-full pointer-events-none select-none">
         Shop Now
       </a>
 
@@ -112,10 +113,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 1</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★</span><span class="star-empty">★</span>
-          <span class="product-rating-count">4/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -128,10 +126,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 2</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★★</span>
-          <span class="product-rating-count">5/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -144,10 +139,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 3</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★</span><span class="star-empty">★</span>
-          <span class="product-rating-count">4/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -160,10 +152,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 4</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★★</span>
-          <span class="product-rating-count">5/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -185,10 +174,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 1</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★</span><span class="star-empty">★</span>
-          <span class="product-rating-count">4/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -201,10 +187,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 2</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★★</span>
-          <span class="product-rating-count">5/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -217,10 +200,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 3</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★★</span>
-          <span class="product-rating-count">5/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 4">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
@@ -233,10 +213,7 @@
       <div class="placeholder w-full aspect-square"></div>
       <div class="mt-[10px]">
         <div class="product-name">Item 4</div>
-        <div class="product-rating">
-          <span class="star-filled">★★★★★</span>
-          <span class="product-rating-count">6/5</span>
-        </div>
+        <div class="star-rating" style="--rating: 3.5">★★★★★</div>
         <div class="product-price-row">
           <span class="product-price">$212</span>
           <span class="product-price-original">$232</span>
