@@ -19,7 +19,7 @@
     .heading                { @apply font-heading font-black; }
     .placeholder            { @apply bg-[#d9d9d9] rounded-[10px]; }
     .badge-red              { @apply bg-[#FF3333] text-white text-[10px] font-bold px-[7px] py-[2px] rounded-full; }
-    .nav-link               { @apply text-[13.5px] font-semibold text-[#111] no-underline pointer-events-none select-none; }
+    .nav-link               { @apply text-[13.5px] font-semibold text-[#111] no-underline select-none; }
     .product-name           { @apply font-bold text-sm mb-[5px]; }
     .product-rating         { @apply flex items-center gap-1 mb-[5px]; }
     .product-rating-count   { @apply text-[11px] text-[#999]; }
