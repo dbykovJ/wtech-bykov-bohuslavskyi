@@ -4,7 +4,7 @@
     "@tailwindcss/cli": "^4.2.1"
   },
   "scripts": {
-    "tw:build": "@tailwindcss -i ./globals.css -o ./output.css",
-    "tw:watch": "@tailwindcss -i ./globals.css -o ./output.css --watch"
+    "tw:build": "@tailwindcss/cli -i ./resources/css/globals.css -o ./public/css/output.css",
+    "tw:watch": "@tailwindcss/cli -i ./resources/css/globals.css -o ./public/css/output.css --watch"
   }
 }
