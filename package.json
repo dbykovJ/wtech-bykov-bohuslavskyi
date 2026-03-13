@@ -1,10 +1,11 @@
 {
-  "devDependencies": {
-    "tailwindcss": "^4.2.1",
-    "@tailwindcss/cli": "^4.2.1"
-  },
+  "private": true,
   "scripts": {
-    "tw:build": "@tailwindcss/cli -i ./resources/css/globals.css -o ./public/css/output.css",
-    "tw:watch": "@tailwindcss/cli -i ./resources/css/globals.css -o ./public/css/output.css --watch"
+    "tw:build": "tailwindcss -i ./resources/css/globals.css -o ./public/css/output.css",
+    "tw:watch": "tailwindcss -i ./resources/css/globals.css -o ./public/css/output.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
   }
 }
