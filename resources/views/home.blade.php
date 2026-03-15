@@ -103,22 +103,4 @@
             @endfor
         </div>
     </section>
-
-    <section class="bg-[#111] py-[52px]">
-        <div class="max-w-[1160px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
-            <h2 class="heading text-white text-[28px] md:text-[36px] leading-[1.1] m-0 max-w-[400px] text-center md:text-left">
-                STAY UPTO DATE ABOUT OUR LATEST OFFERS
-            </h2>
-            <div class="flex flex-col gap-3 w-full md:w-[320px] shrink-0">
-                <div class="bg-[#333] rounded-full py-[11px] px-[18px] flex items-center gap-[10px]">
-                    <svg width="14" height="14" fill="none" stroke="#aaa" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                    <input type="email" placeholder="Enter your email address" class="bg-transparent border-none text-[#ccc] text-[13px] w-full font-body outline-none placeholder:text-[#888]" />
-                </div>
-                <button class="bg-white text-[#111] font-bold text-sm border-none rounded-full py-[13px] px-6 cursor-pointer font-body">
-                    Subscribe to Newsletter
-                </button>
-            </div>
-        </div>
-    </section>
-
 @endsection

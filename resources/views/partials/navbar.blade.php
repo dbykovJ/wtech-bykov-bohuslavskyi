@@ -21,7 +21,9 @@
 
         <div class="flex items-center gap-[14px]">
             <img src="{{ asset('assets/icons/shopping-cart.svg') }}" alt="Shopping Cart" width="16" height="16" />
+            <a href="{{ route('login') }}">
             <img class="hidden md:block" src="{{ asset('assets/icons/user.svg') }}" alt="Account" width="16" height="16" />
+            </a>
             <button class="md:hidden flex flex-col gap-[5px]" aria-label="Menu">
                 <span class="block w-5 h-[2px] bg-[#111]"></span>
                 <span class="block w-5 h-[2px] bg-[#111]"></span>
