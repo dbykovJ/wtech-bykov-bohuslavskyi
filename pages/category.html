@@ -12,9 +12,11 @@
             Sign up and get 20% off to your first order.
             <a href="./register.html">Sign Up Now</a>
             <img
+                draggable="false"
                 class="banner__close"
                 src="../public/assets/icons/cross.svg"
                 alt="close"
+                onclick="closeElement('.banner')"
             />
         </div>
 
@@ -25,17 +27,24 @@
                 >
 
                 <div class="navbar__links">
-                    <a href="./category.html" class="navbar__link">
-                        Shop
-                    </a>
-                    <a href="#" class="navbar__link">On Sale</a>
-                    <a href="#" class="navbar__link">New Arrivals</a>
-                    <a href="#" class="navbar__link">Brands</a>
+                    <a href="./category.html" class="navbar__link"> Shop </a>
+                    <a
+                        href="../index.html#top-brand-seller"
+                        class="navbar__link"
+                        >Top Brand Seller</a
+                    >
+                    <a href="../index.html#on-sale" class="navbar__link"
+                        >On Sale</a
+                    >
+                    <a href="../index.html#new-arrivals" class="navbar__link"
+                        >New Arrivals</a
+                    >
                 </div>
 
                 <div class="navbar__search">
                     <div class="navbar__search-inner">
                         <img
+                            draggable="false"
                             src="../public/assets/icons/search.svg"
                             alt="search"
                         />
@@ -48,11 +57,13 @@
 
                 <div class="navbar__icons">
                     <img
+                        draggable="false"
                         src="../public/assets/icons/shopping-cart.svg"
                         alt="Cart"
                     />
                     <a href="./login.html">
                         <img
+                            draggable="false"
                             class="navbar__user-icon"
                             src="../public/assets/icons/user.svg"
                             alt="Account"
@@ -431,13 +442,13 @@
                         </div>
 
                         <div class="pagination">
-                            <button class="pagination__btn">← Previous</button>
+                            <button class="pagination__btn">←</button>
                             <button class="pagination__btn active">1</button>
                             <button class="pagination__btn">2</button>
                             <button class="pagination__btn">3</button>
                             <span class="pagination__dots">...</span>
                             <button class="pagination__btn">10</button>
-                            <button class="pagination__btn">Next →</button>
+                            <button class="pagination__btn">→</button>
                         </div>
                     </div>
                 </div>
@@ -488,21 +499,25 @@
                         <div class="footer__socials">
                             <a href="#"
                                 ><img
+                                    draggable="false"
                                     src="../public/assets/icons/socials/facebook.svg"
                                     alt="Facebook"
                             /></a>
                             <a href="#"
                                 ><img
+                                    draggable="false"
                                     src="../public/assets/icons/socials/instagram.svg"
                                     alt="Instagram"
                             /></a>
                             <a href="#"
                                 ><img
+                                    draggable="false"
                                     src="../public/assets/icons/socials/twitter.svg"
                                     alt="Twitter"
                             /></a>
                             <a href="#"
                                 ><img
+                                    draggable="false"
                                     src="../public/assets/icons/socials/linkedin.svg"
                                     alt="LinkedIn"
                             /></a>

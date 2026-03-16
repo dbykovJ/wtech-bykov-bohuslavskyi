@@ -1,329 +1,436 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SUPERSELL</title>
-    <link rel="stylesheet" href="./styles/main.css" />
-    <link rel="stylesheet" href="./styles/home.css" />
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SUPERSELL</title>
+        <link rel="stylesheet" href="./styles/main.css" />
+        <link rel="stylesheet" href="./styles/home.css" />
+    </head>
+    <body>
+        <div  id="banner" class="banner">
+            Sign up and get 20% off to your first order.
+            <a href="./pages/register.html">Sign Up Now</a>
+            <img
+                onclick="closeElement('banner')"
+                class="banner__close"
+                src="./public/assets/icons/cross.svg"
+                alt="close"
+                draggable="false"
+            />
+        </div>
 
-    
-    <div class="banner">
-        Sign up and get 20% off to your first order.
-        <a href="./pages/register.html">Sign Up Now</a>
-        <img class="banner__close" src="./public/assets/icons/cross.svg" alt="close" />
-    </div>
+        <nav class="navbar">
+            <div class="container navbar__inner">
+                <a href="./index.html" class="navbar__logo heading"
+                    >SUPERSELL</a
+                >
 
-    
-    <nav class="navbar">
-        <div class="container navbar__inner">
-            <a href="./index.html" class="navbar__logo heading">SUPERSELL</a>
+                <div class="navbar__links">
+                    <a href="./pages/category.html" class="navbar__link">
+                        Shop
+                    </a>
+                    <a data-scroll="top-brand-seller" class="navbar__link">Brands</a>
+                    <a data-scroll="on-sale" class="navbar__link">On Sale</a>
+                    <a data-scroll="new-arrivals" class="navbar__link">New Arrivals</a>
+                </div>
 
-            <div class="navbar__links">
-                <a href="./pages/category.html" class="navbar__link">
-                    Shop
-                </a>
-                <a href="#" class="navbar__link">On Sale</a>
-                <a href="#" class="navbar__link">New Arrivals</a>
-                <a href="#" class="navbar__link">Brands</a>
+                <div class="navbar__search">
+                    <div class="navbar__search-inner">
+                        <img draggable="false"
+                            src="./public/assets/icons/search.svg"
+                            alt="search"
+                        />
+                        <input
+                            type="search"
+                            placeholder="Search for Products"
+                        />
+                    </div>
+                </div>
+
+                <div class="navbar__icons">
+                    <img draggable="false"
+                        src="./public/assets/icons/shopping-cart.svg"
+                        alt="Cart"
+                    />
+                    <a href="./pages/login.html">
+                        <img draggable="false"
+                            class="navbar__user-icon"
+                            src="./public/assets/icons/user.svg"
+                            alt="Account"
+                        />
+                    </a>
+                    <button class="navbar__burger" aria-label="Menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
             </div>
+        </nav>
 
-            <div class="navbar__search">
-                <div class="navbar__search-inner">
-                    <img src="./public/assets/icons/search.svg" alt="search" />
-                    <input type="search" placeholder="Search for Products" />
+        <main>
+            <section class="hero">
+                <div class="container">
+                    <div class="hero__grid">
+                        <div>
+                            <h1 class="hero__title">
+                                FIND CLOTHES<br />THAT MATCHES<br />YOUR STYLE
+                            </h1>
+                            <p class="hero__desc">
+                                Browse through our diverse range of meticulously
+                                crafted garments, designed to bring out your
+                                individuality and cater to your sense of style.
+                            </p>
+                            <a href="./pages/category.html" class="hero__cta"
+                                >Shop Now</a
+                            >
+
+                            <div class="hero__stats">
+                                <div>
+                                    <div class="hero__stat-num">200+</div>
+                                    <div class="hero__stat-label">
+                                        International Brands
+                                    </div>
+                                </div>
+                                <div class="hero__stat-divider"></div>
+                                <div>
+                                    <div class="hero__stat-num">2,000+</div>
+                                    <div class="hero__stat-label">
+                                        High Quality Products
+                                    </div>
+                                </div>
+                                <div class="hero__stat-divider"></div>
+                                <div>
+                                    <div class="hero__stat-num">30,000+</div>
+                                    <div class="hero__stat-label">
+                                        Happy Customers
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="placeholder hero__image"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="brands-section">
+                <div class="container">
+                    <h2 id="top-brand-seller" class="section-heading">TOP BRAND SELLER</h2>
+
+                    <div class="brands-grid">
+                        <div class="placeholder brands-grid__main"></div>
+                        <div class="brands-grid__center">
+                            <div class="placeholder"></div>
+                            <div class="placeholder"></div>
+                            <div class="placeholder"></div>
+                            <div class="placeholder"></div>
+                            <div class="placeholder"></div>
+                            <div class="placeholder"></div>
+                        </div>
+                        <div class="brands-grid__right">
+                            <div class="placeholder"></div>
+                            <div class="placeholder"></div>
+                        </div>
+                    </div>
+
+                    <div class="brands-grid--mobile">
+                        <div class="placeholder"></div>
+                        <div class="placeholder"></div>
+                        <div class="placeholder"></div>
+                        <div class="placeholder"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="products-section">
+                <div class="container">
+                    <h2 id="on-sale" class="section-heading">ON SALE</h2>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">
+                                    Gradient Graphic Tee
+                                </div>
+                                <div class="star-rating" style="--rating: 4">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$145</span>
+                                    <span class="product-price-original"
+                                        >$168</span
+                                    >
+                                    <span class="badge-red">-14%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">
+                                    Polo with Tipping Details
+                                </div>
+                                <div class="star-rating" style="--rating: 5">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$180</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">
+                                    Black Striped T-Shirt
+                                </div>
+                                <div class="star-rating" style="--rating: 5">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$120</span>
+                                    <span class="product-price-original"
+                                        >$150</span
+                                    >
+                                    <span class="badge-red">-20%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">Skinny Fit Jeans</div>
+                                <div class="star-rating" style="--rating: 4">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$240</span>
+                                    <span class="product-price-original"
+                                        >$260</span
+                                    >
+                                    <span class="badge-red">-8%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="products-section products-section--last">
+                <div class="container">
+                    <h2 id="new-arrivals" class="section-heading">NEW ARRIVALS</h2>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">
+                                    T-Shirt with Tape Details
+                                </div>
+                                <div class="star-rating" style="--rating: 4">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$120</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">Skinny Fit Jeans</div>
+                                <div class="star-rating" style="--rating: 4">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$240</span>
+                                    <span class="product-price-original"
+                                        >$260</span
+                                    >
+                                    <span class="badge-red">-8%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">Checkered Shirt</div>
+                                <div class="star-rating" style="--rating: 5">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$180</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="placeholder product-card__image"></div>
+                            <div class="product-meta">
+                                <div class="product-name">
+                                    Sleeve Striped T-Shirt
+                                </div>
+                                <div class="star-rating" style="--rating: 5">
+                                    ★★★★★
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$130</span>
+                                    <span class="product-price-original"
+                                        >$160</span
+                                    >
+                                    <span class="badge-red">-19%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer__newsletter">
+                <div class="container footer__newsletter-inner">
+                    <h2 class="footer__newsletter-title">
+                        STAY UPTO DATE ABOUT OUR LATEST OFFERS
+                    </h2>
+                    <div class="footer__newsletter-form">
+                        <div class="footer__email-input">
+                            <svg
+                                width="14"
+                                height="14"
+                                fill="none"
+                                stroke="#aaa"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                                />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <input
+                                type="email"
+                                placeholder="Enter your email address"
+                            />
+                        </div>
+                        <button class="footer__subscribe-btn">
+                            Subscribe to Newsletter
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="navbar__icons">
-                <img src="./public/assets/icons/shopping-cart.svg" alt="Cart" />
-                <a href="./pages/login.html">
-                    <img class="navbar__user-icon" src="./public/assets/icons/user.svg" alt="Account" />
-                </a>
-                <button class="navbar__burger" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <main>
-
-        
-        <section class="hero">
-            <div class="container">
-                <div class="hero__grid">
-                    <div>
-                        <h1 class="hero__title">
-                            FIND CLOTHES<br>THAT MATCHES<br>YOUR STYLE
-                        </h1>
-                        <p class="hero__desc">
-                            Browse through our diverse range of meticulously crafted garments,
-                            designed to bring out your individuality and cater to your sense of style.
+            <div class="container footer__body">
+                <div class="footer__cols">
+                    <div class="footer__brand">
+                        <div class="footer__brand-logo heading">SHOP.CO</div>
+                        <p class="footer__brand-desc">
+                            We have clothes that suits your style and which
+                            you're proud to wear. From women to men.
                         </p>
-                        <a href="./pages/category.html" class="hero__cta">Shop Now</a>
-
-                        <div class="hero__stats">
-                            <div>
-                                <div class="hero__stat-num">200+</div>
-                                <div class="hero__stat-label">International Brands</div>
-                            </div>
-                            <div class="hero__stat-divider"></div>
-                            <div>
-                                <div class="hero__stat-num">2,000+</div>
-                                <div class="hero__stat-label">High Quality Products</div>
-                            </div>
-                            <div class="hero__stat-divider"></div>
-                            <div>
-                                <div class="hero__stat-num">30,000+</div>
-                                <div class="hero__stat-label">Happy Customers</div>
-                            </div>
+                        <div class="footer__socials">
+                            <a href="#"
+                                ><img draggable="false"
+                                    src="./public/assets/icons/socials/facebook.svg"
+                                    alt="Facebook"
+                            /></a>
+                            <a href="#"
+                                ><img draggable="false"
+                                    src="./public/assets/icons/socials/instagram.svg"
+                                    alt="Instagram"
+                            /></a>
+                            <a href="#"
+                                ><img draggable="false"
+                                    src="./public/assets/icons/socials/twitter.svg"
+                                    alt="Twitter"
+                            /></a>
+                            <a href="#"
+                                ><img draggable="false"
+                                    src="./public/assets/icons/socials/linkedin.svg"
+                                    alt="LinkedIn"
+                            /></a>
                         </div>
                     </div>
 
-                    <div class="placeholder hero__image"></div>
+                    <div>
+                        <div class="footer__col-title">COMPANY</div>
+                        <ul class="footer__links">
+                            <li><a href="#" class="footer__link">About</a></li>
+                            <li>
+                                <a href="#" class="footer__link">Features</a>
+                            </li>
+                            <li><a href="#" class="footer__link">Works</a></li>
+                            <li><a href="#" class="footer__link">Career</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <div class="footer__col-title">HELP</div>
+                        <ul class="footer__links">
+                            <li>
+                                <a href="#" class="footer__link"
+                                    >Customer Support</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#" class="footer__link"
+                                    >Delivery Details</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#" class="footer__link"
+                                    >Terms &amp; Conditions</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#" class="footer__link"
+                                    >Privacy Policy</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <div class="footer__col-title">FAQ</div>
+                        <ul class="footer__links">
+                            <li>
+                                <a href="#" class="footer__link">Account</a>
+                            </li>
+                            <li>
+                                <a href="#" class="footer__link"
+                                    >Manage Deliveries</a
+                                >
+                            </li>
+                            <li><a href="#" class="footer__link">Orders</a></li>
+                            <li>
+                                <a href="#" class="footer__link">Payments</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer__bottom">
+                    <span class="footer__copyright"
+                        >Shop.co &copy; 2000-2025. All Rights Reserved</span
+                    >
+                    <div class="footer__payments">
+                        <span class="payment-badge">VISA</span>
+                        <span class="payment-badge">Mastercard</span>
+                        <span class="payment-badge">PayPal</span>
+                        <span class="payment-badge">Apple Pay</span>
+                        <span class="payment-badge">G Pay</span>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        
-        <section class="brands-section">
-            <div class="container">
-                <h2 class="section-heading">TOP BRAND SELLER</h2>
-
-                
-                <div class="brands-grid">
-                    <div class="placeholder brands-grid__main"></div>
-                    <div class="brands-grid__center">
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                    </div>
-                    <div class="brands-grid__right">
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                    </div>
-                </div>
-
-                
-                <div class="brands-grid--mobile">
-                    <div class="placeholder"></div>
-                    <div class="placeholder"></div>
-                    <div class="placeholder"></div>
-                    <div class="placeholder"></div>
-                </div>
-            </div>
-        </section>
-
-        
-        <section class="products-section">
-            <div class="container">
-                <h2 class="section-heading">TOP SELLERS</h2>
-                <div class="products-grid">
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Gradient Graphic Tee</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$145</span>
-                                <span class="product-price-original">$168</span>
-                                <span class="badge-red">-14%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Polo with Tipping Details</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$180</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Black Striped T-Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$120</span>
-                                <span class="product-price-original">$150</span>
-                                <span class="badge-red">-20%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Skinny Fit Jeans</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$240</span>
-                                <span class="product-price-original">$260</span>
-                                <span class="badge-red">-8%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        
-        <section class="products-section products-section--last">
-            <div class="container">
-                <h2 class="section-heading">NEW ARRIVALS</h2>
-                <div class="products-grid">
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">T-Shirt with Tape Details</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$120</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Skinny Fit Jeans</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$240</span>
-                                <span class="product-price-original">$260</span>
-                                <span class="badge-red">-8%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Checkered Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$180</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Sleeve Striped T-Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$130</span>
-                                <span class="product-price-original">$160</span>
-                                <span class="badge-red">-19%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    
-    <footer class="footer">
-
-        
-        <div class="footer__newsletter">
-            <div class="container footer__newsletter-inner">
-                <h2 class="footer__newsletter-title">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
-                <div class="footer__newsletter-form">
-                    <div class="footer__email-input">
-                        <svg width="14" height="14" fill="none" stroke="#aaa" stroke-width="1.8" viewBox="0 0 24 24">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                            <polyline points="22,6 12,13 2,6" />
-                        </svg>
-                        <input type="email" placeholder="Enter your email address" />
-                    </div>
-                    <button class="footer__subscribe-btn">Subscribe to Newsletter</button>
-                </div>
-            </div>
-        </div>
-
-        
-        <div class="container footer__body">
-            <div class="footer__cols">
-
-                <div class="footer__brand">
-                    <div class="footer__brand-logo heading">SHOP.CO</div>
-                    <p class="footer__brand-desc">
-                        We have clothes that suits your style and which you're proud to wear. From women to men.
-                    </p>
-                    <div class="footer__socials">
-                        <a href="#"><img src="./public/assets/icons/socials/facebook.svg" alt="Facebook" /></a>
-                        <a href="#"><img src="./public/assets/icons/socials/instagram.svg" alt="Instagram" /></a>
-                        <a href="#"><img src="./public/assets/icons/socials/twitter.svg" alt="Twitter" /></a>
-                        <a href="#"><img src="./public/assets/icons/socials/linkedin.svg" alt="LinkedIn" /></a>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="footer__col-title">COMPANY</div>
-                    <ul class="footer__links">
-                        <li><a href="#" class="footer__link">About</a></li>
-                        <li><a href="#" class="footer__link">Features</a></li>
-                        <li><a href="#" class="footer__link">Works</a></li>
-                        <li><a href="#" class="footer__link">Career</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <div class="footer__col-title">HELP</div>
-                    <ul class="footer__links">
-                        <li><a href="#" class="footer__link">Customer Support</a></li>
-                        <li><a href="#" class="footer__link">Delivery Details</a></li>
-                        <li><a href="#" class="footer__link">Terms &amp; Conditions</a></li>
-                        <li><a href="#" class="footer__link">Privacy Policy</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <div class="footer__col-title">FAQ</div>
-                    <ul class="footer__links">
-                        <li><a href="#" class="footer__link">Account</a></li>
-                        <li><a href="#" class="footer__link">Manage Deliveries</a></li>
-                        <li><a href="#" class="footer__link">Orders</a></li>
-                        <li><a href="#" class="footer__link">Payments</a></li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="footer__bottom">
-                <span class="footer__copyright">Shop.co &copy; 2000-2025. All Rights Reserved</span>
-                <div class="footer__payments">
-                    <span class="payment-badge">VISA</span>
-                    <span class="payment-badge">Mastercard</span>
-                    <span class="payment-badge">PayPal</span>
-                    <span class="payment-badge">Apple Pay</span>
-                    <span class="payment-badge">G Pay</span>
-                </div>
-            </div>
-        </div>
-
-    </footer>
-
-</body>
+        </footer>
+    </body>
 </html>
+
+<script src="./js/shared/scrollTo.js"></script>
+<script src="./js/shared/close.js"></script>
