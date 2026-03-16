@@ -1,4 +1,4 @@
-<nav class="border-b border-[#e5e5e5] py-[13px] bg-white sticky top-0 z-50">
+<nav class="w-full border-b border-[#e5e5e5] py-[13px] bg-white sticky top-0 z-50">
     <div class="max-w-[1160px] mx-auto px-4 md:px-8 flex items-center gap-4 md:gap-7">
         <a href="{{ route('home') }}" class="heading text-[20px] tracking-[2px] whitespace-nowrap">SUPERSELL</a>
 

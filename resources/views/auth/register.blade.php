@@ -2,7 +2,7 @@
 
 @section('title', 'Register')
 @section('content')
-    <section class="w-full h-full flex flex-col items-center align-center justify-center">
+    <section class="w-full h-full flex flex-col items-center align-center justify-center pt-[36px]">
         <section
             class="flex content-center justify-start flex-col gap-[53px] w-[400px] h-fit border-[#252526] border-[1px] rounded-[10px] px-[24px] pt-[36px] pb-[24px]">
             <h1 class="w-full text-center font-inter text-[50px] font-bold">Register</h1>
@@ -41,7 +41,8 @@
                     </button>
                     <button
                         class="w-full h-[38px] text-center font-inter text-[15px] bg-[#4C4848] text-white rounded-[20px] font-medium"
-                        type="submit">Have an account? Sign In
+                        type="button" onclick="window.location.href='{{ route('login') }}'">
+                        Have an account? Sign In
                     </button>
                 </section>
             </form>

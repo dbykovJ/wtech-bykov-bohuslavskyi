@@ -2,7 +2,7 @@
 
 @section('title', 'Login')
 @section('content')
-    <section class="w-full h-full flex flex-col items-center justify-center gap-[55px]">
+    <section class="w-full h-full flex flex-col items-center justify-center gap-[55px] pt-[36px]">
     <section class="flex content-center justify-start flex-col gap-[53px] w-[400px] h-[400px]">
         <h1 class="w-full text-center font-inter text-[50px] font-bold">Login</h1>
         <form method="POST" action="#" class="w-full flex flex-col items-center justify-start gap-[56px]">
