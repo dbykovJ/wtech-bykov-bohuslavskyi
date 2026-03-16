@@ -1,10 +1,11 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Integral+CF&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Integral+CF&family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
 
 @theme {
   --font-heading: "Integral CF", sans-serif;
   --font-body: "Satoshi", sans-serif;
+  --font-inter: "Inter", sans-serif;
   --grid-template-columns-brands: 180px 1fr 180px;
   --grid-template-columns-footer: 1.4fr 1fr 1fr 1fr;
   --grid-template-rows-brands-inner: 1fr 1fr;
