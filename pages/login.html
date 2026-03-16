@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — SUPERSELL</title>
+    <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/auth.css" />
+</head>
+<body class="auth-body">
+
+    
+    <nav class="navbar">
+        <div class="container navbar__inner">
+            <a href="../index.html" class="navbar__logo heading">SUPERSELL</a>
+
+            <div class="navbar__links">
+                <a href="./category.html" class="navbar__link">
+                    Shop
+                    <img src="../public/assets/icons/down.svg" alt="dropdown" />
+                </a>
+                <a href="#" class="navbar__link">On Sale</a>
+                <a href="#" class="navbar__link">New Arrivals</a>
+                <a href="#" class="navbar__link">Brands</a>
+            </div>
+
+            <div class="navbar__search">
+                <div class="navbar__search-inner">
+                    <img src="../public/assets/icons/search.svg" alt="search" />
+                    <input type="search" placeholder="Search for Products" />
+                </div>
+            </div>
+
+            <div class="navbar__icons">
+                <img src="../public/assets/icons/shopping-cart.svg" alt="Cart" />
+                <a href="./login.html">
+                    <img class="navbar__user-icon" src="../public/assets/icons/user.svg" alt="Account" />
+                </a>
+                <button class="navbar__burger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    
+    <main class="auth-main">
+        <div class="login-box">
+            <h1 class="auth-title">Login</h1>
+
+            <form class="auth-form" method="post" action="#">
+                <div class="auth-fields">
+                    <input
+                        class="auth-input"
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="Username"
+                        required
+                        autofocus
+                    />
+                    <input
+                        class="auth-input"
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required
+                    />
+                </div>
+
+                <button class="auth-submit" type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="auth-footer-text">
+            Don't have an account? <a href="./register.html">Register.</a>
+        </div>
+    </main>
+
+</body>
+</html>
