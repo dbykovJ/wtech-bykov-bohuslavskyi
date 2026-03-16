@@ -690,6 +690,12 @@
   .h-\[2px\] {
     height: 2px;
   }
+  .h-\[15px\] {
+    height: 15px;
+  }
+  .h-\[19px\] {
+    height: 19px;
+  }
   .h-\[38px\] {
     height: 38px;
   }
@@ -707,6 +713,12 @@
   }
   .h-\[400px\] {
     height: 400px;
+  }
+  .h-\[600px\] {
+    height: 600px;
+  }
+  .h-fit {
+    height: fit-content;
   }
   .h-full {
     height: 100%;
@@ -734,6 +746,9 @@
   }
   .w-5 {
     width: calc(var(--spacing) * 5);
+  }
+  .w-\[15px\] {
+    width: 15px;
   }
   .w-\[158px\] {
     width: 158px;
@@ -880,6 +895,9 @@
   .gap-\[14px\] {
     gap: 14px;
   }
+  .gap-\[15px\] {
+    gap: 15px;
+  }
   .gap-\[18px\] {
     gap: 18px;
   }
@@ -891,6 +909,12 @@
   }
   .gap-\[56px\] {
     gap: 56px;
+  }
+  .gap-\[308px\] {
+    gap: 308px;
+  }
+  .gap-\[377px\] {
+    gap: 377px;
   }
   .space-x-1 {
     :where(& > :not(:last-child)) {
@@ -934,11 +958,19 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .border-\[1px\] {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
   .border-\[2px\] {
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
   .border-t {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 1px;
+  }
+  .border-t-\[1px\] {
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
   }
@@ -971,11 +1003,17 @@
   .border-transparent {
     border-color: transparent;
   }
+  .bg-\[\#000000\] {
+    background-color: #000000;
+  }
   .bg-\[\#1b1b18\] {
     background-color: #1b1b18;
   }
   .bg-\[\#4C4848\] {
     background-color: #4C4848;
+  }
+  .bg-\[\#7F7D83\] {
+    background-color: #7F7D83;
   }
   .bg-\[\#111\] {
     background-color: #111;
@@ -1031,6 +1069,9 @@
   .px-\[18px\] {
     padding-inline: 18px;
   }
+  .px-\[24px\] {
+    padding-inline: 24px;
+  }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
@@ -1064,11 +1105,20 @@
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }
+  .pt-\[36px\] {
+    padding-top: 36px;
+  }
   .pt-\[52px\] {
     padding-top: 52px;
   }
   .pt-\[136px\] {
     padding-top: 136px;
+  }
+  .pt-\[145px\] {
+    padding-top: 145px;
+  }
+  .pr-\[196px\] {
+    padding-right: 196px;
   }
   .pb-6 {
     padding-bottom: calc(var(--spacing) * 6);
@@ -1081,6 +1131,9 @@
   }
   .pb-14 {
     padding-bottom: calc(var(--spacing) * 14);
+  }
+  .pb-\[24px\] {
+    padding-bottom: 24px;
   }
   .pb-\[56px\] {
     padding-bottom: 56px;
@@ -1109,6 +1162,9 @@
   }
   .text-\[13px\] {
     font-size: 13px;
+  }
+  .text-\[14px\] {
+    font-size: 14px;
   }
   .text-\[15px\] {
     font-size: 15px;
