@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Product — SUPERSELL</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="stylesheet" href="../styles/product.css" />
+    </head>
+    <body>
+        <div id="banner" class="banner">
+            Sign up and get 20% off to your first order.
+            <a href="./register.html">Sign Up Now</a>
+            <img
+                draggable="false"
+                class="banner__close"
+                src="../public/assets/icons/cross.svg"
+                alt="close"
+                onclick="closeElement('banner')"
+            />
+        </div>
+
+        <nav class="navbar">
+            <div class="container navbar__inner">
+                <a href="../index.html" class="navbar__logo heading">SUPERSELL</a>
+
+                <div class="navbar__links">
+                    <a href="./category.html" class="navbar__link">Shop</a>
+                    <a href="../index.html#on-sale" class="navbar__link">On Sale</a>
+                    <a href="../index.html#new-arrivals" class="navbar__link">New Arrivals</a>
+                    <a href="../index.html#top-brand-seller" class="navbar__link">Brands</a>
+                </div>
+
+                <div class="navbar__search">
+                    <div class="navbar__search-inner">
+                        <img draggable="false" src="../public/assets/icons/search.svg" alt="search" />
+                        <input type="search" placeholder="Search for Products" />
+                    </div>
+                </div>
+
+                <div class="navbar__icons">
+                    <a href="./cart.html">
+                        <img draggable="false" src="../public/assets/icons/shopping-cart.svg" alt="Cart" />
+                    </a>
+                    <a href="./login.html">
+                        <img draggable="false" class="navbar__user-icon" src="../public/assets/icons/user.svg" alt="Account" />
+                    </a>
+                    <button class="navbar__burger" aria-label="Menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="container">
+
+                <nav class="breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span>›</span>
+                    <a href="./category.html">Shop</a>
+                    <span>›</span>
+                    <a href="./category.html">T-shirts</a>
+                    <span>›</span>
+                    <span class="breadcrumb__current">Product 1 Name</span>
+                </nav>
+
+                <section class="product-detail">
+                    <div class="product-gallery">
+                        <div class="product-gallery__thumbs">
+                            <div class="product-gallery__thumb product-gallery__thumb--active placeholder"></div>
+                            <div class="product-gallery__thumb placeholder"></div>
+                            <div class="product-gallery__thumb placeholder"></div>
+                        </div>
+                        <div class="product-gallery__main placeholder"></div>
+                    </div>
+
+                    <div class="product-info">
+                        <h1 class="product-info__name heading">PRODUCT 1 NAME</h1>
+
+                        <div class="product-info__rating">
+                            <span class="star-rating" style="--rating: 4.5">★★★★★</span>
+                            <span class="product-info__rating-count">4.5/5</span>
+                        </div>
+
+                        <div class="product-info__price-row">
+                            <span class="product-info__price">$260</span>
+                            <span class="product-info__price-original">$300</span>
+                            <span class="badge-red">-40%</span>
+                        </div>
+
+                        <p class="product-info__desc">
+                            This is a description to the product 1. Here, you can specify some important info
+                            about the product and highlight its strengths.
+                        </p>
+
+                        <div class="product-info__divider"></div>
+
+                        <div class="product-info__section">
+                            <span class="product-info__label">Choose Colors</span>
+                            <div class="product-colors">
+                                <button class="product-color" style="background:#6b7c5e;" aria-label="Olive"></button>
+                                <button class="product-color product-color--active" style="background:#2a2a2a;" aria-label="Black"></button>
+                                <button class="product-color" style="background:#3a5a8a;" aria-label="Blue"></button>
+                            </div>
+                        </div>
+
+                        <div class="product-info__divider"></div>
+
+                        <div class="product-info__section">
+                            <span class="product-info__label">Choose Size</span>
+                            <div class="product-sizes">
+                                <button class="product-size">Small</button>
+                                <button class="product-size">Medium</button>
+                                <button class="product-size product-size--active">Large</button>
+                                <button class="product-size">X-Large</button>
+                            </div>
+                        </div>
+
+                        <div class="product-info__divider"></div>
+
+                        <div class="product-info__actions">
+                            <div class="product-qty">
+                                <button class="product-qty__btn" onclick="changeQty(-1)">−</button>
+                                <span class="product-qty__val" id="qty">1</span>
+                                <button class="product-qty__btn" onclick="changeQty(1)">+</button>
+                            </div>
+                            <button class="product-add-btn" onclick="window.location.href='./cart.html'">Add to Cart</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="reviews-header">
+                    <div class="reviews-header__line"></div>
+                    <span class="reviews-header__title">Rating &amp; Reviews</span>
+                    <div class="reviews-header__line"></div>
+                    <div class="reviews-header__nav">
+                        <button class="reviews-nav-btn">&#8592;</button>
+                        <button class="reviews-nav-btn">&#8594;</button>
+                    </div>
+                </div>
+
+                <section class="reviews">
+                    <div class="reviews__toolbar">
+                        <span class="reviews__count">All Reviews <span class="reviews__count-num">(13)</span></span>
+                        <div class="reviews__toolbar-right">
+                            <button class="reviews__filter-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+                            </button>
+                            <div class="reviews__sort">
+                                Latest
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                            <button class="reviews__write-btn">Write a Review</button>
+                        </div>
+                    </div>
+
+                    <div class="reviews__grid">
+                        <div class="review-card">
+                            <div class="review-card__header">
+                                <span class="star-rating" style="--rating: 4">★★★★★</span>
+                                <button class="review-card__more">···</button>
+                            </div>
+                            <div class="review-card__author">
+                                Olivia P.
+                                <span class="review-card__verified">✔</span>
+                            </div>
+                            <p class="review-card__text">"As a UI/UX enthusiast, I value simplicity and functionality. This T-shirt not only represents those principles but also feels great to wear. It's evident that the designer poured their creativity into making this T-shirt stand out."</p>
+                            <span class="review-card__date">Posted on August 17, 2023</span>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-card__header">
+                                <span class="star-rating" style="--rating: 4">★★★★★</span>
+                                <button class="review-card__more">···</button>
+                            </div>
+                            <div class="review-card__author">
+                                Ethan R.
+                                <span class="review-card__verified">✔</span>
+                            </div>
+                            <p class="review-card__text">"This T-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my eye, and the fit is perfect. I can see the designer's touch in every aspect of this shirt."</p>
+                            <span class="review-card__date">Posted on August 16, 2023</span>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-card__header">
+                                <span class="star-rating" style="--rating: 5">★★★★★</span>
+                                <button class="review-card__more">···</button>
+                            </div>
+                            <div class="review-card__author">
+                                Alex M.
+                                <span class="review-card__verified">✔</span>
+                            </div>
+                            <p class="review-card__text">"I exceeded my expectations! The colors are vibrant and the print quality is top-notch. Being a UI/UX designer myself, I'm quite picky about aesthetics, and this T-shirt definitely gets a thumbs up from me."</p>
+                            <span class="review-card__date">Posted on August 15, 2023</span>
+                        </div>
+                    </div>
+
+                    <div class="reviews__pagination">
+                        <button class="reviews__page-btn">← Previous</button>
+                        <span class="reviews__page-info">Page 1 of 2</span>
+                        <button class="reviews__page-btn reviews__page-btn--active">Next →</button>
+                    </div>
+                </section>
+
+                <section class="also-like">
+                    <h2 class="section-heading">YOU MIGHT ALSO LIKE</h2>
+                    <div class="also-like__grid">
+                        <a href="./product.html" class="product-card">
+                            <div class="product-card__img placeholder"></div>
+                            <div class="product-card__info">
+                                <div class="product-name">Item 1</div>
+                                <div class="product-meta">
+                                    <span class="star-rating" style="--rating: 4">★★★★★</span>
+                                    <span class="product-info__rating-count">4/5</span>
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$212</span>
+                                    <span class="product-price-original">$232</span>
+                                    <span class="badge-red">-20%</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="./product.html" class="product-card">
+                            <div class="product-card__img placeholder"></div>
+                            <div class="product-card__info">
+                                <div class="product-name">Item 2</div>
+                                <div class="product-meta">
+                                    <span class="star-rating" style="--rating: 5">★★★★★</span>
+                                    <span class="product-info__rating-count">5/5</span>
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$212</span>
+                                    <span class="product-price-original">$232</span>
+                                    <span class="badge-red">-20%</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="./product.html" class="product-card">
+                            <div class="product-card__img placeholder"></div>
+                            <div class="product-card__info">
+                                <div class="product-name">Item 3</div>
+                                <div class="product-meta">
+                                    <span class="star-rating" style="--rating: 4">★★★★★</span>
+                                    <span class="product-info__rating-count">4/5</span>
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$212</span>
+                                    <span class="product-price-original">$232</span>
+                                    <span class="badge-red">-20%</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="./product.html" class="product-card">
+                            <div class="product-card__img placeholder"></div>
+                            <div class="product-card__info">
+                                <div class="product-name">Item 4</div>
+                                <div class="product-meta">
+                                    <span class="star-rating" style="--rating: 4.5">★★★★★</span>
+                                    <span class="product-info__rating-count">4.5/5</span>
+                                </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">$212</span>
+                                    <span class="product-price-original">$232</span>
+                                    <span class="badge-red">-20%</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer__newsletter">
+                <div class="container footer__newsletter-inner">
+                    <h2 class="footer__newsletter-title">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+                    <div class="footer__newsletter-form">
+                        <div class="footer__email-input">
+                            <svg width="14" height="14" fill="none" stroke="#aaa" stroke-width="1.8" viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <input type="email" placeholder="Enter your email address" />
+                        </div>
+                        <button class="footer__subscribe-btn">Subscribe to Newsletter</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container footer__body">
+                <div class="footer__cols">
+                    <div class="footer__brand">
+                        <div class="footer__brand-logo heading">SHOP.CO</div>
+                        <p class="footer__brand-desc">We have clothes that suits your style and which you're proud to wear. From women to men.</p>
+                        <div class="footer__socials">
+                            <a href="#"><img draggable="false" src="../public/assets/icons/socials/facebook.svg" alt="Facebook" /></a>
+                            <a href="#"><img draggable="false" src="../public/assets/icons/socials/instagram.svg" alt="Instagram" /></a>
+                            <a href="#"><img draggable="false" src="../public/assets/icons/socials/twitter.svg" alt="Twitter" /></a>
+                            <a href="#"><img draggable="false" src="../public/assets/icons/socials/linkedin.svg" alt="LinkedIn" /></a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="footer__col-title">COMPANY</div>
+                        <ul class="footer__links">
+                            <li><a href="#" class="footer__link">About</a></li>
+                            <li><a href="#" class="footer__link">Features</a></li>
+                            <li><a href="#" class="footer__link">Works</a></li>
+                            <li><a href="#" class="footer__link">Career</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="footer__col-title">HELP</div>
+                        <ul class="footer__links">
+                            <li><a href="#" class="footer__link">Customer Support</a></li>
+                            <li><a href="#" class="footer__link">Delivery Details</a></li>
+                            <li><a href="#" class="footer__link">Terms &amp; Conditions</a></li>
+                            <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="footer__col-title">FAQ</div>
+                        <ul class="footer__links">
+                            <li><a href="#" class="footer__link">Account</a></li>
+                            <li><a href="#" class="footer__link">Manage Deliveries</a></li>
+                            <li><a href="#" class="footer__link">Orders</a></li>
+                            <li><a href="#" class="footer__link">Payments</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer__bottom">
+                    <span class="footer__copyright">Shop.co &copy; 2000-2025. All Rights Reserved</span>
+                    <div class="footer__payments">
+                        <span class="payment-badge">VISA</span>
+                        <span class="payment-badge">Mastercard</span>
+                        <span class="payment-badge">PayPal</span>
+                        <span class="payment-badge">Apple Pay</span>
+                        <span class="payment-badge">G Pay</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/shared/close.js"></script>
+        <script src="../js/shared/scrollTo.js"></script>
+        <script>
+            function changeQty(delta) {
+                const el = document.getElementById('qty');
+                const val = Math.max(1, parseInt(el.textContent) + delta);
+                el.textContent = val;
+            }
+
+            document.querySelectorAll('.product-color').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.product-color').forEach(b => b.classList.remove('product-color--active'));
+                    btn.classList.add('product-color--active');
+                });
+            });
+
+            document.querySelectorAll('.product-size').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.product-size').forEach(b => b.classList.remove('product-size--active'));
+                    btn.classList.add('product-size--active');
+                });
+            });
+        </script>
+    </body>
+</html>
