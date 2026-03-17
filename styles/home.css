@@ -138,6 +138,12 @@
     gap: 20px;
 }
 
+.product-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
 .product-card__image {
     width: 100%;
     aspect-ratio: 1 / 1;
