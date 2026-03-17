@@ -403,6 +403,15 @@ button {
     );
 }
 
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 0 1rem;
