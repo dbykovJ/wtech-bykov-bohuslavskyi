@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SuperDash — Products</title>
+        <link rel="stylesheet" href="../styles/admin.css" />
+    </head>
+    <body>
+        <div class="admin-layout">
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar__logo">SuperDash</div>
+                <nav class="sidebar__nav">
+                    <a href="admin-dashboard.html" class="sidebar__link">Dashboard</a>
+                    <a href="admin-products.html" class="sidebar__link sidebar__link--active">Products</a>
+                    <a href="admin-orders.html" class="sidebar__link">Order List</a>
+                </nav>
+            </aside>
+
+            <!-- Main area -->
+            <div class="admin-main">
+
+                <!-- Top bar -->
+                <header class="topbar">
+                    <div class="topbar__search">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" placeholder="Search" />
+                    </div>
+                    <div class="topbar__right">
+                        <div class="topbar__user">
+                            <div class="topbar__avatar"></div>
+                            <div class="topbar__user-info">
+                                <span class="topbar__user-name">Name</span>
+                                <span class="topbar__user-role">Admin</span>
+                            </div>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Page content -->
+                <main class="admin-content">
+                    <div class="products-header">
+                        <h1 class="admin-page-title">Products</h1>
+                        <a href="admin-product-edit.html?mode=add" class="btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Product
+                        </a>
+                    </div>
+
+                    <div class="product-grid">
+
+                        <!-- Card -->
+                        <div class="product-card">
+                            <div class="product-card__image">
+                                <button class="product-card__arrow product-card__arrow--prev" aria-label="Previous">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button class="product-card__arrow product-card__arrow--next" aria-label="Next">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                </button>
+                            </div>
+                            <div class="product-card__body">
+                                <div class="product-card__row">
+                                    <span class="product-card__name">Item 1</span>
+                                    <button class="product-card__wishlist" aria-label="Wishlist">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                    </button>
+                                </div>
+                                <p class="product-card__price">$120.00</p>
+                                <div class="product-card__rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-count">(131)</span>
+                                </div>
+                                <a href="admin-product-edit.html?id=1" class="btn-outline">Edit Product</a>
+                            </div>
+                        </div>
+
+                        <!-- Card -->
+                        <div class="product-card">
+                            <div class="product-card__image">
+                                <button class="product-card__arrow product-card__arrow--prev" aria-label="Previous">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button class="product-card__arrow product-card__arrow--next" aria-label="Next">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                </button>
+                            </div>
+                            <div class="product-card__body">
+                                <div class="product-card__row">
+                                    <span class="product-card__name">Item 2</span>
+                                    <button class="product-card__wishlist" aria-label="Wishlist">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                    </button>
+                                </div>
+                                <p class="product-card__price">$120.00</p>
+                                <div class="product-card__rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-count">(131)</span>
+                                </div>
+                                <a href="admin-product-edit.html?id=2" class="btn-outline">Edit Product</a>
+                            </div>
+                        </div>
+
+                        <!-- Card -->
+                        <div class="product-card">
+                            <div class="product-card__image">
+                                <button class="product-card__arrow product-card__arrow--prev" aria-label="Previous">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button class="product-card__arrow product-card__arrow--next" aria-label="Next">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                </button>
+                            </div>
+                            <div class="product-card__body">
+                                <div class="product-card__row">
+                                    <span class="product-card__name">Item 3</span>
+                                    <button class="product-card__wishlist" aria-label="Wishlist">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                    </button>
+                                </div>
+                                <p class="product-card__price">$120.00</p>
+                                <div class="product-card__rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-count">(131)</span>
+                                </div>
+                                <a href="admin-product-edit.html?id=3" class="btn-outline">Edit Product</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>
