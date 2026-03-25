@@ -12,12 +12,15 @@
     grid-template-columns: 260px 1fr;
     gap: 20px;
     align-items: flex-start;
+    position: relative;
 }
 
 .info-nav {
     background: #f5f5f5;
     border-radius: 16px;
     padding: 20px;
+    position: sticky;
+    top: 80px;
 }
 
 .info-nav__section-title {
