@@ -4,7 +4,8 @@
       "Bash(rm -f public/index.php public/.htaccess public/robots.txt public/favicon.ico)",
       "Bash(rm -rf public/css/ .idea/)",
       "Bash(python -c \":*)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(grep -E '\\\\.\\(html|css|js\\)$')"
     ]
   }
 }

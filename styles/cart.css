@@ -271,6 +271,10 @@
 }
 
 @media (max-width: 480px) {
+    .cart-title {
+        font-size: 24px;
+    }
+
     .cart-item__image {
         width: 80px;
         height: 80px;
