@@ -1,0 +1,241 @@
+ .account-main {
+     padding: 32px 0 56px;
+ }
+
+ .account-title {
+     font-size: 32px;
+     margin-bottom: 24px;
+ }
+
+ .account-layout {
+     display: grid;
+     grid-template-columns: 260px 1fr;
+     gap: 20px;
+     align-items: flex-start;
+ }
+
+ .account-menu-toggle {
+     display: none;
+ }
+
+ .account-menu-toggle__btn {
+     border: 1px solid #e0e0e0;
+     border-radius: 999px;
+     width: 34px;
+     height: 34px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: #fff;
+     padding: 0;
+     cursor: pointer;
+ }
+
+ .account-menu-toggle__icon {
+     display: flex;
+     flex-direction: column;
+     gap: 4px;
+ }
+
+ .account-menu-toggle__icon span {
+     display: block;
+     width: 16px;
+     height: 2px;
+     background: #111;
+     border-radius: 2px;
+ }
+
+ .account-menu-toggle__label {
+     font-size: 14px;
+     font-weight: 600;
+ }
+
+ .account-nav {
+     background: #f5f5f5;
+     border-radius: 16px;
+     padding: 20px;
+ }
+
+ .account-nav__title {
+     font-size: 15px;
+     font-weight: 700;
+     margin-bottom: 12px;
+ }
+
+ .account-nav__list {
+     display: flex;
+     flex-direction: column;
+     gap: 6px;
+ }
+
+ .account-nav__link {
+     display: block;
+     font-size: 14px;
+     color: #555;
+     padding: 8px 12px;
+     border-radius: 10px;
+     transition: background 0.15s, color 0.15s;
+     cursor: pointer;
+ }
+
+ .account-nav__link:hover {
+     background: #e5e5e5;
+     color: #111;
+ }
+
+ .account-nav__link--active {
+     background: #111;
+     color: #fff;
+ }
+
+ .account-content {
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+ }
+
+ .account-card {
+     border: 1px solid #e5e5e5;
+     border-radius: 16px;
+     padding: 20px 22px;
+     background: #fff;
+ }
+
+ .account-card__title {
+     font-size: 18px;
+     font-weight: 700;
+     margin-bottom: 12px;
+ }
+
+ .account-profile__header {
+     display: flex;
+     align-items: center;
+     gap: 14px;
+     margin-bottom: 14px;
+ }
+
+ .account-profile__name {
+     font-size: 16px;
+     font-weight: 700;
+ }
+
+ .account-profile__email {
+     font-size: 13px;
+     color: #777;
+ }
+
+ .account-profile__meta {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 12px 24px;
+     font-size: 13px;
+     color: #555;
+ }
+
+ .account-profile__meta span {
+     color: #777;
+ }
+
+ .account-profile__meta strong {
+     margin-left: 4px;
+     color: #111;
+ }
+
+ .account-quick__grid {
+     display: grid;
+     grid-template-columns: repeat(2, minmax(0, 1fr));
+     gap: 12px;
+ }
+
+ .account-quick__item {
+     display: block;
+     border-radius: 12px;
+     background: #f5f5f5;
+     padding: 12px 14px;
+     transition: background 0.15s, transform 0.15s;
+ }
+
+ .account-quick__item:hover {
+     background: #e5e5e5;
+     transform: translateY(-1px);
+ }
+
+ .account-quick__label {
+     font-size: 14px;
+     font-weight: 600;
+     margin-bottom: 4px;
+ }
+
+ .account-quick__desc {
+     font-size: 12px;
+     color: #777;
+ }
+
+ .account-security__list {
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+     font-size: 14px;
+     color: #555;
+ }
+
+ .account-security__item strong {
+     color: #111;
+ }
+
+ .account-security__actions {
+     margin-top: 12px;
+     display: flex;
+     flex-wrap: wrap;
+     gap: 10px;
+ }
+
+ .account-btn {
+     background: #111;
+     color: #fff;
+     border: none;
+     border-radius: 30px;
+     padding: 10px 18px;
+     font-size: 13px;
+     font-weight: 600;
+     cursor: pointer;
+     font-family: 'Satoshi', sans-serif;
+ }
+
+ .account-btn--secondary {
+     background: #f5f5f5;
+     color: #111;
+     border: 1px solid #e5e5e5;
+ }
+
+ .account-btn:hover {
+     background: #333;
+ }
+
+ .account-btn--secondary:hover {
+     background: #e5e5e5;
+ }
+
+ @media (max-width: 900px) {
+     .account-layout {
+         grid-template-columns: 1fr;
+     }
+
+     .account-menu-toggle {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         margin-bottom: 12px;
+         padding: 10px 14px;
+         border-radius: 12px;
+         background: #f5f5f5;
+         gap: 10px;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .account-quick__grid {
+         grid-template-columns: 1fr;
+     }
+ }
+

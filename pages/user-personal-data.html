@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Data — SUPERSELL</title>
+    <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/account.css" />
+    <link rel="stylesheet" href="../styles/user-personal-data.css" />
+</head>
+<body>
+<div class="banner">
+    Sign up and get 20% off to your first order.
+    <a href="./register.html">Sign Up Now</a>
+    <img
+        draggable="false"
+        class="banner__close"
+        src="../public/assets/icons/cross.svg"
+        alt="close"
+        onclick="closeElement('banner')"
+    />
+</div>
+
+<nav class="navbar">
+    <div class="container navbar__inner">
+        <a href="../index.html" class="navbar__logo heading">SUPERSELL</a>
+
+        <div class="navbar__links">
+            <a href="./category.html" class="navbar__link">Shop</a>
+            <a href="../index.html#top-brand-seller" class="navbar__link">Brands</a>
+            <a href="../index.html#on-sale" class="navbar__link">On Sale</a>
+            <a href="../index.html#new-arrivals" class="navbar__link">New Arrivals</a>
+        </div>
+
+        <div class="navbar__search">
+            <div class="navbar__search-inner">
+                <img draggable="false" src="../public/assets/icons/search.svg" alt="search" />
+                <input type="search" placeholder="Search for Products" />
+            </div>
+        </div>
+
+        <div class="navbar__icons">
+            <a href="./cart.html">
+                <img draggable="false" src="../public/assets/icons/shopping-cart.svg" alt="Cart" />
+            </a>
+            <a href="./login.html">
+                <img draggable="false" class="navbar__user-icon" src="../public/assets/icons/user.svg" alt="Account" />
+            </a>
+            <button class="navbar__burger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<main class="personal-main">
+    <div class="container">
+
+        <h1 class="personal-title heading">YOUR DATA</h1>
+
+        <div class="account-menu-toggle">
+            <button class="account-menu-toggle__btn" type="button">
+                <span class="account-menu-toggle__icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <span class="account-menu-toggle__label">Account menu</span>
+        </div>
+
+        <aside class="account-nav">
+            <div class="account-nav__title">Account menu</div>
+            <div class="account-nav__list">
+                <a href="./user-account.html" class="account-nav__link">
+                    Overview
+                </a>
+                <a href="./user-personal-data.html" class="account-nav__link account-nav__link--active">
+                    Personal data
+                </a>
+                 <a href="./user-cart.html" class="account-nav__link">
+                     Cart &amp; checkout
+                 </a>
+                 <a href="./user-orders.html" class="account-nav__link">
+                     Orders
+                 </a>
+                <a href="./login.html" class="account-nav__link">
+                    Sign out
+                </a>
+            </div>
+        </aside>
+
+        <div class="personal-layout">
+            <div class="personal-left">
+                <div class="personal-form-box">
+                    <form class="personal-form" onsubmit="return false;">
+                        <input type="text" class="personal-input" placeholder="Full Name" />
+                        <input type="email" class="personal-input" placeholder="E-mail" />
+                        <input type="text" class="personal-input" placeholder="Address" />
+                        <input type="text" class="personal-input" placeholder="Post Code" />
+                        <input type="text" class="personal-input" placeholder="City" />
+                        <input type="text" class="personal-input" placeholder="Country" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer__newsletter">
+        <div class="container footer__newsletter-inner">
+            <h2 class="footer__newsletter-title">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+            <div class="footer__newsletter-form">
+                <div class="footer__email-input">
+                    <svg width="14" height="14" fill="none" stroke="#aaa" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    <input type="email" placeholder="Enter your email address" />
+                </div>
+                <button class="footer__subscribe-btn">Subscribe to Newsletter</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container footer__body">
+        <div class="footer__cols">
+            <div class="footer__brand">
+                <div class="footer__brand-logo heading">SHOP.CO</div>
+                <p class="footer__brand-desc">We have clothes that suits your style and which you're proud to wear. From
+                    women to men.</p>
+                <div class="footer__socials">
+                    <a href="#"><img draggable="false" src="../public/assets/icons/socials/facebook.svg"
+                                     alt="Facebook" /></a>
+                    <a href="#"><img draggable="false" src="../public/assets/icons/socials/instagram.svg"
+                                     alt="Instagram" /></a>
+                    <a href="#"><img draggable="false" src="../public/assets/icons/socials/twitter.svg" alt="Twitter" /></a>
+                    <a href="#"><img draggable="false" src="../public/assets/icons/socials/linkedin.svg"
+                                     alt="LinkedIn" /></a>
+                </div>
+            </div>
+            <div>
+                <div class="footer__col-title">COMPANY</div>
+                <ul class="footer__links">
+                    <li><a href="#" class="footer__link">About</a></li>
+                    <li><a href="#" class="footer__link">Features</a></li>
+                    <li><a href="#" class="footer__link">Works</a></li>
+                    <li><a href="#" class="footer__link">Career</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer__col-title">HELP</div>
+                <ul class="footer__links">
+                    <li><a href="#" class="footer__link">Customer Support</a></li>
+                    <li><a href="#" class="footer__link">Delivery Details</a></li>
+                    <li><a href="#" class="footer__link">Terms &amp; Conditions</a></li>
+                    <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer__col-title">FAQ</div>
+                <ul class="footer__links">
+                    <li><a href="#" class="footer__link">Account</a></li>
+                    <li><a href="#" class="footer__link">Manage Deliveries</a></li>
+                    <li><a href="#" class="footer__link">Orders</a></li>
+                    <li><a href="#" class="footer__link">Payments</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer__bottom">
+            <span class="footer__copyright">Shop.co &copy; 2000-2025. All Rights Reserved</span>
+            <div class="footer__payments">
+                <span class="payment-badge">VISA</span>
+                <span class="payment-badge">Mastercard</span>
+                <span class="payment-badge">PayPal</span>
+                <span class="payment-badge">Apple Pay</span>
+                <span class="payment-badge">G Pay</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/shared/close.js"></script>
+<script src="../js/shared/scrollTo.js"></script>
+</body>
+</html>
