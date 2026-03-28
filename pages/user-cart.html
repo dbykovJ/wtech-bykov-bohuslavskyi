@@ -386,6 +386,11 @@
         <script src="../js/shared/close.js"></script>
         <script src="../js/shared/burger.js"></script>
         <script src="../js/shared/scrollTo.js"></script>
+        <script>
+            document.querySelector('.account-menu-toggle').addEventListener('click', function () {
+                document.querySelector('.account-nav').classList.toggle('account-nav--open');
+            });
+        </script>
     </body>
 </html>
 
