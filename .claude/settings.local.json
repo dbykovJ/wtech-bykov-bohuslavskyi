@@ -5,7 +5,15 @@
       "Bash(rm -rf public/css/ .idea/)",
       "Bash(python -c \":*)",
       "Bash(node -e \":*)",
-      "Bash(grep -E '\\\\.\\(html|css|js\\)$')"
+      "Bash(grep -E '\\\\.\\(html|css|js\\)$')",
+      "Bash(grep -l \"addEventListener.*burger\\\\|querySelector.*burger\" /d/Uni/wtech-bykov-bohuslavskyi/*.html /d/Uni/wtech-bykov-bohuslavskyi/pages/*.html)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//d/Uni/wtech-bykov-bohuslavskyi/**)",
+      "Bash(done)",
+      "Bash(do)",
+      "Bash(sed -i 's|<script src=\"\"../js/shared/close.js\"\"></script>|<script src=\"\"../js/shared/close.js\"\"></script>\\\\n        <script src=\"\"../js/shared/burger.js\"\"></script>|' \"$f\")",
+      "Bash(echo \"Updated: $f\")"
     ]
   }
 }
