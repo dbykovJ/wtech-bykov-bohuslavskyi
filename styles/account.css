@@ -224,7 +224,6 @@
      .account-menu-toggle {
          display: flex;
          align-items: center;
-         justify-content: space-between;
          margin-bottom: 12px;
          padding: 10px 14px;
          border-radius: 12px;
