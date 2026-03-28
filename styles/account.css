@@ -230,6 +230,16 @@
          border-radius: 12px;
          background: #f5f5f5;
          gap: 10px;
+         cursor: pointer;
+     }
+
+     .account-nav {
+         display: none;
+         margin-bottom: 8px;
+     }
+
+     .account-nav--open {
+         display: block;
      }
  }
 
