@@ -9,7 +9,6 @@
     <body>
         <div class="admin-layout">
 
-            <!-- Sidebar -->
             <aside class="sidebar">
                 <div class="sidebar__logo">SuperDash</div>
                 <nav class="sidebar__nav">
@@ -19,10 +18,8 @@
                 </nav>
             </aside>
 
-            <!-- Main area -->
             <div class="admin-main">
 
-                <!-- Top bar -->
                 <header class="topbar">
                     <div class="topbar__search">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -40,7 +37,6 @@
                     </div>
                 </header>
 
-                <!-- Page content -->
                 <main class="admin-content">
                     <div class="edit-header">
                         <a href="admin-products.html" class="back-link">
@@ -51,10 +47,8 @@
 
                     <form class="edit-form-card" id="product-form" onsubmit="handleSubmit(event)">
 
-                        <!-- Photo upload -->
                         <div class="photo-upload">
                             <div class="photo-upload__previews" id="photo-previews">
-                                <!-- Filled by JS -->
                             </div>
                             <label class="photo-upload__trigger" for="photo-input">
                                 <div class="photo-upload__icon">
@@ -65,7 +59,6 @@
                             </label>
                         </div>
 
-                        <!-- Form fields -->
                         <div class="form-grid">
                             <div class="form-field">
                                 <label class="form-label" for="item-name">Item Name</label>
@@ -138,7 +131,6 @@
                             </div>
                         </div>
 
-                        <!-- Actions -->
                         <div class="form-actions">
                             <a href="admin-products.html" class="btn-ghost">Cancel</a>
                             <button type="submit" class="btn-primary btn-primary--large" id="submit-btn">Save Changes</button>
@@ -150,7 +142,6 @@
         </div>
 
         <script>
-            // Detect add vs edit mode from URL
             const params = new URLSearchParams(location.search);
             const mode = params.get('mode');
             const id = params.get('id');
@@ -159,11 +150,9 @@
             document.getElementById('page-title').textContent = isAdd ? 'Add New Product' : `Item ${id}: Edit`;
             document.getElementById('submit-btn').textContent = isAdd ? 'Add Now' : 'Save Changes';
 
-            // Photo upload preview
             const input = document.getElementById('photo-input');
             const previewsContainer = document.getElementById('photo-previews');
 
-            // Render placeholder slots
             function renderPreviews(files) {
                 previewsContainer.innerHTML = '';
                 const slots = Math.max(2, files.length);
@@ -192,7 +181,6 @@
                 renderPreviews(Array.from(input.files));
             });
 
-            // Color picker
             let selectedColors = [];
             document.querySelectorAll('.color-swatch:not(.color-swatch--add)').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -212,7 +200,6 @@
                 });
             });
 
-            // Submit
             function handleSubmit(e) {
                 e.preventDefault();
                 const btn = document.getElementById('submit-btn');
