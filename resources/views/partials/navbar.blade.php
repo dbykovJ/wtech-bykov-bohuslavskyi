@@ -1,33 +1,32 @@
-<nav class="w-full border-b border-[#e5e5e5] py-[13px] bg-white sticky top-0 z-50">
-    <div class="max-w-[1160px] mx-auto px-4 md:px-8 flex items-center gap-4 md:gap-7">
-        <a href="{{ route('home') }}" class="heading text-[20px] tracking-[2px] whitespace-nowrap">SUPERSELL</a>
+<nav class="navbar">
+    <div class="container navbar__inner">
+        <a href="{{ route('home') }}" class="navbar__logo heading">SUPERSELL</a>
 
-        <div class="hidden md:flex items-center gap-5">
-            <a href="#" class="nav-link flex items-center gap-[3px]">
-                Shop
-                <img src="{{ asset('assets/icons/down.svg') }}" alt="Dropdown" width="16" height="16" />
-            </a>
-            <a href="#" class="nav-link">On Sale</a>
-            <a href="#" class="nav-link">New Arrivals</a>
-            <a href="#" class="nav-link">Brands</a>
+        <div class="navbar__links">
+            <a href="{{ route('category') }}" class="navbar__link">Shop</a>
+            <a href="{{ route('home') }}#top-brand-seller" class="navbar__link">Brands</a>
+            <a href="{{ route('home') }}#on-sale" class="navbar__link">On Sale</a>
+            <a href="{{ route('home') }}#new-arrivals" class="navbar__link">New Arrivals</a>
         </div>
 
-        <div class="flex-1 mx-0 md:mx-3">
-            <div class="bg-[#f0f0f0] rounded-full flex items-center gap-2 py-2 px-4">
-                <img src="{{ asset('assets/icons/search.svg') }}" alt="Search" width="16" height="16" />
-                <input type="search" placeholder="Search for Products" class="bg-transparent border-none text-[#000] text-[13px] w-full font-body outline-none placeholder:text-[#888] select-none" />
+        <div class="navbar__search">
+            <div class="navbar__search-inner">
+                <img draggable="false" src="{{ asset('assets/icons/search.svg') }}" alt="search" />
+                <input type="search" placeholder="Search for Products" />
             </div>
         </div>
 
-        <div class="flex items-center gap-[14px]">
-            <img src="{{ asset('assets/icons/shopping-cart.svg') }}" alt="Shopping Cart" width="16" height="16" />
-            <a href="{{ route('login') }}">
-            <img class="hidden md:block" src="{{ asset('assets/icons/user.svg') }}" alt="Account" width="16" height="16" />
+        <div class="navbar__icons">
+            <a href="{{ route('cart') }}">
+                <img draggable="false" src="{{ asset('assets/icons/shopping-cart.svg') }}" alt="Cart" />
             </a>
-            <button class="md:hidden flex flex-col gap-[5px]" aria-label="Menu">
-                <span class="block w-5 h-[2px] bg-[#111]"></span>
-                <span class="block w-5 h-[2px] bg-[#111]"></span>
-                <span class="block w-5 h-[2px] bg-[#111]"></span>
+            <a href="{{ route('login') }}">
+                <img draggable="false" class="navbar__user-icon" src="{{ asset('assets/icons/user.svg') }}" alt="Account" />
+            </a>
+            <button class="navbar__burger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
         </div>
     </div>

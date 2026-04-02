@@ -1,0 +1,89 @@
+@extends('layouts.app')
+
+@section('title', 'Payment — SUPERSELL')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/payment.css') }}" />
+@endpush
+
+@section('content')
+<main class="payment-main">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{{ route('cart') }}">Payment</a>
+            <span class="breadcrumb__sep">›</span>
+            <span class="breadcrumb__current">Choose your payment method</span>
+        </div>
+
+        <h1 class="payment-title heading">CHOOSE YOUR PAYMENT METHOD</h1>
+
+        <div class="payment-layout">
+            <div class="payment-methods">
+                <label class="payment-option">
+                    <div class="payment-option__left">
+                        <div class="placeholder payment-option__logo"></div>
+                        <span class="payment-option__name">Credit or Debit Card</span>
+                    </div>
+                    <input type="radio" name="payment" value="card" class="payment-option__radio" checked />
+                    <span class="payment-option__custom-radio"></span>
+                </label>
+
+                <label class="payment-option">
+                    <div class="payment-option__left">
+                        <div class="placeholder payment-option__logo"></div>
+                        <span class="payment-option__name">PayPal</span>
+                    </div>
+                    <input type="radio" name="payment" value="paypal" class="payment-option__radio" />
+                    <span class="payment-option__custom-radio"></span>
+                </label>
+
+                <label class="payment-option">
+                    <div class="payment-option__left">
+                        <div class="placeholder payment-option__logo"></div>
+                        <span class="payment-option__name">Apple Pay</span>
+                    </div>
+                    <input type="radio" name="payment" value="applepay" class="payment-option__radio" />
+                    <span class="payment-option__custom-radio"></span>
+                </label>
+
+                <label class="payment-option">
+                    <div class="payment-option__left">
+                        <div class="placeholder payment-option__logo"></div>
+                        <span class="payment-option__name">Google Pay</span>
+                    </div>
+                    <input type="radio" name="payment" value="googlepay" class="payment-option__radio" />
+                    <span class="payment-option__custom-radio"></span>
+                </label>
+            </div>
+
+            <div class="order-summary">
+                <h2 class="order-summary__title">Order Summary</h2>
+
+                <div class="order-summary__rows">
+                    <div class="order-summary__row">
+                        <span>Subtotal</span>
+                        <span>$565</span>
+                    </div>
+                    <div class="order-summary__row">
+                        <span>Discount (-20%)</span>
+                        <span class="order-summary__discount">-$113</span>
+                    </div>
+                    <div class="order-summary__row">
+                        <span>Delivery Fee</span>
+                        <span>$15</span>
+                    </div>
+                </div>
+
+                <div class="order-summary__divider"></div>
+
+                <div class="order-summary__total">
+                    <span>Total</span>
+                    <span>$467</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="place-order-btn" onclick="window.location.href='{{ route('delivery') }}'">Place Order</button>
+    </div>
+</main>
+@endsection
