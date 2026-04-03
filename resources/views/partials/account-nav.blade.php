@@ -24,8 +24,9 @@
         <a href="{{ route('account.orders') }}" class="account-nav__link {{ request()->routeIs('account.orders') ? 'account-nav__link--active' : '' }}">
             Orders
         </a>
-        <a href="{{ route('login') }}" class="account-nav__link">
-            Sign out
-        </a>
+        <form action="{{ route('logout') }}" class="account-nav__link" method="POST">
+            @csrf
+            <button type="submit" style="border: none; background: none">Sign out</button>
+        </form>
     </div>
 </aside>

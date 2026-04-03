@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
@@ -16,8 +19,22 @@ Route::get('/checkout/personal-data', fn() => view('personal-data'))->name('chec
 Route::get('/order-confirm', fn() => view('order-confirm'))->name('order-confirm');
 
 // Auth
-Route::get('/login', fn() => view('auth.login'))->name('login');
-Route::get('/register', fn() => view('auth.register'))->name('register');
+Route::get('/login', fn() => view('auth.login'))
+    ->middleware('guest')
+    ->name('login');
+Route::post('/login', LoginController::class)
+    ->middleware('guest')
+    ->name('login');
+Route::get('/register', fn() => view('auth.register'))
+    ->middleware('guest')
+    ->name('register');
+Route::post('/register', RegisterController::class)
+    ->middleware('guest')
+    ->name('register');
+
+Route::post('/logout', LogoutController::class)
+    ->middleware('auth')
+    ->name('logout');
 
 // Account
 Route::get('/account', fn() => view('account.index'))->name('account');

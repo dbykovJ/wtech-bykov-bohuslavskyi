@@ -20,9 +20,17 @@
             <a href="{{ route('cart') }}">
                 <img draggable="false" src="{{ asset('assets/icons/shopping-cart.svg') }}" alt="Cart" />
             </a>
-            <a href="{{ route('login') }}">
-                <img draggable="false" class="navbar__user-icon" src="{{ asset('assets/icons/user.svg') }}" alt="Account" />
-            </a>
+            @auth
+                <a href="{{ route('account') }}">
+                    <img draggable="false" class="navbar__user-icon" src="{{ asset('assets/icons/user.svg') }}"
+                         alt="Account" />
+                </a>
+            @else
+                <a href="{{ route('login') }}">
+                    <img draggable="false" class="navbar__user-icon" src="{{ asset('assets/icons/user.svg') }}"
+                         alt="Account" />
+                </a>
+            @endauth
             <button class="navbar__burger" aria-label="Menu">
                 <span></span>
                 <span></span>

@@ -25,14 +25,14 @@
                     <h2 class="account-card__title">Profile</h2>
                     <div class="account-profile__header">
                         <div>
-                            <div class="account-profile__name">John Doe</div>
-                            <div class="account-profile__email">john.doe@example.com</div>
+                            <div class="account-profile__name">{{ Auth::user()->name  }}</div>
+                            <div class="account-profile__email">{{ Auth::user()->email  }}</div>
                         </div>
                     </div>
                     <div class="account-profile__meta">
                         <div>
-                            <span>Member since</span>
-                            <strong>Jan 2025</strong>
+                            <span>Member since:</span>
+                            <strong>{{ Auth::user()->created_at->format('M Y') }}</strong>
                         </div>
                         <div>
                             <span>Total orders</span>

@@ -15,9 +15,21 @@
             @csrf
             <div class="auth-fields">
                 <input class="register-input" id="name" type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required autofocus />
-                <input class="register-input" id="phone" type="text" name="phone" placeholder="Phone" value="{{ old('phone') }}" required />
+                @error('name')
+                <span>{{ $message }}</span>
+                @enderror
+                <input class="register-input" id="email" type="text" name="email" placeholder="Phone" value="{{ old('email') }}" required />
+                @error('email')
+                <span>{{ $message }}</span>
+                @enderror
                 <input class="register-input" id="password" type="password" name="password" placeholder="Password" required />
+                @error('password')
+                <span>{{ $message }}</span>
+                @enderror
                 <input class="register-input" id="confirm-password" type="password" name="password_confirmation" placeholder="Confirm Password" required />
+                @error('password_confirmation')
+                <span>{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="register-actions">
