@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
@@ -43,7 +44,8 @@ Route::get('/account/cart', fn() => view('account.cart'))->name('account.cart');
 Route::get('/account/orders', fn() => view('account.orders'))->name('account.orders');
 
 // Admin
-Route::get('/admin', fn() => view('admin.dashboard'))->name('admin.dashboard');
-Route::get('/admin/products', fn() => view('admin.products'))->name('admin.products');
-Route::get('/admin/products/edit', fn() => view('admin.product-edit'))->name('admin.product-edit');
-Route::get('/admin/orders', fn() => view('admin.orders'))->name('admin.orders');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::resource('products', ProductController::class)->except('show');
+    Route::get('/orders', fn() => view('admin.orders'))->name('orders');
+});

@@ -13,9 +13,16 @@
             <div class="sidebar__logo">SuperDash</div>
             <nav class="sidebar__nav">
                 <a href="{{ route('admin.dashboard') }}" class="sidebar__link {{ request()->routeIs('admin.dashboard') ? 'sidebar__link--active' : '' }}">Dashboard</a>
-                <a href="{{ route('admin.products') }}" class="sidebar__link {{ request()->routeIs('admin.products*') ? 'sidebar__link--active' : '' }}">Products</a>
+                <a href="{{ route('admin.products.index') }}" class="sidebar__link {{ request()->routeIs('admin.products*') ? 'sidebar__link--active' : '' }}">Products</a>
                 <a href="{{ route('admin.orders') }}" class="sidebar__link {{ request()->routeIs('admin.orders') ? 'sidebar__link--active' : '' }}">Order List</a>
             </nav>
+
+            <form action="{{ route('logout') }}" method="POST" style="padding: 16px;">
+                @csrf
+                <button type="submit" class="sidebar__link" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: #ef4444;">
+                    Logout
+                </button>
+            </form>
         </aside>
 
         <div class="admin-main">
@@ -31,12 +38,9 @@
                     <div class="topbar__user">
                         <div class="topbar__avatar"></div>
                         <div class="topbar__user-info">
-                            <span class="topbar__user-name">Name</span>
+                            <span class="topbar__user-name">{{ auth()->user()->name }}</span>
                             <span class="topbar__user-role">Admin</span>
                         </div>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"/>
-                        </svg>
                     </div>
                 </div>
             </header>

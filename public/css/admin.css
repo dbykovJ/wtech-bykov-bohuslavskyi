@@ -88,7 +88,18 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 12px;
+    overflow: hidden;
 }
+
+.product-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
 
 .product-card__arrow {
     width: 32px;
@@ -193,8 +204,18 @@
 
 .photo-upload__previews {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    object-fit: cover;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 10px;
+}
+
+.photo-upload__preview {
+    display: flex;
+    object-fit: cover;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 10px;
 }
 
 .photo-preview-slot {
