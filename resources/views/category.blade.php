@@ -11,207 +11,119 @@
     <div class="container">
         <div class="breadcrumb">
             <a href="{{ route('home') }}">Home</a>
-            <span class="breadcrumb__sep">›</span>
             <span class="breadcrumb__current">Shop</span>
         </div>
 
         <div class="category-layout">
+            <form action="{{ route('category') }}" method="GET" id="filter-form">
             <aside class="filters">
                 <div class="filters__header">
                     <span class="filters__title">Filters</span>
-                    <button class="filters__reset">Reset All</button>
+                    <a href="{{ route('category') }}" class="filters__reset">Reset All</a>
                 </div>
 
                 <div class="filters__section">
-                    <div class="filters__section-title">Categories <span>›</span></div>
+                    <div class="filters__section-title">Categories</div>
                     <div class="filters__categories">
-                        <div class="filters__category-item active">T-Shirts <span>›</span></div>
-                        <div class="filters__category-item">Shorts <span>›</span></div>
-                        <div class="filters__category-item">Shirts <span>›</span></div>
-                        <div class="filters__category-item">Hoodie <span>›</span></div>
-                        <div class="filters__category-item">Jeans <span>›</span></div>
-                    </div>
-                </div>
-
-                <div class="filters__section">
-                    <div class="filters__section-title">Price Range <span>›</span></div>
-                    <div class="price-range">
-                        <div class="price-range__track">
-                            <div class="price-range__fill"></div>
-                            <div class="price-range__handle price-range__handle--left"></div>
-                            <div class="price-range__handle price-range__handle--right"></div>
+                        <div class="filters__category-item {{ !request('category') ? 'active' : '' }}"
+                             onclick="setCategory('')">
+                            <span>All</span>
+                            <span class="filters__category-radio {{ !request('category') ? 'filters__category-radio--active' : '' }}"></span>
                         </div>
-                        <div class="price-range__labels">
-                            <span>$50</span>
-                            <span>$200</span>
+                        @foreach($categories as $cat)
+                            <div class="filters__category-item {{ request('category') == $cat->id ? 'active' : '' }}"
+                                 onclick="setCategory('{{ $cat->id }}')">
+                                <span>{{ $cat->name }}</span>
+                                <span class="filters__category-radio {{ request('category') == $cat->id ? 'filters__category-radio--active' : '' }}"></span>
+                            </div>
+                        @endforeach
+                        <input type="hidden" name="category" id="category-input" value="{{ request('category') }}" />
+                    </div>
+                </div>
+
+                <div class="filters__section">
+                    <div class="filters__section-title">Price Range</div>
+                    <div class="filters__price-inputs">
+                        <div class="filters__price-box">
+                            <span class="filters__price-label">Min</span>
+                            <input type="number" name="min_price" placeholder="$0"
+                                   value="{{ request('min_price') }}"
+                                   min="0" step="1"
+                                   class="filters__price-input" />
+                        </div>
+                        <span class="filters__price-sep">—</span>
+                        <div class="filters__price-box">
+                            <span class="filters__price-label">Max</span>
+                            <input type="number" name="max_price" placeholder="$999"
+                                   value="{{ request('max_price') }}"
+                                   min="0" step="1"
+                                   class="filters__price-input" />
                         </div>
                     </div>
                 </div>
 
                 <div class="filters__section">
-                    <div class="filters__section-title">Colors <span>›</span></div>
-                    <div class="colors-grid">
-                        <div class="color-swatch active" style="background: #4caf50" title="Green"></div>
-                        <div class="color-swatch" style="background: #f44336" title="Red"></div>
-                        <div class="color-swatch" style="background: #ffeb3b" title="Yellow"></div>
-                        <div class="color-swatch" style="background: #ff9800" title="Orange"></div>
-                        <div class="color-swatch" style="background: #03a9f4" title="Blue"></div>
-                        <div class="color-swatch" style="background: #9c27b0" title="Purple"></div>
-                        <div class="color-swatch" style="background: #f48fb1" title="Pink"></div>
-                        <div class="color-swatch" style="background: #ffffff; border: 1px solid #ddd;" title="White"></div>
-                        <div class="color-swatch" style="background: #111" title="Black"></div>
-                    </div>
-                </div>
-
-                <div class="filters__section">
-                    <div class="filters__section-title">Size <span>›</span></div>
-                    <div class="sizes-grid">
-                        <button class="size-btn">XX-Small</button>
-                        <button class="size-btn">X-Small</button>
-                        <button class="size-btn active">Small</button>
-                        <button class="size-btn">Medium</button>
-                        <button class="size-btn">Large</button>
-                        <button class="size-btn">X-Large</button>
-                        <button class="size-btn">XX-Large</button>
-                        <button class="size-btn">3X-Large</button>
-                        <button class="size-btn">4X-Large</button>
-                    </div>
+                    <button type="submit" class="filters__apply-btn">Apply Filters</button>
                 </div>
             </aside>
+            </form>
 
             <div class="products-area">
                 <div class="products-area__header">
                     <div>
                         <h1 class="products-area__title">Shop</h1>
-                        <div class="products-area__meta">Showing 1-9 of 40 Products</div>
+                        <div class="products-area__meta">
+                            Showing {{ $products->firstItem() }}–{{ $products->lastItem() }} of {{ $products->total() }} Products
+                        </div>
                     </div>
                     <div class="products-area__sort">
                         Sort by:
                         <div class="select">
                             <div class="select__selected">
-                                <span>Most Popular</span>
+                                <span>{{ match(request('sort')) {
+                                    'price_asc'  => 'Price: Low to High',
+                                    'price_desc' => 'Price: High to Low',
+                                    'newest'     => 'Newest',
+                                    default      => 'Newest'
+                                } }}</span>
                                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                                     <path d="M1 1l4 4 4-4" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
                             <ul class="select__dropdown">
-                                <li class="active">Most Popular</li>
-                                <li>Newest</li>
-                                <li>Price: Low to High</li>
-                                <li>Price: High to Low</li>
+                                <li onclick="setSort('newest')" class="{{ request('sort', 'newest') === 'newest' ? 'active' : '' }}">Newest</li>
+                                <li onclick="setSort('price_asc')" class="{{ request('sort') === 'price_asc' ? 'active' : '' }}">Price: Low to High</li>
+                                <li onclick="setSort('price_desc')" class="{{ request('sort') === 'price_desc' ? 'active' : '' }}">Price: High to Low</li>
                             </ul>
                         </div>
+                        <input type="hidden" name="sort" id="sort-input" value="{{ request('sort') }}" form="filter-form" />
                     </div>
                 </div>
 
                 <div class="category-products-grid">
+                    @forelse ($products as $product)
                     <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
+                            @if($product->image_url)
+                                <img src="{{ asset('storage/' . $product->image_url) }}"
+                                    alt="{{ $product->name }}"
+                                    class="product-card__image" style="object-fit: cover;" />
+                            @else
+                            <div class="placeholder product-card__image"></div>
+                        @endif
                         <div class="product-meta">
-                            <div class="product-name">Gradient Graphic Tee</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
+                            <div class="product-name">{{ $product->name }}</div>
                             <div class="product-price-row">
-                                <span class="product-price">$145</span>
-                                <span class="product-price-original">$168</span>
-                                <span class="badge-red">-14%</span>
+                                <span class="product-price">${{ $product->price }}</span>
                             </div>
                         </div>
                     </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Polo with Tipping Details</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$180</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Black Striped T-Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$120</span>
-                                <span class="product-price-original">$150</span>
-                                <span class="badge-red">-20%</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Skinny Fit Jeans</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$240</span>
-                                <span class="product-price-original">$260</span>
-                                <span class="badge-red">-8%</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Checkered Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$180</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Sleeve Striped T-Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$130</span>
-                                <span class="product-price-original">$160</span>
-                                <span class="badge-red">-19%</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Vertical Striped Shirt</div>
-                            <div class="star-rating" style="--rating: 5">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$212</span>
-                                <span class="product-price-original">$232</span>
-                                <span class="badge-red">-9%</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('product') }}" class="product-card">
-                        <div class="placeholder product-card__image"></div>
-                        <div class="product-meta">
-                            <div class="product-name">Courage Graphic T-Shirt</div>
-                            <div class="star-rating" style="--rating: 4">★★★★★</div>
-                            <div class="product-price-row">
-                                <span class="product-price">$145</span>
-                            </div>
-                        </div>
-                    </a>
+                    @empty
+                        <p style="color: #888; font-size: 14px;">No products found.</p>
+                    @endforelse
                 </div>
 
                 <div class="pagination">
-                    <button class="pagination__btn">←</button>
-                    <button class="pagination__btn active">1</button>
-                    <button class="pagination__btn">2</button>
-                    <button class="pagination__btn">3</button>
-                    <span class="pagination__dots">...</span>
-                    <button class="pagination__btn">10</button>
-                    <button class="pagination__btn">→</button>
+                    {{ $products->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>
@@ -221,4 +133,15 @@
 
 @push('scripts')
 <script src="{{ asset('js/category/select.js') }}"></script>
+<script>
+    function setCategory(id) {
+        document.getElementById('category-input').value = id;
+        document.getElementById('filter-form').submit();
+    }
+
+    function setSort(value) {
+        document.getElementById('sort-input').value = value;
+        document.getElementById('filter-form').submit();
+    }
+</script>
 @endpush
