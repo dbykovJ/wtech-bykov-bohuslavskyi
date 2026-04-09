@@ -79,16 +79,19 @@
             <div class="container">
                 <h2 id="on-sale" class="section-heading">ON SALE</h2>
                 <div class="products-grid">
-                    @foreach($productsOnSale= App\Models\Product::take(4)->orderBy('rating', 'desc')->get() as $productOnSale)
+                    @foreach($productsOnSale as $productOnSale)
                         <a href="{{ route('product', ['product' => $productOnSale]) }}" class="product-card">
                             <div class="placeholder product-card__image"></div>
                             <div class="product-meta">
                                 <div class="product-name">{{$productOnSale->name}}</div>
                                 <div class="star-rating" style="--rating: {{$productOnSale->rating}}">★★★★★</div>
                                 <div class="product-price-row">
-                                    <span class="product-price">$145</span>
-                                    <span class="product-price-original">${{number_format($productOnSale->price, 2)}}</span>
-                                    <span class="badge-red">-14%</span>
+                                    <span
+                                        class="product-price">${{number_format($productOnSale->price - ($productOnSale->price*$productOnSale->total_discount), 2)}}</span>
+                                    <span
+                                        class="product-price-original">${{number_format($productOnSale->price, 2)}}</span>
+                                    <span
+                                        class="badge-red">-{{number_format($productOnSale->total_discount * 100)}}%</span>
                                 </div>
                             </div>
                         </a>
@@ -101,14 +104,25 @@
             <div class="container">
                 <h2 id="new-arrivals" class="section-heading">NEW ARRIVALS</h2>
                 <div class="products-grid">
-                    @foreach($newProducts= App\Models\Product::take(4)->orderBy('created_at', 'desc')->get() as $newProduct)
-                        <a href="{{ route('product', ['product' => $newProduct]) }}" class="product-card">
+                    @foreach($newArrivals as $newArrival)
+                        <a href="{{ route('product', ['product' => $newArrival]) }}" class="product-card">
                             <div class="placeholder product-card__image"></div>
                             <div class="product-meta">
-                                <div class="product-name">{{$newProduct->name}}</div>
-                                <div class="star-rating" style="--rating: {{$newProduct->rating}}">★★★★★</div>
+                                <div class="product-name">{{$newArrival->name}}</div>
+                                <div class="star-rating" style="--rating: {{$newArrival->rating}}">★★★★★</div>
                                 <div class="product-price-row">
-                                    <span class="product-price">${{number_format($newProduct->price, 2)}}</span>
+                                    @if($newArrival->sales->isNotEmpty())
+                                        @php $total_discount = $newArrival->sales->sum('discount') @endphp
+                                        <span
+                                            class="product-price">${{number_format($newArrival->price - ($newArrival->price*($total_discount/100)), 2)}}</span>
+                                        <span
+                                            class="product-price-original">${{number_format($newArrival->price, 2)}}</span>
+                                        <span
+                                            class="badge-red">-{{number_format($total_discount)}}%</span>
+
+                                    @else
+                                        <span class="product-price">${{number_format($newArrival->price, 2)}}</span>
+                                    @endif
                                 </div>
                             </div>
                         </a>

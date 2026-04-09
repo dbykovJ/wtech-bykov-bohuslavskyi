@@ -44,9 +44,18 @@
                     </div>
 
                     <div class="product-info__price-row">
-                        <span class="product-info__price">${{$product->price}}</span>
-                        <span class="product-info__price-original">$300</span>
-                        <span class="badge-red">-40%</span>
+                        @if($product->sales->isNotEmpty())
+                            @php $total_discount = $product->sales->sum('discount') @endphp
+                            <span
+                                class="product-price">${{number_format($product->price - ($product->price*($total_discount/100)), 2)}}</span>
+                            <span
+                                class="product-price-original">${{number_format($product->price, 2)}}</span>
+                            <span
+                                class="badge-red">-{{number_format($total_discount)}}%</span>
+
+                        @else
+                            <span class="product-price">${{number_format($product->price, 2)}}</span>
+                        @endif
                     </div>
 
                     <p class="product-info__desc">

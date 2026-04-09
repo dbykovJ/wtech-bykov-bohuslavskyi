@@ -10,9 +10,9 @@ class Sale extends Model
         'slug',
         'name',
         'discount',
-        'validFrom',
-        'validTo',
-        'promoCode',
+        'valid_from',
+        'valid_to',
+        'promo_code',
     ];
 
     public function products(): BelongsToMany
