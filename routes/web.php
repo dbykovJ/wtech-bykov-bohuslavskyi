@@ -5,10 +5,14 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Models\Product;
+use App\Services\Product\ProductService;
 use Illuminate\Support\Facades\Route;
 
+
+$productService = new productService();
+
 // Public pages
-Route::get('/', fn() => view('home', ['productsOnSale' => Product::getOnSale(), 'newArrivals' => Product::getNewArrivals()]))->name('home');
+Route::get('/', fn() => view('home', ['productsOnSale' => $productService::getOnSale(), 'newArrivals' => $productService::getNewArrivals()]))->name('home');
 Route::get('/shop', fn() => view('category'))->name('category');
 Route::get('/product/{product}', fn(Product $product) => view('product', ['product' => $product]))->name('product');
 Route::get('/about', fn() => view('about'))->name('about');
