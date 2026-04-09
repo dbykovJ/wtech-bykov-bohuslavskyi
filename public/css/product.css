@@ -45,6 +45,11 @@ main {
     min-height: 380px;
 }
 
+.product-gallery-image__main{
+    width: 400px;
+    object-fit: contain;
+}
+
 .product-info {
     display: flex;
     flex-direction: column;

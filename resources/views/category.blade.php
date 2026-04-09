@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="category-products-grid">
-                    <a href="{{ route('product') }}" class="product-card">
+                    <a href="{{ route('product', ['product' => Product::where(['id' => request()->id])->firstOrFail()]) }}" class="product-card">
                         <div class="placeholder product-card__image"></div>
                         <div class="product-meta">
                             <div class="product-name">Gradient Graphic Tee</div>
@@ -118,7 +118,7 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('product') }}" class="product-card">
+{{--                    <a href="{{ route('product') }}" class="product-card">--}}
                         <div class="placeholder product-card__image"></div>
                         <div class="product-meta">
                             <div class="product-name">Polo with Tipping Details</div>
@@ -129,7 +129,7 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('product') }}" class="product-card">
+{{--                    <a href="{{ route('product') }}" class="product-card">--}}
                         <div class="placeholder product-card__image"></div>
                         <div class="product-meta">
                             <div class="product-name">Black Striped T-Shirt</div>

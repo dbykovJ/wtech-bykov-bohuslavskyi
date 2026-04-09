@@ -3,13 +3,14 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/shop', fn() => view('category'))->name('category');
-Route::get('/product', fn() => view('product'))->name('product');
+Route::get('/product/{product}', fn(Product $product) => view('product', ['product' => $product]))->name('product');
 Route::get('/about', fn() => view('about'))->name('about');
 
 // Cart & checkout flow
@@ -46,6 +47,6 @@ Route::get('/account/orders', fn() => view('account.orders'))->name('account.ord
 // Admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', fn() => view('admin.dashboard'))->name('dashboard');
-    Route::resource('products', ProductController::class)->except('show');
+    Route::resource('products', AdminProductController::class)->except('show');
     Route::get('/orders', fn() => view('admin.orders'))->name('orders');
 });
