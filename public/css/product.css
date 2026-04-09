@@ -138,6 +138,11 @@ main {
     outline-offset: -4px;
 }
 
+.product-color--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .product-sizes {
     display: flex;
     flex-wrap: wrap;
@@ -159,6 +164,18 @@ main {
     background: #111;
     color: #fff;
     border-color: #111;
+}
+
+.product-size--disabled {
+    background: #f0f0f0;
+    color: #aaa;
+    border-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+.product-sizes__empty {
+    font-size: 13px;
+    color: #888;
 }
 
 .product-info__actions {

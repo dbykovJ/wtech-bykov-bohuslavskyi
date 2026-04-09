@@ -64,27 +64,65 @@
 
                     <div class="product-info__divider"></div>
 
-                    <div class="product-info__section">
-                        <span class="product-info__label">Choose Colors</span>
-                        <div class="product-colors">
-                            <button class="product-color" style="background:#6b7c5e;" aria-label="Olive"></button>
-                            <button class="product-color product-color--active" style="background:#2a2a2a;"
-                                    aria-label="Black"></button>
-                            <button class="product-color" style="background:#3a5a8a;" aria-label="Blue"></button>
-                        </div>
-                    </div>
+                    @if(isset($product->colorGroups) && $product->colorGroups->isNotEmpty())
+                        @php
+                            $defaultColorId = $product->defaultColorId ?? $product->colorGroups->keys()->first();
+                            $defaultGroup = $defaultColorId !== null ? $product->colorGroups[$defaultColorId] ?? null : null;
+                            $defaultSizes = $defaultGroup['sizes'] ?? collect();
+                            // Do not pre-select any size; customer must choose
+                            $defaultSizeCode = null;
+                        @endphp
 
-                    <div class="product-info__divider"></div>
-
-                    <div class="product-info__section">
-                        <span class="product-info__label">Choose Size</span>
-                        <div class="product-sizes">
-                            <button class="product-size">Small</button>
-                            <button class="product-size">Medium</button>
-                            <button class="product-size product-size--active">Large</button>
-                            <button class="product-size">X-Large</button>
+                        <div class="product-info__section">
+                            <span class="product-info__label">Choose Colors</span>
+                            <div
+                                class="product-colors"
+                                id="product-colors"
+                                data-color-sizes='@json($product->colorGroups)'
+                                data-default-color-id="{{ $defaultColorId }}"
+                            >
+                                @foreach($product->colorGroups as $colorId => $group)
+                                    @php
+                                        $isActive = $colorId === $defaultColorId;
+                                        $hasInStock = $group['has_in_stock'] ?? collect($group['sizes'])->contains(fn($s) => $s['in_stock'] ?? false);
+                                    @endphp
+                                    <button
+                                        class="product-color{{ $isActive ? ' product-color--active' : '' }}{{ !$hasInStock ? ' product-color--disabled' : '' }}"
+                                        style="background: {{ "#" . $group['hex_code'] }};"
+                                        aria-label="{{ $group['name'] }}"
+                                        data-color-id="{{ $colorId }}"
+                                        @if(!$hasInStock) disabled aria-disabled="true" @endif
+                                    ></button>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="product-info__divider"></div>
+
+                        <div class="product-info__section">
+                            <span class="product-info__label">Choose Size</span>
+                            <div
+                                class="product-sizes"
+                                id="product-sizes"
+                            >
+                                @forelse($defaultSizes as $size)
+                                    @php
+                                        $isDisabled = !($size['in_stock'] ?? false);
+                                        $isActive = !$isDisabled && $size['code'] === $defaultSizeCode;
+                                    @endphp
+                                    <button
+                                        class="product-size{{ $isActive ? ' product-size--active' : '' }}{{ $isDisabled ? ' product-size--disabled' : '' }}"
+                                        data-size-code="{{ $size['code'] }}"
+                                        @if($isDisabled) disabled aria-disabled="true" @endif
+                                    >
+                                        {{ $size['label'] }}
+                                    </button>
+                                @empty
+                                    <span class="product-sizes__empty">No sizes available for this color.</span>
+                                @endforelse
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="product-info__divider"></div>
 
@@ -253,5 +291,100 @@
             if (val < 1) val = 1;
             el.textContent = val;
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const colorsContainer = document.getElementById('product-colors');
+            const sizesContainer = document.getElementById('product-sizes');
+
+            if (!colorsContainer || !sizesContainer) {
+                return;
+            }
+
+            const colorSizesRaw = colorsContainer.dataset.colorSizes;
+            if (!colorSizesRaw) {
+                return;
+            }
+
+            let colorSizes;
+            try {
+                colorSizes = JSON.parse(colorSizesRaw);
+            } catch (e) {
+                console.error('Failed to parse color sizes data', e);
+                return;
+            }
+
+            let selectedColorId = colorsContainer.dataset.defaultColorId || null;
+            // No default size; user must actively choose one
+            let selectedSizeCode = null;
+
+            function bindSizeButtons() {
+                const sizeButtons = sizesContainer.querySelectorAll('.product-size');
+                sizeButtons.forEach(function (btn) {
+                    if (btn.classList.contains('product-size--disabled')) {
+                        return;
+                    }
+
+                    btn.addEventListener('click', function () {
+                        sizeButtons.forEach(function (b) {
+                            b.classList.remove('product-size--active');
+                        });
+
+                        btn.classList.add('product-size--active');
+                        selectedSizeCode = btn.dataset.sizeCode || null;
+                    });
+                });
+            }
+
+            function renderSizesForColor(colorId) {
+                const group = colorSizes[colorId];
+                if (!group || !Array.isArray(group.sizes) || group.sizes.length === 0) {
+                    sizesContainer.innerHTML = '<span class="product-sizes__empty">No sizes available for this color.</span>';
+                    return;
+                }
+
+                let html = '';
+
+                group.sizes.forEach(function (size) {
+                    const isDisabled = !size.in_stock;
+                    const isActive = !isDisabled && selectedSizeCode && selectedSizeCode === size.code;
+
+                    html += '<button class="product-size' +
+                        (isActive ? ' product-size--active' : '') +
+                        (isDisabled ? ' product-size--disabled' : '') +
+                        '" data-size-code="' + size.code + '"' +
+                        (isDisabled ? ' disabled aria-disabled="true"' : '') +
+                        '>' + size.label + '</button>';
+                });
+
+                sizesContainer.innerHTML = html;
+                bindSizeButtons();
+            }
+
+            // Initial binding for server-rendered buttons
+            bindSizeButtons();
+
+            const colorButtons = colorsContainer.querySelectorAll('.product-color');
+            colorButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (btn.disabled || btn.classList.contains('product-color--disabled')) {
+                        return;
+                    }
+
+                    colorButtons.forEach(function (b) {
+                        b.classList.remove('product-color--active');
+                    });
+
+                    btn.classList.add('product-color--active');
+                    selectedColorId = btn.dataset.colorId;
+                    selectedSizeCode = null;
+                    renderSizesForColor(selectedColorId);
+                });
+            });
+
+            // Render sizes if we have a default color
+            if (selectedColorId && colorSizes[selectedColorId]) {
+                renderSizesForColor(selectedColorId);
+            }
+        });
     </script>
 @endpush

@@ -31,4 +31,9 @@ class Product extends Model
     }
 
 
+    public function colorSizes(): BelongsToMany
+    {
+        return $this->belongsToMany(Color::class, 'item_color_size_counts', 'item_id', 'color_id')
+            ->withPivot('size', 'count');
+    }
 }

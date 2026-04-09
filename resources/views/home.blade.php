@@ -80,7 +80,7 @@
                 <h2 id="on-sale" class="section-heading">ON SALE</h2>
                 <div class="products-grid">
                     @foreach($productsOnSale as $productOnSale)
-                        <a href="{{ route('product', ['product' => $productOnSale]) }}" class="product-card">
+                        <a href="{{ route('product', ['id' => $productOnSale->id]) }}" class="product-card">
                             <div class="placeholder product-card__image"></div>
                             <div class="product-meta">
                                 <div class="product-name">{{$productOnSale->name}}</div>
@@ -105,7 +105,7 @@
                 <h2 id="new-arrivals" class="section-heading">NEW ARRIVALS</h2>
                 <div class="products-grid">
                     @foreach($newArrivals as $newArrival)
-                        <a href="{{ route('product', ['product' => $newArrival]) }}" class="product-card">
+                        <a href="{{ route('product', ['id' => $newArrival->id]) }}" class="product-card">
                             <div class="placeholder product-card__image"></div>
                             <div class="product-meta">
                                 <div class="product-name">{{$newArrival->name}}</div>
