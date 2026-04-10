@@ -18,6 +18,6 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect('/account')->with('success', 'Welcome to SuperSell!');
+        return view('account.index')->with('success', 'Welcome to SuperSell!');
     }
 }
