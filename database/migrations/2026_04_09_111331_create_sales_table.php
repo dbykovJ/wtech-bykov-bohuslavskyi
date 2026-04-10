@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('slug')->unique();
             $table->decimal('discount', 5, 2);
-            $table->dateTime('validFrom');
-            $table->dateTime('validTo');
-            $table->string('promoCode')->nullable();
+            $table->dateTime('valid_from');
+            $table->dateTime('valid_to');
+            $table->string('promo_code')->nullable();
         });
     }
 

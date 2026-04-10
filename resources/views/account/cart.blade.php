@@ -17,92 +17,41 @@
 
         <div class="cart-layout">
             <div class="cart-items">
+                @forelse ($cartItems as $item)
                 <div class="cart-item">
                     <div class="placeholder cart-item__image"></div>
                     <div class="cart-item__info">
                         <div class="cart-item__top">
-                            <div class="cart-item__name">Item 1</div>
-                            <button class="cart-item__delete" aria-label="Remove item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"/>
-                                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-                                    <path d="M10 11v6M14 11v6"/>
-                                    <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
-                                </svg>
-                            </button>
+                            <div class="cart-item__name">{{ $item->product->name }}</div>
+                            <form method="POST" action="/cart/{{ $item->id }}">
+                                @csrf @method('DELETE')
+                                <button class="cart-item__delete" aria-label="Remove item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"/>
+                                        <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                                        <path d="M10 11v6M14 11v6"/>
+                                        <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                         <div class="cart-item__meta">
-                            <span>Size: <strong>Large</strong></span>
-                            <span>Color: <strong>White</strong></span>
+                            <span>Size: <strong>{{ $item->size->value }}</strong></span>
+                            <span>Color: <strong>{{ $item->color->name }}</strong></span>
                         </div>
                         <div class="cart-item__bottom">
-                            <span class="cart-item__price">$145</span>
+                            <span class="cart-item__price">${{ number_format($item->product->price, 2) }}</span>
                             <div class="quantity">
                                 <button class="quantity__btn">−</button>
-                                <span class="quantity__val">1</span>
+                                <span class="quantity__val">{{ $item->count }}</span>
                                 <button class="quantity__btn">+</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="cart-item">
-                    <div class="placeholder cart-item__image"></div>
-                    <div class="cart-item__info">
-                        <div class="cart-item__top">
-                            <div class="cart-item__name">Item 2</div>
-                            <button class="cart-item__delete" aria-label="Remove item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"/>
-                                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-                                    <path d="M10 11v6M14 11v6"/>
-                                    <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="cart-item__meta">
-                            <span>Size: <strong>Medium</strong></span>
-                            <span>Color: <strong>Red</strong></span>
-                        </div>
-                        <div class="cart-item__bottom">
-                            <span class="cart-item__price">$180</span>
-                            <div class="quantity">
-                                <button class="quantity__btn">−</button>
-                                <span class="quantity__val">2</span>
-                                <button class="quantity__btn">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cart-item">
-                    <div class="placeholder cart-item__image"></div>
-                    <div class="cart-item__info">
-                        <div class="cart-item__top">
-                            <div class="cart-item__name">Item 3</div>
-                            <button class="cart-item__delete" aria-label="Remove item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"/>
-                                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-                                    <path d="M10 11v6M14 11v6"/>
-                                    <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="cart-item__meta">
-                            <span>Size: <strong>Large</strong></span>
-                            <span>Color: <strong>Blue</strong></span>
-                        </div>
-                        <div class="cart-item__bottom">
-                            <span class="cart-item__price">$240</span>
-                            <div class="quantity">
-                                <button class="quantity__btn">−</button>
-                                <span class="quantity__val">1</span>
-                                <button class="quantity__btn">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                    <p>Your cart is empty.</p>
+                @endforelse
             </div>
 
             <div class="order-summary">

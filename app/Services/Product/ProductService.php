@@ -79,7 +79,7 @@ class ProductService
             ->join('sales', 'sales.id', '=', 'products_on_sales.sale_id')
             ->where('sales.valid_to', '>', now())
             ->where('sales.valid_from', '<', now())
-            ->whereNull('promo_code')
+            ->whereNull('sales.promo_code')
             ->groupBy('products.id')
             ->selectRaw('products.*, (SUM(sales.discount)/100) as total_discount')
             ->orderBy('total_discount', 'desc')

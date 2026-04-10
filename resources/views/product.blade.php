@@ -18,43 +18,40 @@
                 <span>›</span>
                 <a href="{{ route('category') }}">T-shirts</a>
                 <span>›</span>
-                <span class="breadcrumb__current">{{$product->name}}</span>
+                <span class="breadcrumb__current">{{ $product->name }}</span>
             </nav>
 
             <section class="product-detail">
                 <div class="product-gallery">
                     <div class="product-gallery__thumbs">
-                        <img src="{{asset('storage/' . $product->image_url)}}" alt="{{$product->name}}"
-                             class="product-gallery__thumb product-gallery__thumb--active" />
+                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"
+                            class="product-gallery__thumb product-gallery__thumb--active" />
                         <div class="product-gallery__thumb placeholder"></div>
                         <div class="product-gallery__thumb placeholder"></div>
                     </div>
                     <div class="product-gallery__main">
-                        <img src="{{asset('storage/' . $product->image_url)}}" alt="{{$product->name}}"
-                             class="product-gallery-image__main" />
+                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"
+                            class="product-gallery-image__main" />
                     </div>
                 </div>
 
                 <div class="product-info">
-                    <h1 class="product-info__name heading">{{$product->name}}</h1>
+                    <h1 class="product-info__name heading">{{ $product->name }}</h1>
 
                     <div class="product-info__rating">
-                        <span class="star-rating" style="--rating: {{$product->rating}}">★★★★★</span>
-                        <span class="product-info__rating-count">{{$product->rating}}/5</span>
+                        <span class="star-rating" style="--rating: {{ $product->rating }}">★★★★★</span>
+                        <span class="product-info__rating-count">{{ $product->rating }}/5</span>
                     </div>
 
                     <div class="product-info__price-row">
-                        @if($product->sales->isNotEmpty())
+                        @if ($product->sales->isNotEmpty())
                             @php $total_discount = $product->sales->sum('discount') @endphp
                             <span
-                                class="product-price">${{number_format($product->price - ($product->price*($total_discount/100)), 2)}}</span>
-                            <span
-                                class="product-price-original">${{number_format($product->price, 2)}}</span>
-                            <span
-                                class="badge-red">-{{number_format($total_discount)}}%</span>
-
+                                class="product-price">${{ number_format($product->price - $product->price * ($total_discount / 100), 2) }}</span>
+                            <span class="product-price-original">${{ number_format($product->price, 2) }}</span>
+                            <span class="badge-red">-{{ number_format($total_discount) }}%</span>
                         @else
-                            <span class="product-price">${{number_format($product->price, 2)}}</span>
+                            <span class="product-price">${{ number_format($product->price, 2) }}</span>
                         @endif
                     </div>
 
@@ -64,10 +61,11 @@
 
                     <div class="product-info__divider"></div>
 
-                    @if(isset($product->colorGroups) && $product->colorGroups->isNotEmpty())
+                    @if (isset($product->colorGroups) && $product->colorGroups->isNotEmpty())
                         @php
                             $defaultColorId = $product->defaultColorId ?? $product->colorGroups->keys()->first();
-                            $defaultGroup = $defaultColorId !== null ? $product->colorGroups[$defaultColorId] ?? null : null;
+                            $defaultGroup =
+                                $defaultColorId !== null ? $product->colorGroups[$defaultColorId] ?? null : null;
                             $defaultSizes = $defaultGroup['sizes'] ?? collect();
                             // Do not pre-select any size; customer must choose
                             $defaultSizeCode = null;
@@ -75,24 +73,20 @@
 
                         <div class="product-info__section">
                             <span class="product-info__label">Choose Colors</span>
-                            <div
-                                class="product-colors"
-                                id="product-colors"
-                                data-color-sizes='@json($product->colorGroups)'
-                                data-default-color-id="{{ $defaultColorId }}"
-                            >
-                                @foreach($product->colorGroups as $colorId => $group)
+                            <div class="product-colors" id="product-colors" data-color-sizes='@json($product->colorGroups)'
+                                data-default-color-id="{{ $defaultColorId }}">
+                                @foreach ($product->colorGroups as $colorId => $group)
                                     @php
                                         $isActive = $colorId === $defaultColorId;
-                                        $hasInStock = $group['has_in_stock'] ?? collect($group['sizes'])->contains(fn($s) => $s['in_stock'] ?? false);
+                                        $hasInStock =
+                                            $group['has_in_stock'] ??
+                                            collect($group['sizes'])->contains(fn($s) => $s['in_stock'] ?? false);
                                     @endphp
                                     <button
                                         class="product-color{{ $isActive ? ' product-color--active' : '' }}{{ !$hasInStock ? ' product-color--disabled' : '' }}"
-                                        style="background: {{ "#" . $group['hex_code'] }};"
-                                        aria-label="{{ $group['name'] }}"
-                                        data-color-id="{{ $colorId }}"
-                                        @if(!$hasInStock) disabled aria-disabled="true" @endif
-                                    ></button>
+                                        style="background: {{ $group['hex_code'] }};"
+                                        aria-label="{{ $group['name'] }}" data-color-id="{{ $colorId }}"
+                                        @if (!$hasInStock) disabled aria-disabled="true" @endif></button>
                                 @endforeach
                             </div>
                         </div>
@@ -101,10 +95,7 @@
 
                         <div class="product-info__section">
                             <span class="product-info__label">Choose Size</span>
-                            <div
-                                class="product-sizes"
-                                id="product-sizes"
-                            >
+                            <div class="product-sizes" id="product-sizes">
                                 @forelse($defaultSizes as $size)
                                     @php
                                         $isDisabled = !($size['in_stock'] ?? false);
@@ -113,8 +104,7 @@
                                     <button
                                         class="product-size{{ $isActive ? ' product-size--active' : '' }}{{ $isDisabled ? ' product-size--disabled' : '' }}"
                                         data-size-code="{{ $size['code'] }}"
-                                        @if($isDisabled) disabled aria-disabled="true" @endif
-                                    >
+                                        @if ($isDisabled) disabled aria-disabled="true" @endif>
                                         {{ $size['label'] }}
                                     </button>
                                 @empty
@@ -136,9 +126,21 @@
                             <span class="product-qty__val" id="qty">1</span>
                             <button class="product-qty__btn" onclick="changeQty(1)">+</button>
                         </div>
-                        <button class="product-add-btn" onclick="window.location.href='{{ route('cart') }}'">Add to
-                            Cart
-                        </button>
+                        <form method="POST" action="/cart/add" id="add-to-cart-form">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="color_id" id="input-color-id" value="{{ $defaultColorId ?? '' }}">
+                            <input type="hidden" name="size" id="input-size" value="">
+                            <input type="hidden" name="count" id="input-count" value="1">
+                            <button type="submit" class="add-to-cart-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                                </svg>
+                                Add to Cart
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             </section>
@@ -159,7 +161,7 @@
                     <div class="reviews__toolbar-right">
                         <button class="reviews__filter-btn">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2">
+                                stroke-width="2">
                                 <line x1="4" y1="6" x2="20" y2="6" />
                                 <line x1="8" y1="12" x2="16" y2="12" />
                                 <line x1="11" y1="18" x2="13" y2="18" />
@@ -168,7 +170,7 @@
                         <div class="reviews__sort">
                             Latest
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2">
+                                stroke-width="2">
                                 <polyline points="6 9 12 15 18 9" />
                             </svg>
                         </div>
@@ -221,7 +223,7 @@
             <section class="also-like">
                 <h2 class="section-heading">YOU MIGHT ALSO LIKE</h2>
                 <div class="also-like__grid">
-                    {{--                    <a href="{{ route('product') }}" class="product-card">--}}
+                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
                     <div class="product-card__img placeholder"></div>
                     <div class="product-card__info">
                         <div class="product-name">Item 1</div>
@@ -236,7 +238,7 @@
                         </div>
                     </div>
                     </a>
-                    {{--                    <a href="{{ route('product') }}" class="product-card">--}}
+                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
                     <div class="product-card__img placeholder"></div>
                     <div class="product-card__info">
                         <div class="product-name">Item 2</div>
@@ -251,7 +253,7 @@
                         </div>
                     </div>
                     </a>
-                    {{--                    <a href="{{ route('product') }}" class="product-card">--}}
+                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
                     <div class="product-card__img placeholder"></div>
                     <div class="product-card__info">
                         <div class="product-name">Item 3</div>
@@ -266,7 +268,7 @@
                         </div>
                     </div>
                     </a>
-                    {{--                    <a href="{{ route('product') }}" class="product-card">--}}
+                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
                     <div class="product-card__img placeholder"></div>
                     <div class="product-card__info">
                         <div class="product-name">Item 4</div>
@@ -290,6 +292,12 @@
 @push('scripts')
     <script>
         let currentMaxQty = Infinity;
+        let colorsContainer = document.getElementById('product-colors');
+        let sizesContainer = document.getElementById('product-sizes');
+        let stockInfoEl = document.getElementById('stock-info');
+
+        let selectedColorBtn = colorsContainer.querySelector('.product-color--active');
+        let selectedSizeBtn = sizesContainer.querySelector('.product-size--active');
 
         function changeQty(delta) {
             const el = document.getElementById("qty");
@@ -301,13 +309,11 @@
             }
 
             el.textContent = val;
+            const countInput = document.getElementById('input-count');
+            if (countInput) countInput.value = val;
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const colorsContainer = document.getElementById('product-colors');
-            const sizesContainer = document.getElementById('product-sizes');
-            const stockInfoEl = document.getElementById('stock-info');
-
+        document.addEventListener('DOMContentLoaded', function() {
             if (!colorsContainer || !sizesContainer) {
                 return;
             }
@@ -339,7 +345,7 @@
                     return null;
                 }
 
-                return group.sizes.find(function (s) {
+                return group.sizes.find(function(s) {
                     return s.code === selectedSizeCode;
                 }) || null;
             }
@@ -371,20 +377,21 @@
 
             function bindSizeButtons() {
                 const sizeButtons = sizesContainer.querySelectorAll('.product-size');
-                sizeButtons.forEach(function (btn) {
+                sizeButtons.forEach(function(btn) {
                     if (btn.classList.contains('product-size--disabled')) {
                         return;
                     }
 
-                    btn.addEventListener('click', function () {
-                        sizeButtons.forEach(function (b) {
+                    btn.addEventListener('click', function() {
+                        sizeButtons.forEach(function(b) {
                             b.classList.remove('product-size--active');
                         });
 
                         btn.classList.add('product-size--active');
                         selectedSizeCode = btn.dataset.sizeCode || null;
 
-                            updateStockInfo();
+                        document.getElementById('input-size').value = selectedSizeCode || '';
+                        updateStockInfo();
                     });
                 });
             }
@@ -392,13 +399,14 @@
             function renderSizesForColor(colorId) {
                 const group = colorSizes[colorId];
                 if (!group || !Array.isArray(group.sizes) || group.sizes.length === 0) {
-                    sizesContainer.innerHTML = '<span class="product-sizes__empty">No sizes available for this color.</span>';
+                    sizesContainer.innerHTML =
+                        '<span class="product-sizes__empty">No sizes available for this color.</span>';
                     return;
                 }
 
                 let html = '';
 
-                group.sizes.forEach(function (size) {
+                group.sizes.forEach(function(size) {
                     const isDisabled = !size.in_stock;
                     const isActive = !isDisabled && selectedSizeCode && selectedSizeCode === size.code;
 
@@ -418,19 +426,22 @@
             bindSizeButtons();
 
             const colorButtons = colorsContainer.querySelectorAll('.product-color');
-            colorButtons.forEach(function (btn) {
-                btn.addEventListener('click', function () {
+            colorButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
                     if (btn.disabled || btn.classList.contains('product-color--disabled')) {
                         return;
                     }
 
-                    colorButtons.forEach(function (b) {
+                    colorButtons.forEach(function(b) {
                         b.classList.remove('product-color--active');
                     });
 
                     btn.classList.add('product-color--active');
                     selectedColorId = btn.dataset.colorId;
                     selectedSizeCode = null;
+
+                    document.getElementById('input-color-id').value = selectedColorId || '';
+                    document.getElementById('input-size').value = '';
                     renderSizesForColor(selectedColorId);
 
                     updateStockInfo();
@@ -444,5 +455,12 @@
 
             updateStockInfo();
         });
+
+        function getSelectedOptions() {
+            return {
+                color_id: selectedColorBtn ? selectedColorBtn.dataset.colorId : null,
+                size: selectedSizeBtn ? selectedSizeBtn.dataset.sizeCode : null,
+            };
+        }
     </script>
 @endpush

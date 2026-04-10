@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Product;
 class Sale extends Model
 {
     protected $fillable = [
@@ -17,7 +18,6 @@ class Sale extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Sale::class, 'product_on_sales')
-            ->withPivot('discount');
+        return $this->belongsToMany(Product::class, 'products_on_sales');
     }
 }

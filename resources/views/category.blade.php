@@ -118,8 +118,15 @@
                                 @endif
                                 <div class="product-meta">
                                     <div class="product-name">{{ $product->name }}</div>
+                                    @php $discount = $product->sales->sum('discount'); @endphp
                                     <div class="product-price-row">
-                                        <span class="product-price">${{ $product->price }}</span>
+                                        @if($discount > 0)
+                                            <span class="product-price">${{ number_format($product->price - $product->price * ($discount / 100), 2) }}</span>
+                                            <span class="product-price product-price--original" style="text-decoration:line-through; color:#aaa; font-size:0.85em;">${{ number_format($product->price, 2) }}</span>
+                                            <span class="badge-red">-{{ number_format($discount) }}%</span>
+                                        @else
+                                            <span class="product-price">${{ number_format($product->price, 2) }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </a>

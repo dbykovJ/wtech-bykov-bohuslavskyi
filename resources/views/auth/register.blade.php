@@ -18,7 +18,7 @@
                 @error('name')
                 <span>{{ $message }}</span>
                 @enderror
-                <input class="register-input" id="email" type="text" name="email" placeholder="Phone" value="{{ old('email') }}" required />
+                <input class="register-input" id="email" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required />
                 @error('email')
                 <span>{{ $message }}</span>
                 @enderror

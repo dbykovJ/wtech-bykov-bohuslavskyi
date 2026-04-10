@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('color_id')->constrained()->onDelete('cascade');
             $table->enum('size', ['XS', 'S', 'M', 'L', 'XL', 'XXL']);
-            $table->integer('quantity');
+            $table->unsignedInteger('count');
             $table->timestamps();
         });
     }

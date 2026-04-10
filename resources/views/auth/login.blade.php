@@ -11,7 +11,7 @@
     <div class="login-box">
         <h1 class="auth-title">Login</h1>
 
-        <form class="auth-form" method="POST" action="#">
+        <form class="auth-form" method="POST" action="{{ route('login') }}">
             @csrf
             <div class="auth-fields">
                 <input class="auth-input" id="email" type="email" name="email" placeholder="Username" value="{{ old('email') }}" required autofocus />

@@ -10,7 +10,11 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::with(['category', 'sales' => function ($q) {
+            $q->where('valid_to', '>', now())
+              ->where('valid_from', '<', now())
+              ->whereNull('promo_code');
+        }]);
 
         if ($request->filled('category')) {
             $query->where('category_id', $request->input('category'));

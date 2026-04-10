@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Product\ProductController;
 use App\Services\Product\ProductService;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CartItem\CartItemController;
 
 $productService = new ProductService();
 $productController = new ProductController($productService);
@@ -28,9 +28,16 @@ Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartItemController::class, 'accountCart'])->name('cart');
+    Route::post('/cart/add', [CartItemController::class, 'add']);
+    Route::patch('/cart/{cartItemId}', [CartItemController::class, 'update']);
+    Route::delete('/cart/{cartItemId}', [CartItemController::class, 'remove']);
+    Route::delete('/cart', [CartItemController::class, 'clear']);
+    Route::get('/account/cart', [CartItemController::class, 'accountCart'])->name('account.cart');
+});
 
 // Cart & checkout flow
-Route::get('/cart', fn() => view('cart'))->name('cart');
 Route::get('/payment', fn() => view('payment'))->name('payment');
 Route::get('/delivery', fn() => view('delivery'))->name('delivery');
 Route::get('/checkout/personal-data', fn() => view('personal-data'))->name('checkout.personal-data');
@@ -41,14 +48,12 @@ Route::get('/login', fn() => view('auth.login'))
     ->middleware('guest')
     ->name('login');
 Route::post('/login', LoginController::class)
-    ->middleware('guest')
-    ->name('login');
+    ->middleware('guest');
 Route::get('/register', fn() => view('auth.register'))
     ->middleware('guest')
     ->name('register');
 Route::post('/register', RegisterController::class)
-    ->middleware('guest')
-    ->name('register');
+    ->middleware('guest');
 
 Route::post('/logout', LogoutController::class)
     ->middleware('auth')
@@ -57,7 +62,6 @@ Route::post('/logout', LogoutController::class)
 // Account
 Route::get('/account', fn() => view('account.index'))->name('account');
 Route::get('/account/personal-data', fn() => view('account.personal-data'))->name('account.personal-data');
-Route::get('/account/cart', fn() => view('account.cart'))->name('account.cart');
 Route::get('/account/orders', fn() => view('account.orders'))->name('account.orders');
 
 // Admin
