@@ -10,10 +10,16 @@
         </div>
 
         <div class="navbar__search">
-            <div class="navbar__search-inner">
+            <form action="{{ route('category') }}" method="GET" class="navbar__search-inner">
                 <img draggable="false" src="{{ asset('assets/icons/search.svg') }}" alt="search" />
-                <input type="search" placeholder="Search for Products" />
-            </div>
+                <input
+                    id="search-input"
+                    type="search"
+                    name="search"
+                    placeholder="Search for Products"
+                    value="{{ request('search') }}"
+                />
+            </form>
         </div>
 
         <div class="navbar__icons">
@@ -39,3 +45,32 @@
         </div>
     </div>
 </nav>
+
+
+@push('scripts')
+    <script>
+        const searchInput = document.getElementById("search-input");
+
+        if (searchInput) {
+            let searchTimer;
+
+            searchInput.addEventListener("input", function () {
+                clearTimeout(searchTimer);
+
+                const query = this.value.trim();
+
+                // if (query.length < 2) {
+                //     return;
+                // }
+
+                searchTimer = setTimeout(() => {
+                    const baseUrl = "{{ route('category') }}";
+                    const url = baseUrl + "?search=" + encodeURIComponent(query);
+
+                    window.location.href = url;
+                }, 400);
+            });
+        }
+    </script>
+@endpush
+

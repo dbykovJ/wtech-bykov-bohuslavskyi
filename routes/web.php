@@ -25,6 +25,9 @@ Route::get('/shop', [ShopController::class, 'index'])->name('category');
 Route::get('/product/{id}', fn($id) => $productController->show($id))
     ->name('product');
 Route::get('/about', fn() => view('about'))->name('about');
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+
+
 
 // Cart & checkout flow
 Route::get('/cart', fn() => view('cart'))->name('cart');

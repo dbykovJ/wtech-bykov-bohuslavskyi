@@ -119,4 +119,12 @@ class ProductService
             default => $code,
         };
     }
+
+
+    public function search(string $query, int $limit = 5)
+    {
+        return Product::where('name', 'ilike', "%{$query}%")
+            ->limit($limit)
+            ->get(['id', 'name', 'price', 'image_url']);
+    }
 }

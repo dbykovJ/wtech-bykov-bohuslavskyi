@@ -24,6 +24,12 @@ class ShopController extends Controller
             $query->where('price', '<=', $request->input('max_price'));
         }
 
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'ilike', "%{$search}%"); // use 'like' if you're not on Postgres
+        }
+
+
         if ($request->sort === 'price_asc') {
             $query->orderBy('price', 'asc');
         } elseif ($request->sort === 'price_desc') {

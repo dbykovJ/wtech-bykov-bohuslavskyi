@@ -5,7 +5,7 @@ namespace App\Services\CartItem;
 
     use App\Models\CartItem;
     use App\Models\ItemColorSizeCount;
-    use Illuminate\Http\Client\Request;
+    use Illuminate\Http\Request;
     use Illuminate\Validation\ValidationException;
 class CartItemService
 {
