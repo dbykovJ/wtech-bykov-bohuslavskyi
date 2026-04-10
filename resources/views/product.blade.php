@@ -121,6 +121,10 @@
                                     <span class="product-sizes__empty">No sizes available for this color.</span>
                                 @endforelse
                             </div>
+
+                            <div id="stock-info" class="product-stock-info">
+                                Select a size to see availability
+                            </div>
                         </div>
                     @endif
 
@@ -285,16 +289,24 @@
 
 @push('scripts')
     <script>
+        let currentMaxQty = Infinity;
+
         function changeQty(delta) {
             const el = document.getElementById("qty");
             let val = parseInt(el.textContent) + delta;
             if (val < 1) val = 1;
+
+            if (Number.isFinite(currentMaxQty) && currentMaxQty > 0 && val > currentMaxQty) {
+                val = currentMaxQty;
+            }
+
             el.textContent = val;
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             const colorsContainer = document.getElementById('product-colors');
             const sizesContainer = document.getElementById('product-sizes');
+            const stockInfoEl = document.getElementById('stock-info');
 
             if (!colorsContainer || !sizesContainer) {
                 return;
@@ -317,6 +329,46 @@
             // No default size; user must actively choose one
             let selectedSizeCode = null;
 
+            function getSelectedSize() {
+                if (!selectedColorId || !selectedSizeCode) {
+                    return null;
+                }
+
+                const group = colorSizes[selectedColorId];
+                if (!group || !Array.isArray(group.sizes)) {
+                    return null;
+                }
+
+                return group.sizes.find(function (s) {
+                    return s.code === selectedSizeCode;
+                }) || null;
+            }
+
+            function updateStockInfo() {
+                if (!stockInfoEl) {
+                    return;
+                }
+
+                const size = getSelectedSize();
+
+                if (!size) {
+                    stockInfoEl.textContent = 'Select a size to see availability';
+                    currentMaxQty = Infinity;
+                    return;
+                }
+
+                stockInfoEl.textContent = 'In stock: ' + size.count;
+                currentMaxQty = size.count;
+
+                const qtyEl = document.getElementById('qty');
+                if (qtyEl) {
+                    let currentQty = parseInt(qtyEl.textContent) || 1;
+                    if (currentQty > currentMaxQty) {
+                        qtyEl.textContent = currentMaxQty;
+                    }
+                }
+            }
+
             function bindSizeButtons() {
                 const sizeButtons = sizesContainer.querySelectorAll('.product-size');
                 sizeButtons.forEach(function (btn) {
@@ -331,6 +383,8 @@
 
                         btn.classList.add('product-size--active');
                         selectedSizeCode = btn.dataset.sizeCode || null;
+
+                            updateStockInfo();
                     });
                 });
             }
@@ -378,6 +432,8 @@
                     selectedColorId = btn.dataset.colorId;
                     selectedSizeCode = null;
                     renderSizesForColor(selectedColorId);
+
+                    updateStockInfo();
                 });
             });
 
@@ -385,6 +441,8 @@
             if (selectedColorId && colorSizes[selectedColorId]) {
                 renderSizesForColor(selectedColorId);
             }
+
+            updateStockInfo();
         });
     </script>
 @endpush
