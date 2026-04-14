@@ -108,9 +108,13 @@
 
                     <div class="category-products-grid">
                         @forelse ($products as $product)
+                            @php
+                                $firstImage = $product->getFirstImage();
+                                $imagePath = $firstImage->image_url ?? $product->image_url;
+                            @endphp
                             <a href="{{ route('product', ['id'=>$product->id]) }}" class="product-card">
-                                @if($product->image_url)
-                                    <img src="{{ asset('storage/' . $product->image_url) }}"
+                                @if($imagePath)
+                                    <img src="{{ asset('storage/' . $imagePath) }}"
                                          alt="{{ $product->name }}"
                                          class="product-card__image" style="object-fit: cover;" />
                                 @else

@@ -21,18 +21,33 @@
 
     <div class="photo-upload">
         <div class="photo-upload__previews" id="photo-previews">
-            @if(isset($product) && $product->image_url)
-                <img src="{{ asset('storage/' . $product->image_url) }}" class="photo-upload__preview" alt="Current image" />
+            @if(isset($product))
+                @foreach($product->images ?? [] as $image)
+                    <img src="{{ asset('storage/' . $image->image_url) }}"
+                         class="photo-upload__preview"
+                         alt="Product image" />
+                @endforeach
+
+                @if(($product->images ?? collect())->isEmpty() && $product->image_url)
+                    <img src="{{ asset('storage/' . $product->image_url) }}"
+                         class="photo-upload__preview"
+                         alt="Current image" />
+                @endif
             @endif
         </div>
         <label class="photo-upload__trigger" for="photo-input">
             <div class="photo-upload__icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </div>
-            <span class="photo-upload__label">Upload Photo</span>
-            <input type="file" id="photo-input" name="image" accept="image/*" hidden />
+            <span class="photo-upload__label">Upload Photos</span>
+            <input type="file"
+                   id="photo-input"
+                   name="images[]"
+                   accept="image/*"
+                   multiple
+                   hidden />
         </label>
     </div>
+
 
     <div class="form-grid">
         <div class="form-field">

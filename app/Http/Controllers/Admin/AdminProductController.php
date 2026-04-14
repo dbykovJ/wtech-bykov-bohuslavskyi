@@ -12,7 +12,7 @@ class AdminProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with(['category', 'images'])->get();
         return view('admin.products', compact('products'));
     }
 
@@ -30,19 +30,33 @@ class AdminProductController extends Controller
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'image'       => 'nullable|image|max:2048',
+            'images.*'    => 'nullable|image|max:2048', // NEW
         ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image_url'] = $request->file('image')->store('products', 'public');
+        $productData = collect($validated)->except('images')->toArray();
+        $productData['slug'] = Str::slug($productData['name']);
+
+        $product = Product::create($productData);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $file) {
+                $path = $file->store('products', 'public');
+
+                $product->images()->create([
+                    'image_url' => $path,
+                    'size'      => $file->dimensions()[0],
+                ]);
+
+                if ($index === 0) {
+                    $product->update(['image_url' => $path]);
+                }
+            }
         }
 
-        unset($validated['image']);
-        $validated['slug'] = Str::slug($validated['name']);
-        Product::create($validated);
-
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product created successfully.');
     }
+
 
     public function edit(string $id)
     {
@@ -53,7 +67,7 @@ class AdminProductController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('images')->findOrFail($id);
 
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
@@ -61,19 +75,32 @@ class AdminProductController extends Controller
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'image'       => 'nullable|image|max:2048',
+            'images.*'    => 'nullable|image|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image_url'] = $request->file('image')->store('products', 'public');
+        $productData = collect($validated)->except('images')->toArray();
+        $productData['slug'] = Str::slug($productData['name']);
+        $product->update($productData);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $file) {
+                $path = $file->store('products', 'public');
+
+                $product->images()->create([
+                    'image_url' => $path,
+                    'size'      => $file->dimensions()[0],
+                ]);
+
+                if (!$product->image_url && $index === 0) {
+                    $product->update(['image_url' => $path]);
+                }
+            }
         }
 
-        unset($validated['image']);
-        $validated['slug'] = Str::slug($validated['name']);
-        $product->update($validated);
-
-        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product updated successfully.');
     }
+
 
     public function destroy(string $id)
     {

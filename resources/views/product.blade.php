@@ -22,16 +22,28 @@
             </nav>
 
             <section class="product-detail">
+                @php
+                    $firstImage = $product->getFirstImage();
+                    $imagePath = $firstImage->image_url ?? $product->image_url;
+                @endphp
                 <div class="product-gallery">
                     <div class="product-gallery__thumbs">
-                        <img src="{{asset('storage/' . $product->image_url)}}" alt="{{$product->name}}"
-                             class="product-gallery__thumb product-gallery__thumb--active" />
+                        @if($imagePath)
+                            <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $product->name }}"
+                                 class="product-gallery__thumb product-gallery__thumb--active" />
+                        @else
+                            <div class="product-gallery__thumb placeholder"></div>
+                        @endif
                         <div class="product-gallery__thumb placeholder"></div>
                         <div class="product-gallery__thumb placeholder"></div>
                     </div>
                     <div class="product-gallery__main">
-                        <img src="{{asset('storage/' . $product->image_url)}}" alt="{{$product->name}}"
-                             class="product-gallery-image__main" />
+                        @if($imagePath)
+                            <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $product->name }}"
+                                 class="product-gallery-image__main" />
+                        @else
+                            <div class="product-gallery-image__main placeholder"></div>
+                        @endif
                     </div>
                 </div>
 

@@ -10,7 +10,7 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::with(['category', 'images']);
 
         if ($request->filled('category')) {
             $query->where('category_id', $request->input('category'));

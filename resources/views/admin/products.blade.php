@@ -18,8 +18,15 @@
         @forelse ($products as $product)
             <div class="product-card">
                 <div class="product-card__image" style="background: none;">
-                    @if ($product->image_url)
-                        <img style="border-radius: 12px; background: node; object-fit:contain;" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"
+                    @php
+                        $firstImage = $product->getFirstImage();
+                        $imagePath = $firstImage->image_url ?? $product->image_url;
+                    @endphp
+                    @if ($imagePath)
+                        <img
+                            style="border-radius: 12px; background: none; object-fit: contain;"
+                            src="{{ asset('storage/' . $imagePath) }}"
+                            alt="{{ $product->name }}"
                             class="product-card__img" />
                     @endif
                     {{-- <button class="product-card__arrow product-card__arrow--prev" aria-label="Previous">

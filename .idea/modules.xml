@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/WTECH.iml" filepath="$PROJECT_DIR$/.idea/WTECH.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SuperSell.iml" filepath="$PROJECT_DIR$/.idea/SuperSell.iml" />
     </modules>
   </component>
 </project>
