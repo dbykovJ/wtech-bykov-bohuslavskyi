@@ -20,12 +20,12 @@
                 <div class="product-card__image" style="background: none;">
                     @php
                         $firstImage = $product->getFirstImage();
-                        $imagePath = $firstImage->image_url ?? $product->image_url;
+                        $imagePath = $firstImage?->public_url;
                     @endphp
                     @if ($imagePath)
                         <img
                             style="border-radius: 12px; background: none; object-fit: contain;"
-                            src="{{ asset('storage/' . $imagePath) }}"
+                            src="{{ $imagePath }}"
                             alt="{{ $product->name }}"
                             class="product-card__img" />
                     @endif

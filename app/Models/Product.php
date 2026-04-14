@@ -16,7 +16,6 @@ class Product extends Model
         'stock',
         'slug',
         'category_id',
-        'image_url',
         'rating',
     ];
 
@@ -37,8 +36,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function getFirstImage(){
-        return $this->images()->first();
+    public function getFirstImage()
+    {
+        return $this->relationLoaded('images')
+            ? $this->images->first()
+            : $this->images()->first();
     }
 
     public function colorSizes(): BelongsToMany

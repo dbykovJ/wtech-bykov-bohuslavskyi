@@ -73,11 +73,15 @@
                         <div>
                             <h1 class="products-area__title">Shop</h1>
                             <div class="products-area__meta">
+                                @php
+                                    $firstItem = $products->firstItem() ?? 0;
+                                    $lastItem = $products->lastItem() ?? 0;
+                                @endphp
                                 @if(request('search'))
-                                    Showing {{ $products->firstItem() }}–{{ $products->lastItem() }}
+                                    Showing {{ $firstItem }}-{{ $lastItem }}
                                     of {{ $products->total() }} Products for "{{ request('search') }}"
                                 @else
-                                    Showing {{ $products->firstItem() }}–{{ $products->lastItem() }}
+                                    Showing {{ $firstItem }}-{{ $lastItem }}
                                     of {{ $products->total() }} Products
                                 @endif
                             </div>
@@ -110,11 +114,11 @@
                         @forelse ($products as $product)
                             @php
                                 $firstImage = $product->getFirstImage();
-                                $imagePath = $firstImage->image_url ?? $product->image_url;
+                                $imagePath = $firstImage?->public_url;
                             @endphp
                             <a href="{{ route('product', ['id'=>$product->id]) }}" class="product-card">
                                 @if($imagePath)
-                                    <img src="{{ asset('storage/' . $imagePath) }}"
+                                    <img src="{{ $imagePath }}"
                                          alt="{{ $product->name }}"
                                          class="product-card__image" style="object-fit: cover;" />
                                 @else
@@ -139,9 +143,11 @@
                         @endforelse
                     </div>
 
-                    <div class="pagination">
-                        {{ $products->appends(request()->query())->links() }}
-                    </div>
+                    @if ($products->hasPages())
+                        <div class="pagination">
+                            {{ $products->onEachSide(1)->links('vendor.pagination.shop') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

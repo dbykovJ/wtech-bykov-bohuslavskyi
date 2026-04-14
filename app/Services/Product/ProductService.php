@@ -124,8 +124,17 @@ class ProductService
 
     public function search(string $query, int $limit = 5)
     {
-        return Product::where('name', 'ilike', "%{$query}%")
+        return Product::with('images')
+            ->where('name', 'ilike', "%{$query}%")
             ->limit($limit)
-            ->get(['id', 'name', 'price', 'image_url']);
+            ->get(['id', 'name', 'price'])
+            ->map(function (Product $product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image_url' => optional($product->getFirstImage())->image_url,
+                ];
+            });
     }
 }

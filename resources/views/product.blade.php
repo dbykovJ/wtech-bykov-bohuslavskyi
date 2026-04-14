@@ -23,23 +23,23 @@
 
             <section class="product-detail">
                 @php
-                    $firstImage = $product->getFirstImage();
-                    $imagePath = $firstImage->image_url ?? $product->image_url;
+                    $images = $product->images;
+                    $mainImageUrl = $images->first()?->public_url;
                 @endphp
                 <div class="product-gallery">
                     <div class="product-gallery__thumbs">
-                        @if($imagePath)
-                            <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $product->name }}"
-                                 class="product-gallery__thumb product-gallery__thumb--active" />
-                        @else
+                        @forelse($images as $image)
+                            <img src="{{ $image->public_url }}" alt="{{ $product->name }}"
+                                 class="product-gallery__thumb {{ $loop->first ? 'product-gallery__thumb--active' : '' }}" />
+                        @empty
                             <div class="product-gallery__thumb placeholder"></div>
-                        @endif
-                        <div class="product-gallery__thumb placeholder"></div>
-                        <div class="product-gallery__thumb placeholder"></div>
+                            <div class="product-gallery__thumb placeholder"></div>
+                            <div class="product-gallery__thumb placeholder"></div>
+                        @endforelse
                     </div>
                     <div class="product-gallery__main">
-                        @if($imagePath)
-                            <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $product->name }}"
+                        @if($mainImageUrl)
+                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}"
                                  class="product-gallery-image__main" />
                         @else
                             <div class="product-gallery-image__main placeholder"></div>

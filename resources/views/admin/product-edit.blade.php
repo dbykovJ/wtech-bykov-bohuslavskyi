@@ -19,33 +19,45 @@
         @method('PUT')
     @endif
 
+    @if ($errors->any())
+        <div class="form-errors" style="margin-bottom: 16px; color: #dc2626;">
+            <ul style="margin: 0; padding-left: 18px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="photo-upload">
         <div class="photo-upload__previews" id="photo-previews">
-            @if(isset($product))
-                @foreach($product->images ?? [] as $image)
-                    <img src="{{ asset('storage/' . $image->image_url) }}"
-                         class="photo-upload__preview"
-                         alt="Product image" />
-                @endforeach
-
-                @if(($product->images ?? collect())->isEmpty() && $product->image_url)
-                    <img src="{{ asset('storage/' . $product->image_url) }}"
-                         class="photo-upload__preview"
-                         alt="Current image" />
+            <div id="existing-photo-previews">
+                @if(isset($product))
+                    @foreach($product->images ?? [] as $image)
+                        <div class="photo-preview-slot" data-image-id="{{ $image->id }}">
+                            <img src="{{ $image->public_url }}"
+                                 class="photo-upload__preview"
+                                 alt="Product image" />
+                            <button type="button" class="photo-preview-remove" data-remove-existing aria-label="Remove image">&times;</button>
+                        </div>
+                    @endforeach
                 @endif
-            @endif
+            </div>
+            <div id="new-photo-previews"></div>
         </div>
-        <label class="photo-upload__trigger" for="photo-input">
+        <label class="photo-upload__trigger" for="photo-input-0" id="photo-upload-trigger">
             <div class="photo-upload__icon">
             </div>
             <span class="photo-upload__label">Upload Photos</span>
+        </label>
+        <div id="photo-inputs" style="display: none;">
             <input type="file"
-                   id="photo-input"
+                   id="photo-input-0"
                    name="images[]"
                    accept="image/*"
                    multiple
-                   hidden />
-        </label>
+                   class="photo-input" />
+        </div>
     </div>
 
 
@@ -105,19 +117,90 @@
 
 @push('scripts')
 <script>
-    document.getElementById('photo-input').addEventListener('change', function() {
-        const previews = document.getElementById('photo-previews');
-        previews.innerHTML = '';
-        Array.from(this.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = e => {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'photo-upload__preview';
-                previews.appendChild(img);
-            };
-            reader.readAsDataURL(file);
+    const editForm = document.querySelector('.edit-form-card');
+    const newPreviews = document.getElementById('new-photo-previews');
+    const existingPreviews = document.getElementById('existing-photo-previews');
+    const inputsContainer = document.getElementById('photo-inputs');
+    const uploadTrigger = document.getElementById('photo-upload-trigger');
+    const selectedSignatures = new Set();
+    let inputIndex = 0;
+
+    function fileSignature(file) {
+        return `${file.name}__${file.size}__${file.lastModified}`;
+    }
+
+    function addPreview(file) {
+        const signature = fileSignature(file);
+
+        if (selectedSignatures.has(signature)) {
+            return;
+        }
+
+        selectedSignatures.add(signature);
+
+        const slot = document.createElement('div');
+        slot.className = 'photo-preview-slot';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.className = 'photo-upload__preview';
+        img.alt = file.name;
+        img.onload = () => URL.revokeObjectURL(img.src);
+
+        slot.appendChild(img);
+        newPreviews.appendChild(slot);
+    }
+
+    function bindInput(input) {
+        input.addEventListener('change', function () {
+            Array.from(this.files || []).forEach(addPreview);
+
+            if ((this.files || []).length > 0) {
+                createNextInput();
+            }
         });
+    }
+
+    function createNextInput() {
+        inputIndex += 1;
+
+        const nextInput = document.createElement('input');
+        nextInput.type = 'file';
+        nextInput.id = `photo-input-${inputIndex}`;
+        nextInput.name = 'images[]';
+        nextInput.accept = 'image/*';
+        nextInput.multiple = true;
+        nextInput.className = 'photo-input';
+
+        inputsContainer.appendChild(nextInput);
+        bindInput(nextInput);
+
+        uploadTrigger.setAttribute('for', nextInput.id);
+    }
+
+    existingPreviews?.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-remove-existing]');
+        if (!button) {
+            return;
+        }
+
+        const slot = button.closest('[data-image-id]');
+        const imageId = slot?.dataset.imageId;
+
+        if (!slot || !imageId) {
+            return;
+        }
+
+        slot.remove();
+
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'remove_image_ids[]';
+        hiddenInput.value = imageId;
+        editForm.appendChild(hiddenInput);
     });
+
+    const firstInput = document.getElementById('photo-input-0');
+    bindInput(firstInput);
 </script>
 @endpush
