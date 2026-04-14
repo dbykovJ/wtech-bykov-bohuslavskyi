@@ -11,11 +11,59 @@ use Illuminate\Validation\ValidationException;
 
 class CartItemService
 {
-    public function getCart()
+    private const DELIVERY_FEE = 15.00;
+
+    public function getCart(): array
     {
         /** @var User $user */
         $user = Auth::user();
-        return $user->cartItems()->with('product', 'color')->get();
+        $now = now();
+
+        $activeSalesScope = function ($query) use ($now) {
+            $query->where('sales.valid_to', '>', $now)
+                ->where('sales.valid_from', '<', $now)
+                ->whereNull('sales.promo_code');
+        };
+
+        $cartItems = $user->cartItems()
+            ->with([
+                'product.images',
+                'product.sales' => $activeSalesScope,
+                'color',
+            ])
+            ->get()
+            ->map(function (CartItem $item) {
+                $baseUnitPrice = (float) $item->product->price;
+                $discountPercent = min((float) $item->product->sales->sum('discount'), 100.0);
+                $discountedUnitPrice = round($baseUnitPrice * (1 - ($discountPercent / 100)), 2);
+                $lineBaseSubtotal = round($baseUnitPrice * $item->count, 2);
+                $lineSubtotal = round($discountedUnitPrice * $item->count, 2);
+
+                $item->setAttribute('discount_percent', $discountPercent);
+                $item->setAttribute('base_unit_price', $baseUnitPrice);
+                $item->setAttribute('discounted_unit_price', $discountedUnitPrice);
+                $item->setAttribute('line_base_subtotal', $lineBaseSubtotal);
+                $item->setAttribute('line_subtotal', $lineSubtotal);
+
+                return $item;
+            });
+
+        $subtotalBeforeDiscount = round((float) $cartItems->sum('line_base_subtotal'), 2);
+        $subtotal = round((float) $cartItems->sum('line_subtotal'), 2);
+        $discountTotal = round($subtotalBeforeDiscount - $subtotal, 2);
+        $deliveryFee = $cartItems->isEmpty() ? 0.0 : self::DELIVERY_FEE;
+        $total = round($subtotal + $deliveryFee, 2);
+
+        return [
+            'items' => $cartItems,
+            'summary' => [
+                'subtotal_before_discount' => $subtotalBeforeDiscount,
+                'subtotal' => $subtotal,
+                'discount_total' => $discountTotal,
+                'delivery_fee' => $deliveryFee,
+                'total' => $total,
+            ],
+        ];
     }
 
     public function addToCart(Request $request)

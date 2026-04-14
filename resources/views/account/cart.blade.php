@@ -19,7 +19,14 @@
             <div class="cart-items">
                 @forelse ($cartItems as $item)
                 <div class="cart-item">
-                    <div class="placeholder cart-item__image"></div>
+                    @php
+                        $imageUrl = $item->product->getFirstImage()?->public_url;
+                    @endphp
+                    @if($imageUrl)
+                        <img src="{{ $imageUrl }}" alt="{{ $item->product->name }}" class="cart-item__image" />
+                    @else
+                        <div class="placeholder cart-item__image"></div>
+                    @endif
                     <div class="cart-item__info">
                         <div class="cart-item__top">
                             <div class="cart-item__name">{{ $item->product->name }}</div>
@@ -40,7 +47,13 @@
                             <span>Color: <strong>{{ $item->color->name }}</strong></span>
                         </div>
                         <div class="cart-item__bottom">
-                            <span class="cart-item__price">${{ number_format($item->product->price, 2) }}</span>
+                            @if ($item->discount_percent > 0)
+                                <span class="cart-item__price">${{ number_format($item->discounted_unit_price, 2) }}</span>
+                                <span class="cart-item__price" style="text-decoration: line-through; color: #999;">${{ number_format($item->base_unit_price, 2) }}</span>
+                                <span class="badge-red">-{{ number_format($item->discount_percent) }}%</span>
+                            @else
+                                <span class="cart-item__price">${{ number_format($item->base_unit_price, 2) }}</span>
+                            @endif
                             <div class="quantity">
                                 <button class="quantity__btn">−</button>
                                 <span class="quantity__val">{{ $item->count }}</span>
@@ -60,15 +73,15 @@
                 <div class="order-summary__rows">
                     <div class="order-summary__row">
                         <span>Subtotal</span>
-                        <span>$565</span>
+                        <span>${{ number_format($cartSummary['subtotal_before_discount'] ?? 0, 2) }}</span>
                     </div>
                     <div class="order-summary__row">
-                        <span>Discount (-20%)</span>
-                        <span class="order-summary__discount">-$113</span>
+                        <span>Discount</span>
+                        <span class="order-summary__discount">-${{ number_format($cartSummary['discount_total'] ?? 0, 2) }}</span>
                     </div>
                     <div class="order-summary__row">
                         <span>Delivery Fee</span>
-                        <span>$15</span>
+                        <span>${{ number_format($cartSummary['delivery_fee'] ?? 0, 2) }}</span>
                     </div>
                 </div>
 
@@ -76,7 +89,7 @@
 
                 <div class="order-summary__total">
                     <span>Total</span>
-                    <span>$467</span>
+                    <span>${{ number_format($cartSummary['total'] ?? 0, 2) }}</span>
                 </div>
 
                 <div class="order-summary__promo">
@@ -104,8 +117,8 @@
 
 @push('scripts')
 <script>
-    document.querySelector('.account-menu-toggle').addEventListener('click', function () {
-        document.querySelector('.account-nav').classList.toggle('account-nav--open');
+    document.querySelector('.account-menu-toggle')?.addEventListener('click', function () {
+        document.querySelector('.account-nav')?.classList.toggle('account-nav--open');
     });
 </script>
 @endpush

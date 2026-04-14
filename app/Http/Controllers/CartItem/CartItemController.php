@@ -13,8 +13,12 @@ class CartItemController extends Controller
 
     public function accountCart()
     {
-        $cartItems = $this->cartItemService->getCart();
-        return view('account.cart', compact('cartItems'));
+        $cartData = $this->cartItemService->getCart();
+
+        $cartItems = $cartData['items'];
+        $cartSummary = $cartData['summary'];
+
+        return view('account.cart', compact('cartItems', 'cartSummary'));
     }
 
 
