@@ -28,7 +28,7 @@ class Product extends Model
     public function sales(): BelongsToMany
     {
         return $this->belongsToMany(Sale::class, 'products_on_sales', 'product_id', 'sale_id')
-            ->whereNull('promo_code');
+            ->whereNull('sales.promo_code');
     }
 
 
