@@ -103,6 +103,12 @@
             <select class="form-input form-select" id="category_id" name="category_id">
                 <option value="">Select category</option>
                 @foreach($categories as $category)
+                    <option value="{{ $category->id }}"
+                        {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
     </div>
 
