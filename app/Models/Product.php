@@ -49,8 +49,4 @@ class Product extends Model
             ->withPivot('size', 'count');
     }
 
-    public function images(): HasMany
-    {
-        return $this->hasMany(ProductImage::class);
-    }
 }

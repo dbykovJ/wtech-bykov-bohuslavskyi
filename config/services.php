@@ -28,6 +28,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'supabase' => [
+        'project_ref'  => env('SUPABASE_PROJECT_REF'),
+        'service_key'  => env('SUPABASE_SERVICE_KEY'),
+        'bucket'       => env('SUPABASE_STORAGE_BUCKET', 'products'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
