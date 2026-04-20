@@ -22,16 +22,30 @@
             </nav>
 
             <section class="product-detail">
+                @php
+                    $images = $product->images;
+                    $mainImageUrl = $images->first()?->public_url;
+                @endphp
                 <div class="product-gallery">
-                    <div class="product-gallery__thumbs">
-                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"
-                            class="product-gallery__thumb product-gallery__thumb--active" />
-                        <div class="product-gallery__thumb placeholder"></div>
-                        <div class="product-gallery__thumb placeholder"></div>
+                    <div class="product-gallery__thumbs" id="product-gallery-thumbs">
+                        @forelse($images as $image)
+                            <img src="{{ $image->public_url }}" alt="{{ $product->name }}"
+                                 data-gallery-image
+                                 class="product-gallery__thumb {{ $loop->first ? 'product-gallery__thumb--active' : '' }}" />
+                        @empty
+                            <div class="product-gallery__thumb placeholder"></div>
+                            <div class="product-gallery__thumb placeholder"></div>
+                            <div class="product-gallery__thumb placeholder"></div>
+                        @endforelse
                     </div>
                     <div class="product-gallery__main">
-                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"
-                            class="product-gallery-image__main" />
+                        @if($mainImageUrl)
+                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}"
+                                 id="product-gallery-main-image"
+                                 class="product-gallery-image__main" />
+                        @else
+                            <div class="product-gallery-image__main placeholder"></div>
+                        @endif
                     </div>
                 </div>
 
@@ -314,6 +328,23 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            const galleryThumbs = document.querySelectorAll('[data-gallery-image]');
+            const mainGalleryImage = document.getElementById('product-gallery-main-image');
+
+            if (mainGalleryImage && galleryThumbs.length > 0) {
+                galleryThumbs.forEach(function (thumb) {
+                    thumb.addEventListener('click', function () {
+                        galleryThumbs.forEach(function (img) {
+                            img.classList.remove('product-gallery__thumb--active');
+                        });
+
+                        thumb.classList.add('product-gallery__thumb--active');
+                        mainGalleryImage.src = thumb.src;
+                        mainGalleryImage.alt = thumb.alt;
+                    });
+                });
+            }
+
             if (!colorsContainer || !sizesContainer) {
                 return;
             }

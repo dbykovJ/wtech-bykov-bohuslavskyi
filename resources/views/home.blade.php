@@ -80,8 +80,15 @@
                 <h2 id="on-sale" class="section-heading">ON SALE</h2>
                 <div class="products-grid">
                     @foreach($productsOnSale as $productOnSale)
+                        @php
+                            $imageUrl = $productOnSale->getFirstImage()?->public_url;
+                        @endphp
                         <a href="{{ route('product', ['id' => $productOnSale->id]) }}" class="product-card">
-                            <div class="placeholder product-card__image"></div>
+                            @if($imageUrl)
+                                <img src="{{ $imageUrl }}" alt="{{ $productOnSale->name }}" class="product-card__image" />
+                            @else
+                                <div class="placeholder product-card__image"></div>
+                            @endif
                             <div class="product-meta">
                                 <div class="product-name">{{$productOnSale->name}}</div>
                                 <div class="star-rating" style="--rating: {{$productOnSale->rating}}">★★★★★</div>
@@ -105,8 +112,15 @@
                 <h2 id="new-arrivals" class="section-heading">NEW ARRIVALS</h2>
                 <div class="products-grid">
                     @foreach($newArrivals as $newArrival)
+                        @php
+                            $imageUrl = $newArrival->getFirstImage()?->public_url;
+                        @endphp
                         <a href="{{ route('product', ['id' => $newArrival->id]) }}" class="product-card">
-                            <div class="placeholder product-card__image"></div>
+                            @if($imageUrl)
+                                <img src="{{ $imageUrl }}" alt="{{ $newArrival->name }}" class="product-card__image" />
+                            @else
+                                <div class="placeholder product-card__image"></div>
+                            @endif
                             <div class="product-meta">
                                 <div class="product-name">{{$newArrival->name}}</div>
                                 <div class="star-rating" style="--rating: {{$newArrival->rating}}">★★★★★</div>

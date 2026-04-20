@@ -19,7 +19,7 @@ class ProductService
      */
     public function getProduct($id)
     {
-        $product = Product::with('colorSizes', 'sales')->findOrFail($id);
+        $product = Product::with('colorSizes', 'sales', 'images')->findOrFail($id);
 
         if ($product->colorSizes->isNotEmpty()) {
             $order = array_flip(self::SIZE_ORDER);
@@ -74,7 +74,7 @@ class ProductService
 
     public static function getOnSale($limit = 4)
     {
-        return Product::with('colorSizes')
+        return Product::with(['colorSizes', 'images'])
             ->join('products_on_sales', 'products.id', '=', 'products_on_sales.product_id')
             ->join('sales', 'sales.id', '=', 'products_on_sales.sale_id')
             ->where('sales.valid_to', '>', now())
@@ -97,6 +97,7 @@ class ProductService
                 ->whereNull('sales.promo_code');
             },
             'colorSizes',
+            'images',
         ])
             ->orderBy('products.created_at', 'desc')
             ->limit($limit)
@@ -123,8 +124,17 @@ class ProductService
 
     public function search(string $query, int $limit = 5)
     {
-        return Product::where('name', 'ilike', "%{$query}%")
+        return Product::with('images')
+            ->where('name', 'ilike', "%{$query}%")
             ->limit($limit)
-            ->get(['id', 'name', 'price', 'image_url']);
+            ->get(['id', 'name', 'price'])
+            ->map(function (Product $product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image_url' => optional($product->getFirstImage())->image_url,
+                ];
+            });
     }
 }

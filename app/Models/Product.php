@@ -16,7 +16,6 @@ class Product extends Model
         'stock',
         'slug',
         'category_id',
-        'image_url',
         'rating',
     ];
 
@@ -31,6 +30,18 @@ class Product extends Model
             ->whereNull('sales.promo_code');
     }
 
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function getFirstImage()
+    {
+        return $this->relationLoaded('images')
+            ? $this->images->first()
+            : $this->images()->first();
+    }
 
     public function colorSizes(): BelongsToMany
     {

@@ -197,25 +197,42 @@
 /* Photo upload */
 .photo-upload {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 16px;
     flex-wrap: wrap;
 }
 
 .photo-upload__previews {
     display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: none;
+    max-height: none;
+    border-radius: 10px;
+}
+
+#existing-photo-previews,
+#new-photo-previews {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.photo-upload__preview {
+    /*display: flex;*/
     object-fit: cover;
+    display: inline;
     max-width: 80px;
     max-height: 80px;
     border-radius: 10px;
 }
 
-.photo-upload__preview {
-    display: flex;
-    object-fit: cover;
-    max-width: 80px;
-    max-height: 80px;
-    border-radius: 10px;
+.photo-preview-slot .photo-upload__preview {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    display: block;
 }
 
 .photo-preview-slot {

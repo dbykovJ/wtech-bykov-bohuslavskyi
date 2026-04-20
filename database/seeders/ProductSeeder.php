@@ -25,7 +25,6 @@ class ProductSeeder extends Seeder
                 'stock'       => 100,
                 'rating'      => 4.5,
                 'category_id' => $clothing->id,
-                'image_url'   => null,
             ],
             [
                 'name'        => 'Slim Fit Jeans',
@@ -35,7 +34,6 @@ class ProductSeeder extends Seeder
                 'stock'       => 60,
                 'rating'      => 4.2,
                 'category_id' => $clothing->id,
-                'image_url'   => null,
             ],
             [
                 'name'        => 'Running Sneakers',
@@ -45,7 +43,6 @@ class ProductSeeder extends Seeder
                 'stock'       => 40,
                 'rating'      => 4.7,
                 'category_id' => $shoes->id,
-                'image_url'   => null,
             ],
             [
                 'name'        => 'Leather Belt',
@@ -55,7 +52,6 @@ class ProductSeeder extends Seeder
                 'stock'       => 80,
                 'rating'      => 4.0,
                 'category_id' => $accessories->id,
-                'image_url'   => null,
             ],
             [
                 'name'        => 'Hoodie Sweatshirt',
@@ -65,7 +61,6 @@ class ProductSeeder extends Seeder
                 'stock'       => 50,
                 'rating'      => 4.6,
                 'category_id' => $clothing->id,
-                'image_url'   => null,
             ],
         ];
 

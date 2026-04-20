@@ -118,8 +118,15 @@
 
 .cart-item__price {
     font-weight: 800;
-    font-size: 20px;
+    font-size: 16px;
 }
+
+
+.cart-item__price__original {
+    text-decoration: line-through;
+    color: #374151;
+}
+
 
 .quantity {
     display: flex;
