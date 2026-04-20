@@ -13,7 +13,7 @@
                 <div class="hero__grid">
                     <div>
                         <h1 class="hero__title">
-                            FIND CLOTHES<br />THAT MATCHES<br />YOUR STYLE
+                            FIND CLOTHES<br />THAT MATCH<br />YOUR STYLE
                         </h1>
                         <p class="hero__desc">
                             Browse through our diverse range of meticulously
