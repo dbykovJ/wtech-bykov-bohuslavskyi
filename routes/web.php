@@ -68,5 +68,6 @@ Route::get('/account/orders', fn() => view('account.orders'))->name('account.ord
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', fn() => view('admin.dashboard'))->name('dashboard');
     Route::resource('products', AdminProductController::class)->except('show');
+    Route::delete('/products/{product}/images/{image}', [AdminProductController::class, 'destroyImage'])->name('products.images.destroy');
     Route::get('/orders', fn() => view('admin.orders'))->name('orders');
 });

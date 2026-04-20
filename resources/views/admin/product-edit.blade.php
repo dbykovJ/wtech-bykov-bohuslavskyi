@@ -10,6 +10,12 @@
     <h1 class="admin-page-title">{{ isset($product) ? $product->name . ': Edit' : 'Add Product' }}</h1>
 </div>
 
+@if(session('success'))
+    <div class="alert alert-success" style="margin-bottom:1rem;padding:.75rem 1rem;background:#d1fae5;border-radius:8px;color:#065f46;">
+        {{ session('success') }}
+    </div>
+@endif
+
 <form class="edit-form-card"
       action="{{ isset($product) ? route('admin.products.update', $product->id) : route('admin.products.store') }}"
       method="POST"
@@ -19,20 +25,52 @@
         @method('PUT')
     @endif
 
-    <div class="photo-upload">
-        <div class="photo-upload__previews" id="photo-previews">
-            @if(isset($product) && $product->image_url)
-                <img src="{{ asset('storage/' . $product->image_url) }}" class="photo-upload__preview" alt="Current image" />
-            @endif
+    {{-- Existing images --}}
+    @if(isset($product) && $product->images->count())
+        <div style="margin-bottom:1.5rem;">
+            <p class="form-label" style="margin-bottom:.75rem;">Current Images</p>
+            <div class="photo-upload__previews" id="existing-previews" style="flex-wrap:wrap;gap:.75rem;display:flex;">
+                @foreach($product->images as $image)
+                    <div style="position:relative;display:inline-block;">
+                        <img src="{{ asset('storage/' . $image->path) }}"
+                             class="photo-upload__preview"
+                             alt="Product image"
+                             style="width:100px;height:100px;object-fit:cover;border-radius:8px;border:2px solid {{ $product->image_url === $image->path ? '#6366f1' : '#e5e7eb' }};" />
+                        @if($product->image_url === $image->path)
+                            <span style="position:absolute;top:4px;left:4px;background:#6366f1;color:#fff;font-size:10px;padding:1px 5px;border-radius:4px;">Primary</span>
+                        @endif
+                        <form action="{{ route('admin.products.images.destroy', [$product->id, $image->id]) }}"
+                              method="POST"
+                              style="display:inline;"
+                              onsubmit="return confirm('Remove this image?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                    style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(239,68,68,0.9);border:none;color:#fff;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                                &times;
+                            </button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
         </div>
+    @endif
+
+    {{-- Upload new images --}}
+    <div class="photo-upload">
+        <div class="photo-upload__previews" id="photo-previews"></div>
         <label class="photo-upload__trigger" for="photo-input">
             <div class="photo-upload__icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </div>
-            <span class="photo-upload__label">Upload Photo</span>
-            <input type="file" id="photo-input" name="image" accept="image/*" hidden />
+            <span class="photo-upload__label">Upload Photos</span>
+            <input type="file" id="photo-input" name="images[]" accept="image/*" multiple hidden />
         </label>
     </div>
+
+    @error('images.*')
+        <p style="color:#ef4444;font-size:.875rem;margin-top:.25rem;">{{ $message }}</p>
+    @enderror
 
     <div class="form-grid">
         <div class="form-field">
@@ -99,6 +137,7 @@
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.className = 'photo-upload__preview';
+                img.style.cssText = 'width:100px;height:100px;object-fit:cover;border-radius:8px;';
                 previews.appendChild(img);
             };
             reader.readAsDataURL(file);
