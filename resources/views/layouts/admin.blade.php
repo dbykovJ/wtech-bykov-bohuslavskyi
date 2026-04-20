@@ -20,7 +20,7 @@
             <form action="{{ route('logout') }}" method="POST" style="padding: 16px;">
                 @csrf
                 <button type="submit" class="sidebar__link" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: #ef4444;">
-                    Logout
+                    Log out
                 </button>
             </form>
         </aside>

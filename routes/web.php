@@ -28,14 +28,13 @@ Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/cart', [CartItemController::class, 'accountCart'])->name('cart');
-    Route::post('/cart/add', [CartItemController::class, 'add']);
-    Route::patch('/cart/{cartItemId}', [CartItemController::class, 'update']);
-    Route::delete('/cart/{cartItemId}', [CartItemController::class, 'remove']);
-    Route::delete('/cart', [CartItemController::class, 'clear']);
-    Route::get('/account/cart', [CartItemController::class, 'accountCart'])->name('account.cart');
-});
+// Cart — accessible to guests and logged-in users
+Route::get('/cart', [CartItemController::class, 'accountCart'])->name('cart');
+Route::post('/cart/add', [CartItemController::class, 'add']);
+Route::patch('/cart/{cartItemId}', [CartItemController::class, 'update']);
+Route::delete('/cart/{cartItemId}', [CartItemController::class, 'remove']);
+Route::delete('/cart', [CartItemController::class, 'clear']);
+Route::get('/account/cart', [CartItemController::class, 'accountCart'])->name('account.cart');
 
 // Cart & checkout flow
 Route::get('/payment', fn() => view('payment'))->name('payment');
