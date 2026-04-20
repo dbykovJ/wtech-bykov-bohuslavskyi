@@ -310,8 +310,8 @@
         let sizesContainer = document.getElementById('product-sizes');
         let stockInfoEl = document.getElementById('stock-info');
 
-        let selectedColorBtn = colorsContainer.querySelector('.product-color--active');
-        let selectedSizeBtn = sizesContainer.querySelector('.product-size--active');
+        let selectedColorBtn = colorsContainer?.querySelector('.product-color--active') ?? null;
+        let selectedSizeBtn = sizesContainer?.querySelector('.product-size--active') ?? null;
 
         function changeQty(delta) {
             const el = document.getElementById("qty");
@@ -327,7 +327,8 @@
             if (countInput) countInput.value = val;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        // Gallery swap — runs immediately since script is at bottom of body
+        (function () {
             const galleryThumbs = document.querySelectorAll('[data-gallery-image]');
             const mainGalleryImage = document.getElementById('product-gallery-main-image');
 
@@ -337,14 +338,15 @@
                         galleryThumbs.forEach(function (img) {
                             img.classList.remove('product-gallery__thumb--active');
                         });
-
                         thumb.classList.add('product-gallery__thumb--active');
                         mainGalleryImage.src = thumb.src;
                         mainGalleryImage.alt = thumb.alt;
                     });
                 });
             }
+        })();
 
+        document.addEventListener('DOMContentLoaded', function() {
             if (!colorsContainer || !sizesContainer) {
                 return;
             }
