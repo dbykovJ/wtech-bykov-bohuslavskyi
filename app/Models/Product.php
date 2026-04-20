@@ -48,9 +48,4 @@ class Product extends Model
         return $this->belongsToMany(Color::class, 'item_color_size_counts', 'item_id', 'color_id')
             ->withPivot('size', 'count');
     }
-
-    public function images(): HasMany
-    {
-        return $this->hasMany(ProductImage::class);
-    }
 }
