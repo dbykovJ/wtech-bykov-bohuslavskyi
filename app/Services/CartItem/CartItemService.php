@@ -7,6 +7,7 @@ use App\Models\ItemColorSizeCount;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -19,38 +20,41 @@ class CartItemService
     {
         /** @var User $user */
         $user = Auth::user();
-        $now = now();
-        $appliedPromoSale = $this->getAppliedPromoSale();
 
-        $activeSalesScope = function ($query) use ($now) {
-            $query->where('sales.valid_to', '>', $now)
-                ->where('sales.valid_from', '<', $now);
-        };
+        return $this->getCartForUser($user);
+    }
+
+    public function getCartForUser(User $user): array
+    {
+        $appliedPromoSale = $this->getAppliedPromoSale();
 
         $cartItems = $user->cartItems()
             ->with([
                 'product.images',
-                'product.allSales' => $activeSalesScope,
+                'product.allSales',
                 'color',
             ])
             ->get()
             ->map(function (CartItem $item) use ($appliedPromoSale) {
                 $baseUnitPrice = (float) $item->product->price;
                 $activeSales = $item->product->allSales;
-                $salesDiscountPercent = min((float) $activeSales->whereNull('promo_code')->sum('discount'), 100.0);
+                $salesDiscountPercent = max(min((float) $activeSales->whereNull('promo_code')->sum('discount'), 100.0), 0.0);
 
                 $promoDiscountPercent = 0.0;
                 if ($appliedPromoSale && $activeSales->contains('id', $appliedPromoSale->id)) {
-                    $promoDiscountPercent = (float) $appliedPromoSale->discount;
+                    $promoDiscountPercent = max(min((float) $appliedPromoSale->discount, 100.0), 0.0);
                 }
 
-                $discountPercent = min($salesDiscountPercent + $promoDiscountPercent, 100.0);
-
-                $discountedUnitPrice = round($baseUnitPrice * (1 - ($discountPercent / 100)), 2);
+                // Apply promo discount to the already discounted sale price (non-additive).
+                $unitPriceAfterSales = round($baseUnitPrice * (1 - ($salesDiscountPercent / 100)), 2);
+                $discountedUnitPrice = round(max($unitPriceAfterSales * (1 - ($promoDiscountPercent / 100)), 0.0), 2);
                 $lineBaseSubtotal = round($baseUnitPrice * $item->count, 2);
                 $lineSubtotal = round($discountedUnitPrice * $item->count, 2);
-                $lineSaleDiscount = round(($baseUnitPrice * ($salesDiscountPercent / 100)) * $item->count, 2);
-                $linePromoDiscount = round(($baseUnitPrice * ($promoDiscountPercent / 100)) * $item->count, 2);
+                $lineSaleDiscount = round(($baseUnitPrice - $unitPriceAfterSales) * $item->count, 2);
+                $linePromoDiscount = round(($unitPriceAfterSales - $discountedUnitPrice) * $item->count, 2);
+                $discountPercent = $baseUnitPrice > 0
+                    ? min(round((1 - ($discountedUnitPrice / $baseUnitPrice)) * 100, 2), 100.0)
+                    : 0.0;
 
                 $item->setAttribute('discount_percent', $discountPercent);
                 $item->setAttribute('sales_discount_percent', $salesDiscountPercent);
@@ -65,26 +69,31 @@ class CartItemService
                 return $item;
             });
 
+        return [
+            'items' => $cartItems,
+            'summary' => $this->buildSummary($cartItems, $appliedPromoSale),
+        ];
+    }
+
+    public function buildSummary(Collection $cartItems, ?Sale $appliedPromoSale): array
+    {
         $subtotalBeforeDiscount = round((float) $cartItems->sum('line_base_subtotal'), 2);
         $subtotal = round((float) $cartItems->sum('line_subtotal'), 2);
         $salesDiscountTotal = round((float) $cartItems->sum('line_sales_discount'), 2);
         $promoDiscountTotal = round((float) $cartItems->sum('line_promo_discount'), 2);
-        $discountTotal = round($salesDiscountTotal + $promoDiscountTotal, 2);
+        $discountTotal = round($subtotalBeforeDiscount - $subtotal, 2);
         $deliveryFee = $cartItems->isEmpty() ? 0.0 : self::DELIVERY_FEE;
         $total = round($subtotal + $deliveryFee, 2);
 
         return [
-            'items' => $cartItems,
-            'summary' => [
-                'promo_code' => $appliedPromoSale?->promo_code,
-                'subtotal_before_discount' => $subtotalBeforeDiscount,
-                'subtotal' => $subtotal,
-                'sales_discount_total' => $salesDiscountTotal,
-                'promo_discount_total' => $promoDiscountTotal,
-                'discount_total' => $discountTotal,
-                'delivery_fee' => $deliveryFee,
-                'total' => $total,
-            ],
+            'promo_code' => $appliedPromoSale?->promo_code,
+            'subtotal_before_discount' => $subtotalBeforeDiscount,
+            'subtotal' => $subtotal,
+            'sales_discount_total' => $salesDiscountTotal,
+            'promo_discount_total' => $promoDiscountTotal,
+            'discount_total' => $discountTotal,
+            'delivery_fee' => $deliveryFee,
+            'total' => $total,
         ];
     }
 
@@ -183,16 +192,26 @@ class CartItemService
             ]);
         }
 
-        $promoSale = $this->findActivePromoSaleByCode($normalizedPromoCode);
-        if (!$promoSale) {
+        $promoSales = $this->findPromoSalesByCode($normalizedPromoCode);
+
+        if ($promoSales->isEmpty()) {
             throw ValidationException::withMessages([
-                'promo_code' => 'Promo code is invalid or expired.',
+                'promo_code' => 'Promo code is invalid.',
             ]);
         }
 
+        if ($promoSales->count() > 1) {
+            throw ValidationException::withMessages([
+                'promo_code' => 'Promo code is duplicated in the system. Please contact support.',
+            ]);
+        }
+
+        /** @var Sale $promoSale */
+        $promoSale = $promoSales->first();
+
         $hasEligibleProduct = CartItem::query()
             ->where('user_id', Auth::id())
-            ->whereHas('product.sales', function ($query) use ($promoSale) {
+            ->whereHas('product.allSales', function ($query) use ($promoSale) {
                 $query->where('sales.id', $promoSale->id);
             })
             ->exists();
@@ -221,23 +240,27 @@ class CartItemService
             return null;
         }
 
-        $sale = $this->findActivePromoSaleByCode($promoCode);
-        if (!$sale) {
+        $promoSales = $this->findPromoSalesByCode($promoCode);
+
+        if ($promoSales->count() !== 1) {
             session()->forget(self::PROMO_SESSION_KEY);
+
+            return null;
         }
+
+        /** @var Sale $sale */
+        $sale = $promoSales->first();
 
         return $sale;
     }
 
-    private function findActivePromoSaleByCode(string $promoCode): ?Sale
+    private function findPromoSalesByCode(string $promoCode): Collection
     {
-        $now = now();
+        $normalizedPromoCode = strtoupper(trim($promoCode));
 
         return Sale::query()
             ->whereNotNull('promo_code')
-            ->whereRaw('LOWER(promo_code) = ?', [strtolower(trim($promoCode))])
-            ->where('valid_from', '<', $now)
-            ->where('valid_to', '>', $now)
-            ->first();
+            ->whereRaw('UPPER(TRIM(promo_code)) = ?', [$normalizedPromoCode])
+            ->get();
     }
 }

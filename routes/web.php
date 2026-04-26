@@ -1,14 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Cart\CartItem\CartItemController;
+use App\Http\Controllers\Cart\Checkout\CheckoutController;
+use App\Http\Controllers\Cart\Shop\ShopController;
+use App\Http\Controllers\Cart\Stripe\StripeWebhookController;
 use App\Http\Controllers\Product\ProductController;
 use App\Services\Product\ProductService;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartItem\CartItemController;
 
 $productService = new ProductService();
 $productController = new ProductController($productService);
@@ -30,12 +33,15 @@ Route::get('/search', [ProductController::class, 'search'])->name('products.sear
 
 Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartItemController::class, 'accountCart'])->name('cart');
+
+    Route::post('/cart/promo', [CartItemController::class, 'applyPromo'])->name('cart.promo.apply');
+    Route::delete('/cart/promo', [CartItemController::class, 'removePromo'])->name('cart.promo.remove');
+
     Route::post('/cart/add', [CartItemController::class, 'add']);
     Route::patch('/cart/{cartItemId}', [CartItemController::class, 'update']);
     Route::delete('/cart/{cartItemId}', [CartItemController::class, 'remove']);
     Route::delete('/cart', [CartItemController::class, 'clear']);
-    Route::post('/cart/promo', [CartItemController::class, 'applyPromo'])->name('cart.promo.apply');
-    Route::delete('/cart/promo', [CartItemController::class, 'removePromo'])->name('cart.promo.remove');
+
     Route::get('/account/cart', [CartItemController::class, 'accountCart'])->name('account.cart');
 
     Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
@@ -45,10 +51,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // Cart & checkout flow
-Route::get('/payment', fn() => view('payment'))->name('payment');
 Route::get('/delivery', fn() => view('delivery'))->name('delivery');
 Route::get('/checkout/personal-data', fn() => view('personal-data'))->name('checkout.personal-data');
+Route::get('/order-confirm', [CheckoutController::class, 'confirm'])->name('order-confirm');
 Route::get('/order-confirm', fn() => view('order-confirm'))->name('order-confirm');
+Route::post('/webhooks/stripe', StripeWebhookController::class)
+    ->withoutMiddleware([VerifyCsrfToken::class])
+    ->name('stripe.webhook');
 
 // Auth
 Route::get('/login', fn() => view('auth.login'))

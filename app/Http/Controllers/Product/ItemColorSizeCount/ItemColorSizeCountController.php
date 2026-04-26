@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Product\ItemColorSizeCount;
 
-use App\Models\Sale;
+use App\Http\Controllers\Controller;
+use App\Models\ItemColorSizeFont;
 use Illuminate\Http\Request;
 
-class SaleController extends Controller
+class ItemColorSizeCountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class SaleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sale $sale)
+    public function show(ItemColorSizeFont $itemColorSizeFont)
     {
         //
     }
@@ -42,7 +43,7 @@ class SaleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Sale $sale)
+    public function edit(ItemColorSizeFont $itemColorSizeFont)
     {
         //
     }
@@ -50,7 +51,7 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
+    public function update(Request $request, ItemColorSizeFont $itemColorSizeFont)
     {
         //
     }
@@ -58,7 +59,7 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sale $sale)
+    public function destroy(ItemColorSizeFont $itemColorSizeFont)
     {
         //
     }

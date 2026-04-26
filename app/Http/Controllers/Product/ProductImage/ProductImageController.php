@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Product\ProductImage;
 
-use App\Models\ItemColorSizeFont;
+use App\Http\Controllers\Controller;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 
-class ItemColorSizeCountController extends Controller
+class ProductImageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class ItemColorSizeCountController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ItemColorSizeFont $itemColorSizeFont)
+    public function show(ProductImage $productImages)
     {
         //
     }
@@ -42,7 +43,7 @@ class ItemColorSizeCountController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ItemColorSizeFont $itemColorSizeFont)
+    public function edit(ProductImage $productImages)
     {
         //
     }
@@ -50,7 +51,7 @@ class ItemColorSizeCountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ItemColorSizeFont $itemColorSizeFont)
+    public function update(Request $request, ProductImage $productImages)
     {
         //
     }
@@ -58,7 +59,7 @@ class ItemColorSizeCountController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ItemColorSizeFont $itemColorSizeFont)
+    public function destroy(ProductImage $productImages)
     {
         //
     }

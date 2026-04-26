@@ -14,7 +14,9 @@
         <h1 class="cart-title heading">YOUR CART</h1>
 
         @if (session('success'))
-            <p style="margin-bottom: 12px; color: #0a7a3f;">{{ session('success') }}</p>
+            <div class="promo-success-bubble" data-promo-success-bubble>
+                {{ session('success') }}
+            </div>
         @endif
 
         @include('partials.account-nav')
@@ -82,10 +84,10 @@
                         <span>${{ number_format($cartSummary['subtotal_before_discount'] ?? 0, 2) }}</span>
                     </div>
                     <div class="order-summary__row">
-                        <span>Discount</span>
-                        <span class="order-summary__discount">-${{ number_format($cartSummary['discount_total'] ?? 0, 2) }}</span>
+                        <span>Sale Discount</span>
+                        <span class="order-summary__discount">-${{ number_format($cartSummary['sales_discount_total'] ?? 0, 2) }}</span>
                     </div>
-                    @if (($cartSummary['promo_discount_total'] ?? 0) > 0)
+                    @if (!empty($cartSummary['promo_code']) && ($cartSummary['promo_discount_total'] ?? 0) >= 0.01)
                         <div class="order-summary__row">
                             <span>Promo Discount ({{ $cartSummary['promo_code'] }})</span>
                             <span class="order-summary__discount">-${{ number_format($cartSummary['promo_discount_total'] ?? 0, 2) }}</span>
@@ -172,6 +174,18 @@
         promoErrorBubble.addEventListener('mouseenter', function () {
             window.clearTimeout(hideTimer);
             hidePromoErrorBubble();
+        }, { once: true });
+    }
+
+    const promoSuccessBubble = document.querySelector('[data-promo-success-bubble]');
+
+    if (promoSuccessBubble) {
+        const hideSuccess = () => promoSuccessBubble.classList.add('promo-success-bubble--hidden');
+        const successTimer = window.setTimeout(hideSuccess, 4000);
+
+        promoSuccessBubble.addEventListener('mouseenter', function () {
+            window.clearTimeout(successTimer);
+            hideSuccess();
         }, { once: true });
     }
 </script>

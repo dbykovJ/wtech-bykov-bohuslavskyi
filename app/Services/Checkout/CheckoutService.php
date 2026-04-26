@@ -24,15 +24,15 @@ class CheckoutService
 
     public function createStripeSessionForUser(User $user, array $address): string
     {
-        $cartData = $this->cartItemService->getCart();
+        $order = DB::transaction(function () use ($user, $address): Order {
+            $cartData = $this->cartItemService->getCartForUser($user);
 
-        if ($cartData['items']->isEmpty()) {
-            throw ValidationException::withMessages([
-                'checkout' => 'Your cart is empty.',
-            ]);
-        }
+            if ($cartData['items']->isEmpty()) {
+                throw ValidationException::withMessages([
+                    'checkout' => 'Your cart is empty.',
+                ]);
+            }
 
-        $order = DB::transaction(function () use ($user, $address, $cartData): Order {
             $summary = $cartData['summary'];
 
             $order = Order::create([
@@ -73,13 +73,29 @@ class CheckoutService
                 ]);
             }
 
-            return $order->fresh('items.product');
+            $order = $order->fresh('items.product');
+            $this->assertOrderTotalsAreConsistent($order);
+
+            return $order;
         });
 
         [$sessionId, $sessionUrl] = $this->createStripeCheckoutSession($order);
         $order->update(['stripe_checkout_session_id' => $sessionId]);
 
         return $sessionUrl;
+    }
+
+    private function assertOrderTotalsAreConsistent(Order $order): void
+    {
+        $itemsTotal = round((float) $order->items->sum('line_total'), 2);
+        $expectedTotal = round($itemsTotal + (float) $order->delivery_fee, 2);
+        $actualTotal = round((float) $order->total, 2);
+
+        if (abs($expectedTotal - $actualTotal) > 0.009) {
+            throw ValidationException::withMessages([
+                'checkout' => 'Cart totals changed. Please review your cart and try checkout again.',
+            ]);
+        }
     }
 
     public function handleCheckoutSessionCompleted(array $session): void

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cart\Checkout;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Checkout\StartCheckoutRequest;
 use App\Models\Order;
 use App\Services\CartItem\CartItemService;
@@ -29,9 +30,15 @@ class CheckoutController extends Controller
             ]);
         }
 
+        $lastOrder = Order::where('user_id', Auth::id())
+            ->where('status', 'paid')
+            ->latest('paid_at')
+            ->first();
+
         return view('payment', [
-            'cartItems' => $cartData['items'],
+            'cartItems'   => $cartData['items'],
             'cartSummary' => $cartData['summary'],
+            'lastOrder'   => $lastOrder,
         ]);
     }
 
@@ -76,8 +83,11 @@ class CheckoutController extends Controller
 
         $this->cartItemService->removePromoCode();
 
-        return redirect()->route('order-confirm')->with('success', 'Payment completed successfully.');
-    }
+        if (!session('success')) {
+            return redirect()->route('cart');
+        }
+
+        return view('order-confirm');    }
 
     public function cancel()
     {

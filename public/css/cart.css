@@ -273,6 +273,27 @@
     margin-top: 8px;
 }
 
+.promo-success-bubble {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #0a7a3f;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.promo-success-bubble--hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+}
+
+
 .promo-error-bubble {
     position: absolute;
     top: calc(100% + 6px);

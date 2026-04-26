@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cart\Stripe;
 
+use App\Http\Controllers\Controller;
 use App\Models\StripeWebhookEvent;
 use App\Services\Checkout\CheckoutService;
 use Illuminate\Http\Request;

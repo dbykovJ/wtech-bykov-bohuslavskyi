@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cart\Sale;
 
-use App\Models\ProductImage;
+use App\Http\Controllers\Controller;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 
-class ProductImageController extends Controller
+class SaleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class ProductImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductImage $productImages)
+    public function show(Sale $sale)
     {
         //
     }
@@ -42,7 +43,7 @@ class ProductImageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductImage $productImages)
+    public function edit(Sale $sale)
     {
         //
     }
@@ -50,7 +51,7 @@ class ProductImageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductImage $productImages)
+    public function update(Request $request, Sale $sale)
     {
         //
     }
@@ -58,7 +59,7 @@ class ProductImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductImage $productImages)
+    public function destroy(Sale $sale)
     {
         //
     }
