@@ -24,14 +24,16 @@
         <a href="{{ route('account.orders') }}" class="account-nav__link {{ request()->routeIs('account.orders') ? 'account-nav__link--active' : '' }}">
             Orders
         </a>
-        @if(auth()->user()->isAdmin())
+        @if(auth()->user()?->isAdmin())
             <a href="{{ route('admin.dashboard') }}" class="account-nav__link">
                 Admin Dashboard
             </a>
         @endif
+        @auth
         <form action="{{ route('logout') }}" class="account-nav__link" method="POST">
             @csrf
             <button type="submit" style="border: none; background: none">Sign out</button>
         </form>
+        @endauth
     </div>
 </aside>

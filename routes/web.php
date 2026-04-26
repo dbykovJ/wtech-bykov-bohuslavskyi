@@ -5,11 +5,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Admin\AdminProductController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\StripeWebhookController;
 use App\Services\Product\ProductService;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartItem\CartItemController;
 
@@ -48,12 +45,10 @@ Route::middleware('auth')->group(function () {
 });
 
 // Cart & checkout flow
+Route::get('/payment', fn() => view('payment'))->name('payment');
 Route::get('/delivery', fn() => view('delivery'))->name('delivery');
 Route::get('/checkout/personal-data', fn() => view('personal-data'))->name('checkout.personal-data');
 Route::get('/order-confirm', fn() => view('order-confirm'))->name('order-confirm');
-Route::post('/stripe/webhook', StripeWebhookController::class)
-    ->withoutMiddleware([VerifyCsrfToken::class])
-    ->name('stripe.webhook');
 
 // Auth
 Route::get('/login', fn() => view('auth.login'))

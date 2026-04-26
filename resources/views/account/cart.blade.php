@@ -58,11 +58,13 @@
                             @else
                                 <span class="cart-item__price">${{ number_format($item->base_unit_price, 2) }}</span>
                             @endif
-                            <div class="quantity">
-                                <button class="quantity__btn">−</button>
+                            <form method="POST" action="/cart/{{ $item->id }}" class="quantity" data-count="{{ $item->count }}">
+                                @csrf @method('PATCH')
+                                <input type="hidden" name="count" class="quantity__input" value="{{ $item->count }}">
+                                <button type="button" class="quantity__btn" onclick="changeCount(this, -1)">−</button>
                                 <span class="quantity__val">{{ $item->count }}</span>
-                                <button class="quantity__btn">+</button>
-                            </div>
+                                <button type="button" class="quantity__btn" onclick="changeCount(this, 1)">+</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -148,6 +150,17 @@
     document.querySelector('.account-menu-toggle')?.addEventListener('click', function () {
         document.querySelector('.account-nav')?.classList.toggle('account-nav--open');
     });
+
+    function changeCount(btn, delta) {
+        const form = btn.closest('form.quantity');
+        const input = form.querySelector('.quantity__input');
+        const display = form.querySelector('.quantity__val');
+        let count = parseInt(input.value) + delta;
+        if (count < 1) count = 1;
+        input.value = count;
+        display.textContent = count;
+        form.submit();
+    }
 
     const promoErrorBubble = document.querySelector('[data-promo-error-bubble]');
 
