@@ -30,6 +30,11 @@ class Product extends Model
             ->whereNull('sales.promo_code');
     }
 
+    public function allSales(): BelongsToMany
+    {
+        return $this->belongsToMany(Sale::class, 'products_on_sales', 'product_id', 'sale_id');
+    }
+
 
     public function images(): HasMany
     {

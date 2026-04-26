@@ -57,3 +57,27 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Stripe Checkout Setup
+
+Add these variables to your local `.env`:
+
+- `STRIPE_KEY`
+- `STRIPE_SECRET`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_CURRENCY` (default: `usd`)
+
+Run migrations after pulling checkout changes:
+
+```bash
+php artisan migrate
+```
+
+To test webhooks locally with Stripe CLI:
+
+```bash
+stripe listen --forward-to http://127.0.0.1:8000/stripe/webhook
+```
+
+Then copy the printed webhook signing secret (`whsec_...`) into `STRIPE_WEBHOOK_SECRET`.
+

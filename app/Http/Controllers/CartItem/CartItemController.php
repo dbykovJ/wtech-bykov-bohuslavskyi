@@ -54,4 +54,24 @@ class CartItemController extends Controller
         $this->cartItemService->clearCart();
         return redirect()->back()->with('success', 'Cart cleared!');
     }
+
+    public function applyPromo(Request $request)
+    {
+        $validated = $request->validate([
+            'promo_code' => 'required|string|max:64',
+        ]);
+
+        try {
+            $this->cartItemService->applyPromoCode($validated['promo_code']);
+            return redirect()->back()->with('success', 'Promo code applied.');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors());
+        }
+    }
+
+    public function removePromo()
+    {
+        $this->cartItemService->removePromoCode();
+        return redirect()->back()->with('success', 'Promo code removed.');
+    }
 }

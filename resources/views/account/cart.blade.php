@@ -13,6 +13,10 @@
     <div class="container">
         <h1 class="cart-title heading">YOUR CART</h1>
 
+        @if (session('success'))
+            <p style="margin-bottom: 12px; color: #0a7a3f;">{{ session('success') }}</p>
+        @endif
+
         @include('partials.account-nav')
 
         <div class="cart-layout">
@@ -79,6 +83,12 @@
                         <span>Discount</span>
                         <span class="order-summary__discount">-${{ number_format($cartSummary['discount_total'] ?? 0, 2) }}</span>
                     </div>
+                    @if (($cartSummary['promo_discount_total'] ?? 0) > 0)
+                        <div class="order-summary__row">
+                            <span>Promo Discount ({{ $cartSummary['promo_code'] }})</span>
+                            <span class="order-summary__discount">-${{ number_format($cartSummary['promo_discount_total'] ?? 0, 2) }}</span>
+                        </div>
+                    @endif
                     <div class="order-summary__row">
                         <span>Delivery Fee</span>
                         <span>${{ number_format($cartSummary['delivery_fee'] ?? 0, 2) }}</span>
@@ -93,15 +103,33 @@
                 </div>
 
                 <div class="order-summary__promo">
-                    <div class="promo-input">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.8">
-                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
-                            <circle cx="7" cy="7" r="1" fill="#aaa" stroke="none"/>
-                        </svg>
-                        <input type="text" placeholder="Add promo code" />
-                    </div>
-                    <button class="promo-apply-btn">Apply</button>
+                    <form method="POST" action="{{ route('cart.promo.apply') }}" class="promo-form">
+                        @csrf
+                        <div class="promo-input-wrap">
+                            <div class="promo-input {{ $errors->has('promo_code') ? 'promo-input--error' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.8">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                                <circle cx="7" cy="7" r="1" fill="#aaa" stroke="none"/>
+                            </svg>
+                            <input type="text" name="promo_code" placeholder="Add promo code" value="{{ old('promo_code', $cartSummary['promo_code'] ?? '') }}" />
+                            </div>
+                            @error('promo_code')
+                                <div class="promo-error-bubble" data-promo-error-bubble>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="promo-apply-btn">Apply</button>
+                    </form>
                 </div>
+
+                @if (!empty($cartSummary['promo_code']))
+                    <form method="POST" action="{{ route('cart.promo.remove') }}" class="promo-remove-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="promo-apply-btn promo-apply-btn--full">Remove Promo ({{ $cartSummary['promo_code'] }})</button>
+                    </form>
+                @endif
 
                 <button class="checkout-btn" onclick="window.location.href='{{ route('payment') }}'">
                     Go to Checkout
@@ -120,5 +148,18 @@
     document.querySelector('.account-menu-toggle')?.addEventListener('click', function () {
         document.querySelector('.account-nav')?.classList.toggle('account-nav--open');
     });
+
+    const promoErrorBubble = document.querySelector('[data-promo-error-bubble]');
+
+    if (promoErrorBubble) {
+        const hidePromoErrorBubble = () => promoErrorBubble.classList.add('promo-error-bubble--hidden');
+
+        const hideTimer = window.setTimeout(hidePromoErrorBubble, 5000);
+
+        promoErrorBubble.addEventListener('mouseenter', function () {
+            window.clearTimeout(hideTimer);
+            hidePromoErrorBubble();
+        }, { once: true });
+    }
 </script>
 @endpush

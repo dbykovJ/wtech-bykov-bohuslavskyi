@@ -12,6 +12,10 @@
         <div class="confirm-box">
             <h1 class="confirm-title heading">THANK YOU FOR SHOPPING AT SUPERSELL</h1>
 
+            @if (session('success'))
+                <p style="margin: 12px 0; color: #0a7a3f;">{{ session('success') }}</p>
+            @endif
+
             <div class="confirm-actions">
                 <button class="confirm-btn confirm-btn--full" onclick="window.print()">
                     Print out shopping recipe
