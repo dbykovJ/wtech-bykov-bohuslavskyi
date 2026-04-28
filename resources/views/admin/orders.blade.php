@@ -5,62 +5,123 @@
 @section('content')
 <h1 class="admin-page-title">Order Lists</h1>
 
-<div class="order-filters">
-    <div class="filter-left">
-        <span class="filter-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        </span>
-        <span class="filter-by-label">Filter By</span>
+@php
+    $statusBadge = [
+        'pending_payment' => 'badge--pending',
+        'paid'            => 'badge--processing',
+        'processing'      => 'badge--processing',
+        'shipped'         => 'badge--in-transit',
+        'delivered'       => 'badge--delivered',
+        'completed'       => 'badge--completed',
+        'cancelled'       => 'badge--cancelled',
+    ];
+    $dateLabels = [
+        'newest'     => 'Newest first',
+        'oldest'     => 'Oldest first',
+        'this_week'  => 'This week',
+        'this_month' => 'This month',
+    ];
+@endphp
 
-        <div class="filter-dropdown" id="filter-date">
-            <button class="filter-btn" onclick="toggleDropdown('date-menu')">
-                <span id="filter-date-label">Date</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="dropdown-menu" id="date-menu">
-                <button onclick="setFilter('date','Newest first')">Newest first</button>
-                <button onclick="setFilter('date','Oldest first')">Oldest first</button>
-                <button onclick="setFilter('date','This week')">This week</button>
-                <button onclick="setFilter('date','This month')">This month</button>
-            </div>
-        </div>
+<form method="GET" action="{{ route('admin.orders') }}" id="filter-form">
 
-        <div class="filter-dropdown" id="filter-type">
-            <button class="filter-btn" onclick="toggleDropdown('type-menu')">
-                <span id="filter-type-label">Order Type</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="dropdown-menu" id="type-menu">
-                <button onclick="setFilter('type','T-shirt')">T-shirt</button>
-                <button onclick="setFilter('type','Jeans')">Jeans</button>
-                <button onclick="setFilter('type','Hoodie')">Hoodie</button>
-                <button onclick="setFilter('type','Shirt')">Shirt</button>
-            </div>
-        </div>
-
-        <div class="filter-dropdown" id="filter-status">
-            <button class="filter-btn" onclick="toggleDropdown('status-menu')">
-                <span id="filter-status-label">Order Status</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="dropdown-menu" id="status-menu">
-                <button onclick="setFilter('status','Completed')">Completed</button>
-                <button onclick="setFilter('status','Processing')">Processing</button>
-                <button onclick="setFilter('status','Rejected')">Rejected</button>
-                <button onclick="setFilter('status','On Hold')">On Hold</button>
-                <button onclick="setFilter('status','In Transit')">In Transit</button>
-            </div>
+    {{-- Search --}}
+    <div style="margin-bottom: 16px;">
+        <div style="position:relative; max-width:340px;">
+            <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;"
+                 width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Search by name or order ID…"
+                style="width:100%;padding:8px 12px 8px 36px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
+                onchange="document.getElementById('filter-form').submit()">
         </div>
     </div>
 
-    <button class="reset-filter-btn" onclick="resetFilters()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
-        Reset Filter
-    </button>
-</div>
+    <div class="order-filters">
+        <div class="filter-left">
+            <span class="filter-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+            </span>
+            <span class="filter-by-label">Filter By</span>
+
+            {{-- Date --}}
+            <div class="filter-dropdown" id="filter-date">
+                <button type="button" class="filter-btn{{ request('date') ? ' filter-btn--active' : '' }}"
+                        onclick="toggleDropdown('date-menu')">
+                    <span>{{ $dateLabels[request('date')] ?? 'Date' }}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="date-menu">
+                    @foreach ($dateLabels as $val => $label)
+                        <button type="button" onclick="applyFilter('date', '{{ $val }}')">{{ $label }}</button>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Category / Type --}}
+            @if ($categories->isNotEmpty())
+            <div class="filter-dropdown" id="filter-type">
+                <button type="button" class="filter-btn{{ request('type') ? ' filter-btn--active' : '' }}"
+                        onclick="toggleDropdown('type-menu')">
+                    <span>{{ request('type') ?? 'Order Type' }}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="type-menu">
+                    @foreach ($categories as $cat)
+                        <button type="button" onclick="applyFilter('type', '{{ $cat }}')">{{ $cat }}</button>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- Status --}}
+            <div class="filter-dropdown" id="filter-status">
+                <button type="button" class="filter-btn{{ request('status') ? ' filter-btn--active' : '' }}"
+                        onclick="toggleDropdown('status-menu')">
+                    <span>{{ $statuses[request('status')] ?? 'Order Status' }}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="status-menu">
+                    @foreach ($statuses as $val => $label)
+                        <button type="button" onclick="applyFilter('status', '{{ $val }}')">{{ $label }}</button>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ route('admin.orders') }}" class="reset-filter-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 .49-3.51"/>
+            </svg>
+            Reset Filter
+        </a>
+    </div>
+
+    {{-- Hidden inputs to carry active filters when form re-submits --}}
+    @foreach (['date','type','status'] as $f)
+        @if (request($f))
+            <input type="hidden" name="{{ $f }}" value="{{ request($f) }}">
+        @endif
+    @endforeach
+
+</form>
 
 <div class="orders-table-card">
-    <table class="admin-table orders-table" id="orders-table">
+    <table class="admin-table orders-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -71,93 +132,64 @@
                 <th>STATUS</th>
             </tr>
         </thead>
-        <tbody id="orders-body"></tbody>
+        <tbody>
+            @forelse ($orders as $order)
+            @php
+                $firstItem = $order->items->first();
+                $category  = $firstItem?->product?->category?->name ?? '—';
+                $address   = implode(', ', array_filter([$order->shipping_city, $order->shipping_country])) ?: '—';
+                $name      = $order->shipping_full_name ?? $order->user?->name ?? '—';
+                $badge     = $statusBadge[$order->status] ?? 'badge--pending';
+                $label     = $statuses[$order->status] ?? ucfirst($order->status);
+            @endphp
+            <tr>
+                <td>#{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                <td>{{ $name }}</td>
+                <td>{{ $address }}</td>
+                <td>{{ $order->created_at->format('d M Y') }}</td>
+                <td>{{ $category }}</td>
+                <td><span class="badge {{ $badge }}">{{ $label }}</span></td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6" style="text-align:center;color:#9ca3af;padding:32px 0;">No orders found.</td>
+            </tr>
+            @endforelse
+        </tbody>
     </table>
 
+    @if ($orders->total())
     <div class="table-footer">
-        <span class="table-showing" id="table-showing">Showing 1-09 of 78</span>
+        <span class="table-showing">
+            Showing {{ $orders->firstItem() }}–{{ $orders->lastItem() }} of {{ $orders->total() }}
+        </span>
         <div class="pagination">
-            <button class="pagination-btn" id="prev-btn" onclick="changePage(-1)" disabled>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button class="pagination-btn" id="next-btn" onclick="changePage(1)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
+            @if ($orders->onFirstPage())
+                <button class="pagination-btn" disabled>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+            @else
+                <a href="{{ $orders->previousPageUrl() }}" class="pagination-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </a>
+            @endif
+            @if ($orders->hasMorePages())
+                <a href="{{ $orders->nextPageUrl() }}" class="pagination-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+            @else
+                <button class="pagination-btn" disabled>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            @endif
         </div>
     </div>
+    @endif
 </div>
 @endsection
 
 @push('scripts')
 <script>
-    const ALL_ORDERS = [
-        { id:'00001', name:'Name 1',  address:'Addr 1', date:'04 Sep 2026', type:'T-shirt', status:'Completed'  },
-        { id:'00002', name:'Name 2',  address:'Addr',   date:'28 May 2026', type:'Jeans',   status:'Processing' },
-        { id:'00003', name:'Name 3',  address:'Addr',   date:'23 Nov 2026', type:'Jeans',   status:'Rejected'   },
-        { id:'00004', name:'Name 4',  address:'Addr',   date:'05 Feb 2026', type:'T-shirt', status:'Completed'  },
-        { id:'00005', name:'Name 5',  address:'Addr',   date:'29 Jul 2026', type:'Jeans',   status:'Processing' },
-        { id:'00006', name:'Name 6',  address:'Addr',   date:'15 Aug 2026', type:'Hoodie',  status:'Completed'  },
-        { id:'00007', name:'Name 7',  address:'Addr',   date:'21 Dec 2026', type:'T-shirt', status:'Processing' },
-        { id:'00008', name:'Name 8',  address:'Addr',   date:'30 Apr 2026', type:'Hoodie',  status:'On Hold'    },
-        { id:'00009', name:'Name 9',  address:'Addr',   date:'09 Jan 2026', type:'Shirt',   status:'In Transit' },
-        { id:'00010', name:'Name 10', address:'Addr',   date:'11 Mar 2026', type:'T-shirt', status:'Completed'  },
-        { id:'00011', name:'Name 11', address:'Addr',   date:'17 Jun 2026', type:'Hoodie',  status:'Rejected'   },
-        { id:'00012', name:'Name 12', address:'Addr',   date:'22 Oct 2026', type:'Jeans',   status:'Completed'  },
-        { id:'00013', name:'Name 13', address:'Addr',   date:'03 Feb 2026', type:'Shirt',   status:'Processing' },
-        { id:'00014', name:'Name 14', address:'Addr',   date:'19 Sep 2026', type:'T-shirt', status:'In Transit' },
-        { id:'00015', name:'Name 15', address:'Addr',   date:'07 Dec 2026', type:'Jeans',   status:'On Hold'    },
-        { id:'00016', name:'Name 16', address:'Addr',   date:'14 Aug 2026', type:'Hoodie',  status:'Completed'  },
-        { id:'00017', name:'Name 17', address:'Addr',   date:'25 May 2026', type:'Shirt',   status:'Processing' },
-        { id:'00018', name:'Name 18', address:'Addr',   date:'30 Nov 2026', type:'T-shirt', status:'Rejected'   },
-    ];
-
-    const STATUS_CLASS = {
-        'Completed':  'badge--completed',
-        'Processing': 'badge--processing',
-        'Rejected':   'badge--rejected',
-        'On Hold':    'badge--on-hold',
-        'In Transit': 'badge--in-transit',
-    };
-
-    const PER_PAGE = 9;
-    let currentPage = 1;
-    let filters = { date: null, type: null, status: null };
-
-    function getFiltered() {
-        return ALL_ORDERS.filter(o =>
-            (!filters.type   || o.type   === filters.type) &&
-            (!filters.status || o.status === filters.status)
-        );
-    }
-
-    function renderTable() {
-        const data = getFiltered();
-        const total = data.length;
-        const start = (currentPage - 1) * PER_PAGE;
-        const page = data.slice(start, start + PER_PAGE);
-
-        document.getElementById('orders-body').innerHTML = page.map(o => `
-            <tr>
-                <td>${o.id}</td>
-                <td>${o.name}</td>
-                <td>${o.address}</td>
-                <td>${o.date}</td>
-                <td>${o.type}</td>
-                <td><span class="badge ${STATUS_CLASS[o.status]}">${o.status}</span></td>
-            </tr>
-        `).join('');
-
-        const end = Math.min(start + PER_PAGE, total);
-        document.getElementById('table-showing').textContent = `Showing ${start + 1}-${end} of ${total}`;
-        document.getElementById('prev-btn').disabled = currentPage === 1;
-        document.getElementById('next-btn').disabled = end >= total;
-    }
-
-    function changePage(delta) {
-        currentPage += delta;
-        renderTable();
-    }
-
     function toggleDropdown(id) {
         document.querySelectorAll('.dropdown-menu').forEach(m => {
             if (m.id !== id) m.classList.remove('open');
@@ -165,21 +197,21 @@
         document.getElementById(id).classList.toggle('open');
     }
 
-    function setFilter(type, value) {
-        filters[type] = value;
-        document.getElementById(`filter-${type}-label`).textContent = value;
-        document.getElementById(`${type}-menu`).classList.remove('open');
-        currentPage = 1;
-        renderTable();
-    }
-
-    function resetFilters() {
-        filters = { date: null, type: null, status: null };
-        document.getElementById('filter-date-label').textContent = 'Date';
-        document.getElementById('filter-type-label').textContent = 'Order Type';
-        document.getElementById('filter-status-label').textContent = 'Order Status';
-        currentPage = 1;
-        renderTable();
+    // Update a hidden input and submit the form
+    function applyFilter(name, value) {
+        const form = document.getElementById('filter-form');
+        let input = form.querySelector(`input[name="${name}"]`);
+        if (!input) {
+            input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            form.appendChild(input);
+        }
+        input.value = value;
+        // Reset page when filter changes
+        const pageInput = form.querySelector('input[name="page"]');
+        if (pageInput) pageInput.remove();
+        form.submit();
     }
 
     document.addEventListener('click', e => {
@@ -187,7 +219,5 @@
             document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
         }
     });
-
-    renderTable();
 </script>
 @endpush

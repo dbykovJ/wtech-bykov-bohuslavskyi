@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -82,8 +84,8 @@ Route::get('/account/orders', fn() => view('account.orders'))->name('account.ord
 
 // Admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::resource('products', AdminProductController::class)->except('show');
     Route::delete('/products/{product}/images/{image}', [AdminProductController::class, 'destroyImage'])->name('products.images.destroy');
-    Route::get('/orders', fn() => view('admin.orders'))->name('orders');
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders');
 });

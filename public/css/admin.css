@@ -834,6 +834,7 @@ body {
     transition: border-color 0.15s;
 }
 .filter-btn:hover { border-color: #4f6ef7; color: #4f6ef7; }
+.filter-btn--active { border-color: #4f6ef7; color: #4f6ef7; background: #eef2ff; }
 
 .dropdown-menu {
     display: none;
