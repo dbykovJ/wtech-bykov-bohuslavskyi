@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="account-security__actions">
-                        <button class="account-btn" type="button" onclick="window.location.href='{{ route('login') }}'">
+                        <button class="account-btn" type="button" onclick="window.location.href='{{ route('account.personal-data') }}'">
                             Change password
                         </button>
                         <button class="account-btn account-btn--secondary" type="button" onclick="window.location.href='{{ route('register') }}'">

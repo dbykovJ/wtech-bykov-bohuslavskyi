@@ -23,7 +23,7 @@
                 <span>{{ $message }}</span>
                 @enderror
                 <input class="register-input" id="password" type="password" name="password" placeholder="Password" required />
-                @error('password')
+                @error('Password')
                 <span>{{ $message }}</span>
                 @enderror
                 <input class="register-input" id="confirm-password" type="password" name="password_confirmation" placeholder="Confirm Password" required />

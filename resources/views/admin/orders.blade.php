@@ -8,7 +8,7 @@
 @php
     $statusBadge = [
         'pending_payment' => 'badge--pending',
-        'paid'            => 'badge--processing',
+        'paid'            => 'badge--paid',
         'processing'      => 'badge--processing',
         'shipped'         => 'badge--in-transit',
         'delivered'       => 'badge--delivered',
@@ -26,8 +26,8 @@
 <form method="GET" action="{{ route('admin.orders') }}" id="filter-form">
 
     {{-- Search --}}
-    <div style="margin-bottom: 16px;">
-        <div style="position:relative; max-width:340px;">
+    <div style="margin-bottom: 16px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div style="position:relative; max-width:340px; flex:1 1 240px;">
             <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;"
                  width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -38,6 +38,26 @@
                 value="{{ request('search') }}"
                 placeholder="Search by name or order ID…"
                 style="width:100%;padding:8px 12px 8px 36px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
+                onchange="document.getElementById('filter-form').submit()">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <input
+                type="number"
+                name="min_total"
+                value="{{ request('min_total') }}"
+                placeholder="Min total"
+                min="0"
+                step="0.01"
+                style="width:120px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
+                onchange="document.getElementById('filter-form').submit()">
+            <input
+                type="number"
+                name="max_total"
+                value="{{ request('max_total') }}"
+                placeholder="Max total"
+                min="0"
+                step="0.01"
+                style="width:120px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
                 onchange="document.getElementById('filter-form').submit()">
         </div>
     </div>
@@ -112,7 +132,7 @@
     </div>
 
     {{-- Hidden inputs to carry active filters when form re-submits --}}
-    @foreach (['date','type','status'] as $f)
+    @foreach (['date','type','status','min_total','max_total'] as $f)
         @if (request($f))
             <input type="hidden" name="{{ $f }}" value="{{ request($f) }}">
         @endif
@@ -129,6 +149,7 @@
                 <th>ADDRESS</th>
                 <th>DATE</th>
                 <th>TYPE</th>
+                <th>PRICE</th>
                 <th>STATUS</th>
             </tr>
         </thead>
@@ -148,11 +169,12 @@
                 <td>{{ $address }}</td>
                 <td>{{ $order->created_at->format('d M Y') }}</td>
                 <td>{{ $category }}</td>
+                <td>${{ number_format($order->total, 2) }}</td>
                 <td><span class="badge {{ $badge }}">{{ $label }}</span></td>
             </tr>
             @empty
             <tr>
-                <td colspan="6" style="text-align:center;color:#9ca3af;padding:32px 0;">No orders found.</td>
+                <td colspan="7" style="text-align:center;color:#9ca3af;padding:32px 0;">No orders found.</td>
             </tr>
             @endforelse
         </tbody>
@@ -192,9 +214,9 @@
 <script>
     function toggleDropdown(id) {
         document.querySelectorAll('.dropdown-menu').forEach(m => {
-            if (m.id !== id) m.classList.remove('open');
+            if (m.id !== id) m.classList.remove('dropdown-menu--open');
         });
-        document.getElementById(id).classList.toggle('open');
+        document.getElementById(id).classList.toggle('dropdown-menu--open');
     }
 
     // Update a hidden input and submit the form
@@ -216,7 +238,7 @@
 
     document.addEventListener('click', e => {
         if (!e.target.closest('.filter-dropdown')) {
-            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('dropdown-menu--open'));
         }
     });
 </script>

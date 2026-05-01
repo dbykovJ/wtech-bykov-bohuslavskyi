@@ -12,16 +12,20 @@
 <aside class="account-nav">
     <div class="account-nav__title">Account menu</div>
     <div class="account-nav__list">
-        <a href="{{ route('account') }}" class="account-nav__link {{ request()->routeIs('account') ? 'account-nav__link--active' : '' }}">
+        <a href="{{ route('account') }}"
+           class="account-nav__link {{ request()->routeIs('account') ? 'account-nav__link--active' : '' }}">
             Overview
         </a>
-        <a href="{{ route('account.personal-data') }}" class="account-nav__link {{ request()->routeIs('account.personal-data') ? 'account-nav__link--active' : '' }}">
+        <a href="{{ route('account.personal-data') }}"
+           class="account-nav__link {{ request()->routeIs('account.personal-data') ? 'account-nav__link--active' : '' }}">
             Personal data
         </a>
-        <a href="{{ route('account.cart') }}" class="account-nav__link {{ request()->routeIs('account.cart') ? 'account-nav__link--active' : '' }}">
+        <a href="{{ route('account.cart') }}"
+           class="account-nav__link {{ request()->routeIs('account.cart') || request()->routeIs('cart') ? 'account-nav__link--active' : '' }}">
             Cart &amp; checkout
         </a>
-        <a href="{{ route('account.orders') }}" class="account-nav__link {{ request()->routeIs('account.orders') ? 'account-nav__link--active' : '' }}">
+        <a href="{{ route('account.orders') }}"
+           class="account-nav__link {{ request()->routeIs('account.orders') ? 'account-nav__link--active' : '' }}">
             Orders
         </a>
         @if(auth()->user()?->isAdmin())
@@ -30,10 +34,10 @@
             </a>
         @endif
         @auth
-        <form action="{{ route('logout') }}" class="account-nav__link" method="POST">
-            @csrf
-            <button type="submit" style="border: none; background: none">Sign out</button>
-        </form>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="account-nav__link account-nav__link--button">Sign out</button>
+            </form>
         @endauth
     </div>
 </aside>

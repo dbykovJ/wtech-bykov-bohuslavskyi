@@ -1,5 +1,10 @@
- .account-main {
+.account-main {
      padding: 32px 0 56px;
+ }
+
+ .account-main > .container {
+     max-width: 80%;
+     width: 80%;
  }
 
  .account-title {
@@ -86,6 +91,23 @@
  .account-nav__link--active {
      background: #111;
      color: #fff;
+ }
+
+ .account-nav__link--button {
+     width: 100%;
+     text-align: left;
+     background: none;
+     border: none;
+     padding: 8px 12px;
+     font-size: 14px;
+     color: #555;
+     border-radius: 10px;
+     cursor: pointer;
+ }
+
+ .account-nav__link--button:hover {
+     background: #e5e5e5;
+     color: #111;
  }
 
  .account-content {
@@ -247,4 +269,3 @@
          grid-template-columns: 1fr;
      }
  }
-

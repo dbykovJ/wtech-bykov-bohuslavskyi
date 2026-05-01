@@ -43,12 +43,21 @@ class AdminOrderController extends Controller
             default      => $query->latest(),
         };
 
+        // Total price range filter
+        if ($request->filled('min_total')) {
+            $query->where('total', '>=', (float) $request->input('min_total'));
+        }
+
+        if ($request->filled('max_total')) {
+            $query->where('total', '<=', (float) $request->input('max_total'));
+        }
+
         $orders     = $query->paginate(9)->withQueryString();
         $categories = Category::orderBy('name')->pluck('name');
 
         $statuses = [
             'pending_payment' => 'Pending',
-            'paid'            => 'Processing',
+            'paid'            => 'Paid',
             'processing'      => 'Processing',
             'shipped'         => 'In Transit',
             'delivered'       => 'Delivered',

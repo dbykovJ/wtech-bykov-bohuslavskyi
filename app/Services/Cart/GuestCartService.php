@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Services\CartItem;
+namespace App\Services\Cart;
 
 use App\Models\CartItem;
 use App\Models\Color;
 use App\Models\ItemColorSizeCount;
 use App\Models\Product;
+use App\Models\Sale;
+use App\Services\PromoCode\PromoCodeService;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -13,6 +15,9 @@ class GuestCartService
 {
     private const SESSION_KEY = 'guest_cart';
     private const DELIVERY_FEE = 15.00;
+
+
+    public function __construct(private PromoCodeService $promo) {}
 
     public function getCart(): array
     {
@@ -32,20 +37,32 @@ class GuestCartService
         }
 
         $now = now();
+        $appliedPromoSale = $this->getAppliedPromoSale();
         $activeSalesScope = fn ($q) => $q->where('sales.valid_to', '>', $now)
-            ->where('sales.valid_from', '<', $now)
-            ->whereNull('sales.promo_code');
+            ->where('sales.valid_from', '<', $now);
 
-        $productIds = array_unique(array_column($sessionItems, 'product_id'));
-        $colorIds   = array_unique(array_column($sessionItems, 'color_id'));
+        $productIds = [];
+        $colorIds = [];
 
-        $products = Product::with(['images', 'sales' => $activeSalesScope])
+        foreach ($sessionItems as $item) {
+            if (is_array($item) && isset($item['product_id']) && isset($item['color_id'])) {
+                $productIds[] = $item['product_id'];
+                $colorIds[] = $item['color_id'];
+            }
+        }
+        $productIds = array_unique($productIds);
+        $colorIds   = array_unique($colorIds);
+
+        $products = Product::with(['images', 'allSales' => $activeSalesScope])
             ->whereIn('id', $productIds)->get()->keyBy('id');
         $colors   = Color::whereIn('id', $colorIds)->get()->keyBy('id');
 
         $cartItems = collect();
 
         foreach ($sessionItems as $key => $data) {
+            if (!is_array($data) || !isset($data['product_id'])) {
+                continue;
+            }
             $product = $products[$data['product_id']] ?? null;
             $color   = $colors[$data['color_id']] ?? null;
 
@@ -54,34 +71,55 @@ class GuestCartService
             }
 
             $baseUnitPrice      = (float) $product->price;
-            $discountPercent    = min((float) $product->sales->sum('discount'), 100.0);
-            $discountedPrice    = round($baseUnitPrice * (1 - $discountPercent / 100), 2);
-            $count              = (int) $data['count'];
+            $activeSales        = $product->allSales;
+            $salesDiscountPercent = max(min((float) $activeSales->whereNull('promo_code')->sum('discount'), 100.0), 0.0);
+
+            $promoDiscountPercent = 0.0;
+            if ($appliedPromoSale && $activeSales->contains('id', $appliedPromoSale->id)) {
+                $promoDiscountPercent = max(min((float) $appliedPromoSale->discount, 100.0), 0.0);
+            }
+
+            $unitPriceAfterSales = round($baseUnitPrice * (1 - ($salesDiscountPercent / 100)), 2);
+            $discountedPrice     = round(max($unitPriceAfterSales * (1 - ($promoDiscountPercent / 100)), 0.0), 2);
+            $count               = (int) $data['count'];
 
             $cartItems->push((object) [
                 'id'                   => $key,
+                'product_id'           => $product->id,
+                'color_id'             => $color->id,
                 'product'              => $product,
                 'color'                => $color,
                 'size'                 => (object) ['value' => $data['size']],
                 'count'                => $count,
-                'discount_percent'     => $discountPercent,
+                'discount_percent'     => $baseUnitPrice > 0
+                    ? min(round((1 - ($discountedPrice / $baseUnitPrice)) * 100, 2), 100.0)
+                    : 0.0,
+                'sales_discount_percent' => $salesDiscountPercent,
+                'promo_discount_percent' => $promoDiscountPercent,
                 'base_unit_price'      => $baseUnitPrice,
                 'discounted_unit_price'=> $discountedPrice,
                 'line_base_subtotal'   => round($baseUnitPrice * $count, 2),
                 'line_subtotal'        => round($discountedPrice * $count, 2),
+                'line_sales_discount'  => round(($baseUnitPrice - $unitPriceAfterSales) * $count, 2),
+                'line_promo_discount'  => round(($unitPriceAfterSales - $discountedPrice) * $count, 2),
             ]);
         }
 
         $subtotalBeforeDiscount = round((float) $cartItems->sum('line_base_subtotal'), 2);
         $subtotal               = round((float) $cartItems->sum('line_subtotal'), 2);
+        $salesDiscountTotal     = round((float) $cartItems->sum('line_sales_discount'), 2);
+        $promoDiscountTotal     = round((float) $cartItems->sum('line_promo_discount'), 2);
         $discountTotal          = round($subtotalBeforeDiscount - $subtotal, 2);
         $deliveryFee            = $cartItems->isEmpty() ? 0.0 : self::DELIVERY_FEE;
 
         return [
             'items'   => $cartItems,
             'summary' => [
+                'promo_code'               => $appliedPromoSale?->promo_code,
                 'subtotal_before_discount' => $subtotalBeforeDiscount,
                 'subtotal'                 => $subtotal,
+                'sales_discount_total'     => $salesDiscountTotal,
+                'promo_discount_total'     => $promoDiscountTotal,
                 'discount_total'           => $discountTotal,
                 'delivery_fee'             => $deliveryFee,
                 'total'                    => round($subtotal + $deliveryFee, 2),
@@ -147,20 +185,54 @@ class GuestCartService
     public function clear(): void
     {
         session()->forget(self::SESSION_KEY);
+        $this->promo->remove();
+    }
+
+    public function applyPromoCode(string $promoCode): Sale
+    {
+        $productIds = $this->getProductIds();
+        return $this->promo->apply($promoCode, $productIds);
+    }
+
+    public function removePromoCode(): void
+    {
+        $this->promo->remove();
+    }
+
+    private function getAppliedPromoSale(): ?Sale
+    {
+        return $this->promo->getApplied();
+    }
+
+    private function getProductIds(): \Illuminate\Support\Collection
+    {
+        return collect($this->all())
+            ->filter(fn ($item) => is_array($item) && isset($item['product_id']))
+            ->pluck('product_id')
+            ->unique();
     }
 
     public function mergeIntoDb(int $userId): void
     {
         foreach ($this->all() as $item) {
-            CartItem::updateOrCreate(
-                [
+            $existing = CartItem::where([
+                'user_id'    => $userId,
+                'product_id' => $item['product_id'],
+                'color_id'   => $item['color_id'],
+                'size'       => $item['size'],
+            ])->first();
+
+            if ($existing) {
+                $existing->increment('count', $item['count']);
+            } else {
+                CartItem::create([
                     'user_id'    => $userId,
                     'product_id' => $item['product_id'],
                     'color_id'   => $item['color_id'],
                     'size'       => $item['size'],
-                ],
-                ['count' => $item['count']]
-            );
+                    'count'      => $item['count'],
+                ]);
+            }
         }
 
         $this->clear();

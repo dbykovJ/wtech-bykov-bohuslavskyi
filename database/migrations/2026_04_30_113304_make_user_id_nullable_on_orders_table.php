@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin')->default(false)->after('Password');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable()->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_admin');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
         });
     }
 };

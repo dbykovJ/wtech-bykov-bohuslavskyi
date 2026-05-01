@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Product\ProductImage;
+namespace App\Http\Controllers\Cart\PromoCode\Product\ProductImage;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Cart\PromoCode\Controller;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 

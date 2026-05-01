@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Cart\Checkout;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Checkout\StartCheckoutRequest;
 use App\Models\Order;
-use App\Services\CartItem\CartItemService;
+use App\Services\Cart\AuthorizedCartService;
+use App\Services\Cart\GuestCartService;
 use App\Services\Checkout\CheckoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +16,17 @@ use RuntimeException;
 class CheckoutController extends Controller
 {
     public function __construct(
-        private readonly CartItemService $cartItemService,
-        private readonly CheckoutService $checkoutService,
+        private readonly AuthorizedCartService $cartItemService,
+        private readonly GuestCartService      $guestCartService,
+        private readonly CheckoutService       $checkoutService,
     ) {
     }
 
     public function payment()
     {
-        $cartData = $this->cartItemService->getCart();
+        $cartData = Auth::check()
+            ? $this->cartItemService->getCart()
+            : $this->guestCartService->getCart();
 
         if ($cartData['items']->isEmpty()) {
             return redirect()->route('cart')->withErrors([
@@ -30,10 +34,13 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $lastOrder = Order::where('user_id', Auth::id())
-            ->where('status', 'paid')
-            ->latest('paid_at')
-            ->first();
+        $lastOrder = null;
+        if (Auth::check()) {
+            $lastOrder = Order::where('user_id', Auth::id())
+                ->where('status', 'paid')
+                ->latest('paid_at')
+                ->first();
+        }
 
         return view('payment', [
             'cartItems'   => $cartData['items'],
@@ -64,10 +71,13 @@ class CheckoutController extends Controller
     {
         $sessionId = (string) $request->query('session_id', '');
 
-        $order = Order::query()
-            ->where('stripe_checkout_session_id', $sessionId)
-            ->where('user_id', Auth::id())
-            ->first();
+        $query = Order::where('stripe_checkout_session_id', $sessionId);
+
+        if (Auth::check()) {
+            $query->where('user_id', Auth::id());
+        }
+
+        $order = $query->first();
 
         if (!$order) {
             return redirect()->route('payment')->withErrors([
@@ -81,7 +91,11 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $this->cartItemService->removePromoCode();
+        if (Auth::check()) {
+            $this->cartItemService->removePromoCode();
+        } else {
+            $this->guestCartService->clear();
+        }
 
         if (!session('success')) {
             return redirect()->route('cart');
@@ -96,4 +110,3 @@ class CheckoutController extends Controller
         ]);
     }
 }
-

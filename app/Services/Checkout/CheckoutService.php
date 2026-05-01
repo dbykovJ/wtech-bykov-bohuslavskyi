@@ -8,7 +8,8 @@ use App\Models\ItemColorSizeCount;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\User;
-use App\Services\CartItem\CartItemService;
+use App\Services\Cart\AuthorizedCartService;
+use App\Services\Cart\GuestCartService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -18,14 +19,20 @@ use RuntimeException;
 
 class CheckoutService
 {
-    public function __construct(private readonly CartItemService $cartItemService)
-    {
+    public function __construct(
+        private readonly AuthorizedCartService $cartItemService,
+        private readonly GuestCartService      $guestCartService
+    ) {
     }
 
-    public function createStripeSessionForUser(User $user, array $address): string
+    public function createStripeSessionForUser(?User $user, array $address): string
     {
         $order = DB::transaction(function () use ($user, $address): Order {
-            $cartData = $this->cartItemService->getCartForUser($user);
+            if ($user) {
+                $cartData = $this->cartItemService->getCartForUser($user);
+            } else {
+                $cartData = $this->guestCartService->getCart();
+            }
 
             if ($cartData['items']->isEmpty()) {
                 throw ValidationException::withMessages([
@@ -36,7 +43,7 @@ class CheckoutService
             $summary = $cartData['summary'];
 
             $order = Order::create([
-                'user_id' => $user->id,
+                'user_id' => $user?->id,
                 'status' => 'pending_payment',
                 'currency' => strtolower((string) config('services.stripe.currency', 'usd')),
                 'promo_code' => $summary['promo_code'] ?? null,
@@ -57,7 +64,9 @@ class CheckoutService
             ]);
 
             foreach ($cartData['items'] as $item) {
-                $size = $item->size instanceof Size ? $item->size->value : (string) $item->size;
+                $size = $item->size instanceof Size
+                    ? $item->size->value
+                    : (is_object($item->size) ? $item->size->value : (string) $item->size);
 
                 $order->items()->create([
                     'product_id' => $item->product_id,
@@ -147,7 +156,11 @@ class CheckoutService
                     return;
                 }
 
-                $stockRow->decrement('count', $item->quantity);
+                ItemColorSizeCount::query()
+                    ->where('item_id', $item->product_id)
+                    ->where('color_id', $item->color_id)
+                    ->where('size', $item->size)
+                    ->update(['count' => $stockRow->count - $item->quantity]);
             }
 
             $order->update([
@@ -167,7 +180,9 @@ class CheckoutService
                 ]
             );
 
-            CartItem::query()->where('user_id', $order->user_id)->delete();
+            if ($order->user_id) {
+                CartItem::query()->where('user_id', $order->user_id)->delete();
+            }
         });
     }
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Cart\CartItem;
 
 use App\Http\Controllers\Controller;
-use App\Services\CartItem\CartItemService;
-use App\Services\CartItem\GuestCartService;
+use App\Services\Cart\AuthorizedCartService;
+use App\Services\Cart\GuestCartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -12,8 +12,8 @@ use Illuminate\Validation\ValidationException;
 class CartItemController extends Controller
 {
     public function __construct(
-        private CartItemService $cartItemService,
-        private GuestCartService $guestCartService,
+        private AuthorizedCartService $cartItemService,
+        private GuestCartService      $guestCartService,
     ) {}
 
     public function accountCart()
@@ -93,7 +93,11 @@ class CartItemController extends Controller
         ]);
 
         try {
-            $this->cartItemService->applyPromoCode($validated['promo_code']);
+            if (Auth::check()) {
+                $this->cartItemService->applyPromoCode($validated['promo_code']);
+            } else {
+                $this->guestCartService->applyPromoCode($validated['promo_code']);
+            }
             return redirect()->back()->with('success', 'Promo code applied.');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors());
@@ -102,7 +106,11 @@ class CartItemController extends Controller
 
     public function removePromo()
     {
-        $this->cartItemService->removePromoCode();
+        if (Auth::check()) {
+            $this->cartItemService->removePromoCode();
+        } else {
+            $this->guestCartService->removePromoCode();
+        }
         return redirect()->back()->with('success', 'Promo code removed.');
     }
 }

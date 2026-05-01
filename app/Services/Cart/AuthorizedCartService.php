@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Services\CartItem;
+namespace App\Services\Cart;
 
 use App\Models\CartItem;
 use App\Models\ItemColorSizeCount;
 use App\Models\Sale;
 use App\Models\User;
+use App\Services\PromoCode\PromoCodeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class CartItemService
+class AuthorizedCartService
 {
     private const DELIVERY_FEE = 15.00;
-    private const PROMO_SESSION_KEY = 'cart.promo_code';
+
+    public function __construct(private PromoCodeService $promo) {}
 
     public function getCart(): array
     {
@@ -179,88 +181,59 @@ class CartItemService
     public function clearCart()
     {
         CartItem::where('user_id', Auth::id())->delete();
-        session()->forget(self::PROMO_SESSION_KEY);
+        $this->promo->remove();
     }
+
 
     public function applyPromoCode(string $promoCode): Sale
     {
-        $normalizedPromoCode = strtoupper(trim($promoCode));
-
-        if ($normalizedPromoCode === '') {
-            throw ValidationException::withMessages([
-                'promo_code' => 'Please enter a promo code.',
-            ]);
-        }
-
-        $promoSales = $this->findPromoSalesByCode($normalizedPromoCode);
-
-        if ($promoSales->isEmpty()) {
-            throw ValidationException::withMessages([
-                'promo_code' => 'Promo code is invalid.',
-            ]);
-        }
-
-        if ($promoSales->count() > 1) {
-            throw ValidationException::withMessages([
-                'promo_code' => 'Promo code is duplicated in the system. Please contact support.',
-            ]);
-        }
-
-        /** @var Sale $promoSale */
-        $promoSale = $promoSales->first();
-
-        $hasEligibleProduct = CartItem::query()
-            ->where('user_id', Auth::id())
-            ->whereHas('product.allSales', function ($query) use ($promoSale) {
-                $query->where('sales.id', $promoSale->id);
-            })
-            ->exists();
-
-        if (!$hasEligibleProduct) {
-            throw ValidationException::withMessages([
-                'promo_code' => 'This promo code does not apply to products in your cart.',
-            ]);
-        }
-
-        session([self::PROMO_SESSION_KEY => $promoSale->promo_code]);
-
-        return $promoSale;
+        $productIds = $this->getProductIds();
+        return $this->promo->apply($promoCode, $productIds);
     }
 
     public function removePromoCode(): void
     {
-        session()->forget(self::PROMO_SESSION_KEY);
+        $this->promo->remove();
     }
 
     private function getAppliedPromoSale(): ?Sale
     {
-        $promoCode = session(self::PROMO_SESSION_KEY);
-
-        if (!is_string($promoCode) || trim($promoCode) === '') {
-            return null;
-        }
-
-        $promoSales = $this->findPromoSalesByCode($promoCode);
-
-        if ($promoSales->count() !== 1) {
-            session()->forget(self::PROMO_SESSION_KEY);
-
-            return null;
-        }
-
-        /** @var Sale $sale */
-        $sale = $promoSales->first();
-
-        return $sale;
+        return $this->promo->getApplied();
     }
 
-    private function findPromoSalesByCode(string $promoCode): Collection
+    private function getProductIds(): Collection
     {
-        $normalizedPromoCode = strtoupper(trim($promoCode));
+        return CartItem::query()
+            ->where('user_id', Auth::id())
+            ->pluck('product_id')
+            ->unique();
+    }
 
-        return Sale::query()
-            ->whereNotNull('promo_code')
-            ->whereRaw('UPPER(TRIM(promo_code)) = ?', [$normalizedPromoCode])
-            ->get();
+    public function addOrderItems(\App\Models\Order $order): void
+    {
+        foreach ($order->items as $item) {
+            $sizeValue = $item->size instanceof \App\Enums\Size ? $item->size->value : (string) $item->size;
+
+            $existingItem = CartItem::where('user_id', Auth::id())
+                ->where('product_id', $item->product_id)
+                ->where('color_id', $item->color_id)
+                ->where('size', $sizeValue)
+                ->first();
+
+            $newCount = $item->quantity + ($existingItem?->count ?? 0);
+            $this->validateColorSizeCounts($item->product_id, $item->color_id, $sizeValue, $newCount);
+
+            if ($existingItem) {
+                $existingItem->update(['count' => $newCount]);
+            } else {
+                CartItem::create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $item->product_id,
+                    'color_id' => $item->color_id,
+                    'size' => $sizeValue,
+                    'count' => $item->quantity,
+                ]);
+            }
+        }
     }
 }

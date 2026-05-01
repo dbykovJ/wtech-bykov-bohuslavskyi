@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Cart\PromoCode\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Cart\PromoCode\Controller;
 use App\Models\Color;
 use App\Services\Color\ColorService;
 use App\Support\ApiResponse;

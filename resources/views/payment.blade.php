@@ -79,7 +79,6 @@
 {{--                                <span class="payment-option__coming-soon">Coming soon</span>--}}
 {{--                            </label>--}}
 {{--                        </div>--}}
-
                         {{-- Delivery Address --}}
                         <div class="payment-card payment-card--section">
                             <h2 class="payment-card__title">Delivery Address</h2>
@@ -88,14 +87,14 @@
                                 <div class="checkout-field checkout-field--full">
                                     <label for="full_name">Full Name</label>
                                     <input id="full_name" name="full_name"
-                                           value="{{ old('full_name', auth()->user()->name) }}" required />
+                                           value="{{ old('full_name', auth()->user()?->name) }}" required />
                                     @error('full_name')<span class="field-error">{{ $message }}</span>@enderror
                                 </div>
 
                                 <div class="checkout-field">
                                     <label for="email">Email</label>
                                     <input id="email" name="email" type="email"
-                                           value="{{ old('email', auth()->user()->email) }}" required />
+                                           value="{{ old('email', auth()->user()?->email) }}" required />
                                     @error('email')<span class="field-error">{{ $message }}</span>@enderror
                                 </div>
 
@@ -109,28 +108,32 @@
                                 <div class="checkout-field checkout-field--full">
                                     <label for="street">Street</label>
                                     <input id="street" name="street"
-                                           value="{{ old('street', $lastOrder?->shipping_street) }}" required />
+                                           value="{{ old('street', $lastOrder?->shipping_street ?? auth()->user()?->address) }}" required />
                                     @error('street')<span class="field-error">{{ $message }}</span>@enderror
                                 </div>
 
                                 <div class="checkout-field">
                                     <label for="city">City</label>
                                     <input id="city" name="city"
-                                           value="{{ old('city', $lastOrder?->shipping_city) }}" required />
+                                           value="{{ old('city', $lastOrder?->shipping_city ?? auth()->user()?->city) }}" required />
                                     @error('city')<span class="field-error">{{ $message }}</span>@enderror
                                 </div>
 
                                 <div class="checkout-field">
                                     <label for="postal_code">Postal Code</label>
                                     <input id="postal_code" name="postal_code"
-                                           value="{{ old('postal_code', $lastOrder?->shipping_postal_code) }}" required />
+                                           value="{{ old('postal_code', $lastOrder?->shipping_postal_code ?? auth()->user()?->postcode) }}" required />
                                     @error('postal_code')<span class="field-error">{{ $message }}</span>@enderror
                                 </div>
 
                                 <div class="checkout-field">
-                                    <label for="country">Country (2-letter code)</label>
-                                    <input id="country" name="country" maxlength="2"
-                                           value="{{ old('country', $lastOrder?->shipping_country ?? 'SK') }}" required />
+                                    <label for="country">Country</label>
+                                    @include('partials.country-select', [
+                                        'id'       => 'country',
+                                        'name'     => 'country',
+                                        'required' => true,
+                                        'selected' => old('country', $lastOrder?->shipping_country ?? auth()->user()?->country ?? 'SK'),
+                                    ])
                                     @error('country')<span class="field-error">{{ $message }}</span>@enderror
                                 </div>
                             </div>

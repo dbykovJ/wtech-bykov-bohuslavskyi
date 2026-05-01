@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\CartItem\GuestCartService;
+use App\Services\Cart\GuestCartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +15,7 @@ class LoginController extends Controller
     {
         $credentials = $request->validate([
             'email'    => 'required|email',
-            'password' => 'required',
+            'Password' => 'required',
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {

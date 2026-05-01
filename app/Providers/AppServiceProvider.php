@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Cart\GuestCartService;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app['events']->listen(Login::class, function (Login $event) {
+            app(GuestCartService::class)->mergeIntoDb($event->user->id);
+        });
     }
 }

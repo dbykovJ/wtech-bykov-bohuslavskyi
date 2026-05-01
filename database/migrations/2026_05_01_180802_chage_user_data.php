@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin')->default(false)->after('Password');
+            $table->string('address', 255)->nullable()->after('email');
+            $table->string('city', 128)->nullable()->after('address');
+            $table->string('postcode', 20)->nullable()->after('city');
+            $table->string('country', 128)->nullable()->after('postcode');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_admin');
+            $table->dropColumn(['address', 'city', 'postcode', 'country']);
         });
     }
 };

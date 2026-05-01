@@ -9,6 +9,14 @@
 @section('content')
 <h1 class="admin-page-title">Dashboard</h1>
 
+
+<a href="{{ route('account') }}" class="reset-filter-btn" style="margin-bottom:16px; display:inline-flex; align-items:center; gap:8px;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Back to Account
+</a>
+
 <div class="stat-cards">
     <div class="stat-card">
         <div class="stat-card__top">
