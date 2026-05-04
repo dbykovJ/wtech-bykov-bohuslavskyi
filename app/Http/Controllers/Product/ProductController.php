@@ -15,8 +15,9 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = $this->productService->getProduct($id);
+        $similar = $this->productService->getSimilar($product);
 
-        return view('product', ['product' => $product]);
+        return view('product', ['product' => $product, 'similar' => $similar]);
     }
 
     public function search(Request $request)

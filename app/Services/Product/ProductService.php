@@ -122,6 +122,40 @@ class ProductService
     }
 
 
+    public function getSimilar(Product $product, int $limit = 4): \Illuminate\Database\Eloquent\Collection
+    {
+        $similar = Product::with([
+            'images',
+            'sales' => fn ($q) => $q->where('sales.valid_to', '>', now())
+                ->where('sales.valid_from', '<', now())
+                ->whereNull('sales.promo_code'),
+        ])
+            ->where('id', '!=', $product->id)
+            ->where('category_id', $product->category_id)
+            ->orderByDesc('rating')
+            ->limit($limit)
+            ->get();
+
+        // Pad with other products if same category has fewer than $limit
+        if ($similar->count() < $limit) {
+            $exclude = $similar->pluck('id')->push($product->id);
+            $pad = Product::with([
+                'images',
+                'sales' => fn ($q) => $q->where('sales.valid_to', '>', now())
+                    ->where('sales.valid_from', '<', now())
+                    ->whereNull('sales.promo_code'),
+            ])
+                ->whereNotIn('id', $exclude)
+                ->orderByDesc('rating')
+                ->limit($limit - $similar->count())
+                ->get();
+
+            $similar = $similar->concat($pad);
+        }
+
+        return $similar;
+    }
+
     public function search(string $query, int $limit = 5)
     {
         return Product::with('images')

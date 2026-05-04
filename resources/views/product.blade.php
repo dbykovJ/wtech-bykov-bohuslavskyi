@@ -237,66 +237,36 @@
             <section class="also-like">
                 <h2 class="section-heading">YOU MIGHT ALSO LIKE</h2>
                 <div class="also-like__grid">
-                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
-                    <div class="product-card__img placeholder"></div>
-                    <div class="product-card__info">
-                        <div class="product-name">Item 1</div>
+                    @foreach ($similar as $item)
+                    @php
+                        $imageUrl      = $item->getFirstImage()?->public_url;
+                        $activeSales   = $item->sales;
+                        $totalDiscount = $activeSales->sum('discount');
+                        $salePrice     = $totalDiscount > 0
+                            ? $item->price * (1 - $totalDiscount / 100)
+                            : null;
+                    @endphp
+                    <a href="{{ route('product', ['id' => $item->id]) }}" class="product-card">
+                        @if ($imageUrl)
+                            <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="product-card__img" />
+                        @else
+                            <div class="placeholder product-card__img"></div>
+                        @endif
                         <div class="product-meta">
-                            <span class="star-rating" style="--rating: 4">★★★★★</span>
-                            <span class="product-info__rating-count">4/5</span>
+                            <div class="product-name">{{ $item->name }}</div>
+                            <div class="star-rating" style="--rating: {{ $item->rating ?? 0 }}">★★★★★</div>
+                            <div class="product-price-row">
+                                @if ($salePrice)
+                                    <span class="product-price">${{ number_format($salePrice, 2) }}</span>
+                                    <span class="product-price-original">${{ number_format($item->price, 2) }}</span>
+                                    <span class="badge-red">-{{ number_format($totalDiscount) }}%</span>
+                                @else
+                                    <span class="product-price">${{ number_format($item->price, 2) }}</span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$212</span>
-                            <span class="product-price-original">$232</span>
-                            <span class="badge-red">-20%</span>
-                        </div>
-                    </div>
                     </a>
-                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
-                    <div class="product-card__img placeholder"></div>
-                    <div class="product-card__info">
-                        <div class="product-name">Item 2</div>
-                        <div class="product-meta">
-                            <span class="star-rating" style="--rating: 5">★★★★★</span>
-                            <span class="product-info__rating-count">5/5</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$212</span>
-                            <span class="product-price-original">$232</span>
-                            <span class="badge-red">-20%</span>
-                        </div>
-                    </div>
-                    </a>
-                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
-                    <div class="product-card__img placeholder"></div>
-                    <div class="product-card__info">
-                        <div class="product-name">Item 3</div>
-                        <div class="product-meta">
-                            <span class="star-rating" style="--rating: 4">★★★★★</span>
-                            <span class="product-info__rating-count">4/5</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$212</span>
-                            <span class="product-price-original">$232</span>
-                            <span class="badge-red">-20%</span>
-                        </div>
-                    </div>
-                    </a>
-                    {{--                    <a href="{{ route('product') }}" class="product-card"> --}}
-                    <div class="product-card__img placeholder"></div>
-                    <div class="product-card__info">
-                        <div class="product-name">Item 4</div>
-                        <div class="product-meta">
-                            <span class="star-rating" style="--rating: 4.5">★★★★★</span>
-                            <span class="product-info__rating-count">4.5/5</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$212</span>
-                            <span class="product-price-original">$232</span>
-                            <span class="badge-red">-20%</span>
-                        </div>
-                    </div>
-                    </a>
+                    @endforeach
                 </div>
             </section>
         </div>

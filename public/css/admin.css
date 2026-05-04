@@ -82,7 +82,8 @@
 
 .product-card__image {
     position: relative;
-    height: 160px;
+    width: 250px;
+    height: 250px;
     background: #1f2937;
     display: flex;
     align-items: center;

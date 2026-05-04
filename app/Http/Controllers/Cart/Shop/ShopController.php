@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
-    private const PRODUCTS_PER_PAGE = 3;
+    private const PRODUCTS_PER_PAGE = 9;
 
     public function index(Request $request)
     {
