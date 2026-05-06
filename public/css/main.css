@@ -389,19 +389,28 @@ button {
 }
 
 .star-rating {
-    display: inline-block;
-    font-size: 12px;
+    display: inline-flex;
+    gap: 2px;
+    font-size: 16px;
     white-space: nowrap;
-    background-clip: text;
+    line-height: 1;
+}
+
+.star-rating::before {
+    content: '★★★★★';
+    background: linear-gradient(
+        to right,
+        #FFC633 0%,
+        #FFC633 calc(var(--rating, 4) / 5 * 100%),
+        #e0e0e0 calc(var(--rating, 4) / 5 * 100%),
+        #e0e0e0 100%
+    );
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    margin-bottom: 5px;
-    background-image: linear-gradient(
-        to right,
-        #FFC633 calc(var(--rating, 4) / 5 * 100%),
-        #bebebe calc(var(--rating, 4) / 5 * 100%)
-    );
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 .breadcrumb {
