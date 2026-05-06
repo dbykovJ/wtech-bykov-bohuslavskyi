@@ -16,7 +16,7 @@ class UserWithCartSeeder extends Seeder
             ['email' => 'test@example.com'],
             [
                 'name'     => 'Test User',
-                'Password' => bcrypt('Password'),
+                'password' => bcrypt('password'),
                 'is_admin' => false,
             ]
         );
