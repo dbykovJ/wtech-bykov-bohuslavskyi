@@ -16,10 +16,10 @@ class PasswordController extends Controller
     {
         $validated = $request->validate([
             'current_password' => ['required', 'current_password'],
-            'Password'         => ['required', 'min:8', 'confirmed'],
+            'password'         => ['required', 'min:8', 'confirmed'],
         ]);
 
-        $this->passwordService->updatePassword(Auth::user(), $validated['Password']);
+        $this->passwordService->updatePassword(Auth::user(), $validated['password']);
 
         return back()->with('success', 'Password updated successfully.');
     }
