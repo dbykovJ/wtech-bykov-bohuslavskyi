@@ -171,16 +171,8 @@
 
             <section class="reviews">
                 <div class="reviews__toolbar">
-                    <span class="reviews__count">All Reviews <span class="reviews__count-num">(13)</span></span>
+                    <span class="reviews__count">All Reviews <span class="reviews__count-num">({{ $product->reviews->count() }})</span></span>
                     <div class="reviews__toolbar-right">
-                        <button class="reviews__filter-btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="4" y1="6" x2="20" y2="6" />
-                                <line x1="8" y1="12" x2="16" y2="12" />
-                                <line x1="11" y1="18" x2="13" y2="18" />
-                            </svg>
-                        </button>
                         <div class="reviews__sort">
                             Latest
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -188,50 +180,51 @@
                                 <polyline points="6 9 12 15 18 9" />
                             </svg>
                         </div>
-                        <button class="reviews__write-btn">Write a Review</button>
                     </div>
                 </div>
 
                 <div class="reviews__grid">
-                    <div class="review-card">
-                        <div class="review-card__header">
-                            <span class="star-rating" style="--rating: 4">★★★★★</span>
-                            <button class="review-card__more">···</button>
+                    @forelse ($product->reviews->sortByDesc('created_at') as $review)
+                        <div class="review-card">
+                            <div class="review-card__header">
+                                <span class="star-rating" style="--rating: {{ $review->rating }}">★★★★★</span>
+                                @if (Auth::check() && Auth::id() === $review->user_id)
+                                    <form method="POST" action="{{ route('reviews.destroy', $review) }}" style="display: inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="review-card__more" onclick="return confirm('Delete this review?')">×</button>
+                                    </form>
+                                @endif
+                            </div>
+                            <div class="review-card__author">{{ $review->user->name }} <span class="review-card__verified">✔</span></div>
+                            @if ($review->body)
+                                <p class="review-card__text">"{{ $review->body }}"</p>
+                            @endif
+                            <span class="review-card__date">Posted on {{ $review->created_at->format('F j, Y') }}</span>
                         </div>
-                        <div class="review-card__author">Olivia P. <span class="review-card__verified">✔</span></div>
-                        <p class="review-card__text">"As a UI/UX enthusiast, I value simplicity and functionality. This
-                            T-shirt not only represents those principles but also feels great to wear."</p>
-                        <span class="review-card__date">Posted on August 17, 2023</span>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-card__header">
-                            <span class="star-rating" style="--rating: 4">★★★★★</span>
-                            <button class="review-card__more">···</button>
-                        </div>
-                        <div class="review-card__author">Ethan R. <span class="review-card__verified">✔</span></div>
-                        <p class="review-card__text">"This T-shirt is a must-have for anyone who appreciates good
-                            design. The minimalistic yet stylish pattern caught my eye, and the fit is perfect."</p>
-                        <span class="review-card__date">Posted on August 16, 2023</span>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-card__header">
-                            <span class="star-rating" style="--rating: 5">★★★★★</span>
-                            <button class="review-card__more">···</button>
-                        </div>
-                        <div class="review-card__author">Alex M. <span class="review-card__verified">✔</span></div>
-                        <p class="review-card__text">"I exceeded my expectations! The colors are vibrant and the print
-                            quality is top-notch."</p>
-                        <span class="review-card__date">Posted on August 15, 2023</span>
-                    </div>
+                    @empty
+                        @if (Auth::check())
+                            <p style="grid-column: 1/-1; text-align: center; color: #999;">No reviews yet. Be the first to review this product!</p>
+                        @else
+                            <p style="grid-column: 1/-1; text-align: center; color: #999;">
+                                <a href="{{ route('login') }}">Log in</a> to see and write reviews.
+                            </p>
+                        @endif
+                    @endforelse
                 </div>
 
-                <div class="reviews__pagination">
-                    <button class="reviews__page-btn">← Previous</button>
-                    <span class="reviews__page-info">Page 1 of 2</span>
-                    <button class="reviews__page-btn reviews__page-btn--active">Next →</button>
-                </div>
+                @if (Auth::check())
+                    <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f9f9f9;">
+                        <h3 style="margin-top: 0; font-size: 16px;">Write a Review</h3>
+                        <p style="margin: 10px 0; font-size: 14px; color: #666;">Have you purchased this product? Share your experience!</p>
+                        <a href="{{ route('account.orders') }}" class="account-btn" style="display: inline-block; padding: 10px 20px;">Leave a Review</a>
+                    </div>
+                @else
+                    <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f0f0f0;">
+                        <p style="margin: 0; font-size: 14px; color: #666;">
+                            <a href="{{ route('login') }}" style="color: #333; font-weight: 500;">Log in</a> to write a review based on your purchase.
+                        </p>
+                    </div>
+                @endif
             </section>
 
             <section class="also-like">

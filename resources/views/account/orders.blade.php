@@ -77,11 +77,54 @@
                                             <div class="order-modal__items">
                                                 @foreach ($order->items as $item)
                                                     <div class="order-modal__item">
-                                                        <div>
+                                                        <div style="width: 100%;">
                                                             <div class="order-modal__item-name">{{ $item->product?->name ?? 'Product' }}</div>
                                                             <div class="order-modal__item-meta">Qty: {{ $item->quantity }} · Size: {{ $item->size }}</div>
+                                                            <div class="order-modal__item-price">${{ number_format($item->line_total, 2) }}</div>
+
+                                                            @if (Auth::check() && in_array($order->status, ['delivered', 'completed']))
+                                                                @if ($item->review)
+                                                                    <div style="margin-top: 12px; padding: 12px; border-radius: 4px; background-color: #f5f5f5;">
+                                                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                                                            <span class="star-rating" style="--rating: {{ $item->review->rating }}">★★★★★</span>
+                                                                            <form method="POST" action="{{ route('reviews.destroy', $item->review) }}" style="display: inline;">
+                                                                                @csrf @method('DELETE')
+                                                                                <button type="submit" class="account-btn account-btn--secondary" style="padding: 4px 12px; font-size: 12px;">Delete</button>
+                                                                            </form>
+                                                                        </div>
+                                                                        <p style="margin: 0; font-size: 14px; color: #666;">{{ $item->review->body }}</p>
+                                                                        <small style="color: #999;">{{ $item->review->created_at->format('d M Y') }}</small>
+                                                                    </div>
+                                                                @else
+                                                                    <form method="POST" action="{{ route('reviews.store') }}" style="margin-top: 12px; padding: 12px; border-radius: 4px; background-color: #f5f5f5;">
+                                                                        @csrf
+                                                                        <input type="hidden" name="order_item_id" value="{{ $item->id }}">
+                                                                        <div style="margin-bottom: 10px;">
+                                                                            <label style="display: block; font-size: 12px; margin-bottom: 6px; font-weight: 500;">Rating:</label>
+                                                                            <div style="display: flex; gap: 8px;">
+                                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                                    <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                                                                                        <input type="radio" name="rating" value="{{ $i }}" style="cursor: pointer;">
+                                                                                        <span style="font-size: 18px;">★</span>
+                                                                                    </label>
+                                                                                @endfor
+                                                                            </div>
+                                                                            @error('rating')
+                                                                                <div class="promo-error-bubble">{{ $message }}</div>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div style="margin-bottom: 10px;">
+                                                                            <label style="display: block; font-size: 12px; margin-bottom: 6px; font-weight: 500;">Comment (optional):</label>
+                                                                            <textarea name="body" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;" rows="2" placeholder="Share your thoughts..."></textarea>
+                                                                            @error('body')
+                                                                                <div class="promo-error-bubble">{{ $message }}</div>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <button type="submit" class="account-btn" style="padding: 6px 16px; font-size: 12px;">Submit Review</button>
+                                                                    </form>
+                                                                @endif
+                                                            @endif
                                                         </div>
-                                                        <div class="order-modal__item-price">${{ number_format($item->line_total, 2) }}</div>
                                                     </div>
                                                 @endforeach
                                             </div>

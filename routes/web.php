@@ -13,6 +13,7 @@ use App\Http\Controllers\Cart\Checkout\CheckoutController;
 use App\Http\Controllers\Cart\Shop\ShopController;
 use App\Http\Controllers\Cart\Stripe\StripeWebhookController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Review\ReviewController;
 use App\Http\Controllers\User\UserController;
 use App\Services\Product\ProductService;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -55,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/orders', [OrderController::class, 'index'])->name('account.orders');
     Route::post('/account/orders/{order}/reorder', [OrderController::class, 'reorder'])->name('account.orders.reorder');
     Route::post('/account/password', [PasswordController::class, 'update'])->name('account.password.update');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 // Cart & checkout flow

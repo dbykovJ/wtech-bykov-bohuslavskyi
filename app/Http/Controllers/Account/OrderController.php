@@ -15,7 +15,7 @@ class OrderController extends Controller
         $user = Auth::user();
 
         $orders = $user->orders()
-            ->with(['items.product.images'])
+            ->with(['items.product.images', 'items.review'])
             ->latest()
             ->get();
 
