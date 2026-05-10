@@ -389,7 +389,7 @@ button {
 }
 
 .star-rating {
-    display: inline-flex;
+        display: inline-flex;
     gap: 2px;
     font-size: 16px;
     white-space: nowrap;
