@@ -43,8 +43,8 @@ class UserService
             'name'     => ['required', 'string', 'max:64'],
             'email'    => ['required', 'email', 'max:128', 'unique:users,email,' . $user->id],
             'address'  => ['nullable', 'string', 'max:255'],
+            'postcode' => ['nullable', 'integer', 'digits_between:1,7'],
             'city'     => ['nullable', 'string', 'max:128'],
-            'postcode' => ['nullable', 'string', 'max:20'],
             'country'  => ['nullable', 'string', 'max:128'],
         ]);
 

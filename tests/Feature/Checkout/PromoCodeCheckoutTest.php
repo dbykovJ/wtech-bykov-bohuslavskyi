@@ -5,14 +5,13 @@ namespace Tests\Feature\Checkout;
 use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\ItemColorSizeCount;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\User;
 use App\Services\Checkout\CheckoutService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class PromoCodeCheckoutTest extends TestCase
@@ -39,19 +38,9 @@ class PromoCodeCheckoutTest extends TestCase
     {
         [$user] = $this->createPromoEligibleCart();
 
-        Config::set('services.stripe.secret', 'sk_test_123');
-        Config::set('services.stripe.currency', 'usd');
-
-        Http::fake([
-            'https://api.stripe.com/v1/checkout/sessions' => Http::response([
-                'id' => 'cs_test_no_promo',
-                'url' => 'https://checkout.stripe.test/session/cs_test_no_promo',
-            ], 200),
-        ]);
-
         $checkoutService = app(CheckoutService::class);
 
-        $checkoutService->createStripeSessionForUser($user, [
+        $checkoutService->processPaymentForUser($user, [
             'full_name' => 'John Doe',
             'email' => 'john@example.com',
             'phone' => '+421900000000',
@@ -59,7 +48,7 @@ class PromoCodeCheckoutTest extends TestCase
             'city' => 'Bratislava',
             'postal_code' => '81101',
             'country' => 'SK',
-        ]);
+        ], 'card');
 
         $order = Order::query()->latest('id')->first();
 
@@ -77,20 +66,11 @@ class PromoCodeCheckoutTest extends TestCase
         $this->actingAs($user)->withSession([
             'cart.promo_code' => $sale->promo_code,
         ]);
-
-        Config::set('services.stripe.secret', 'sk_test_123');
-        Config::set('services.stripe.currency', 'usd');
-
-        Http::fake([
-            'https://api.stripe.com/v1/checkout/sessions' => Http::response([
-                'id' => 'cs_test_123',
-                'url' => 'https://checkout.stripe.test/session/cs_test_123',
-            ], 200),
-        ]);
+        session(['cart.promo_code' => $sale->promo_code]);
 
         $checkoutService = app(CheckoutService::class);
 
-        $checkoutUrl = $checkoutService->createStripeSessionForUser($user, [
+        $checkoutService->processPaymentForUser($user, [
             'full_name' => 'John Doe',
             'email' => 'john@example.com',
             'phone' => '+421900000000',
@@ -98,9 +78,7 @@ class PromoCodeCheckoutTest extends TestCase
             'city' => 'Bratislava',
             'postal_code' => '81101',
             'country' => 'SK',
-        ]);
-
-        $this->assertSame('https://checkout.stripe.test/session/cs_test_123', $checkoutUrl);
+        ], 'card');
 
         $order = Order::query()->latest('id')->first();
 
@@ -112,11 +90,6 @@ class PromoCodeCheckoutTest extends TestCase
         $this->assertSame(112.00, (float) $order->subtotal);
         $this->assertSame(127.00, (float) $order->total);
 
-        Http::assertSent(function ($request) use ($sale) {
-            $payload = $request->data();
-
-            return ($payload['metadata']['promo_code'] ?? null) === $sale->promo_code;
-        });
     }
 
     public function test_public_sale_without_promo_code_is_always_applied(): void
@@ -141,6 +114,13 @@ class PromoCodeCheckoutTest extends TestCase
             'hex_code' => '#000000',
         ]);
 
+        ItemColorSizeCount::create([
+            'item_id' => $product->id,
+            'color_id' => $color->id,
+            'size' => 'M',
+            'count' => 10,
+        ]);
+
         CartItem::create([
             'user_id' => $user->id,
             'product_id' => $product->id,
@@ -160,18 +140,8 @@ class PromoCodeCheckoutTest extends TestCase
 
         $publicSale->products()->attach($product->id);
 
-        Config::set('services.stripe.secret', 'sk_test_123');
-        Config::set('services.stripe.currency', 'usd');
-
-        Http::fake([
-            'https://api.stripe.com/v1/checkout/sessions' => Http::response([
-                'id' => 'cs_test_123_public_sale',
-                'url' => 'https://checkout.stripe.test/session/cs_test_123_public_sale',
-            ], 200),
-        ]);
-
         $checkoutService = app(CheckoutService::class);
-        $checkoutService->createStripeSessionForUser($user, [
+        $checkoutService->processPaymentForUser($user, [
             'full_name' => 'John Doe',
             'email' => 'john@example.com',
             'phone' => '+421900000000',
@@ -179,7 +149,7 @@ class PromoCodeCheckoutTest extends TestCase
             'city' => 'Bratislava',
             'postal_code' => '81101',
             'country' => 'SK',
-        ]);
+        ], 'card');
 
         $order = Order::query()->latest('id')->first();
 
@@ -237,6 +207,13 @@ class PromoCodeCheckoutTest extends TestCase
         $color = Color::create([
             'name' => 'Black',
             'hex_code' => '#000000',
+        ]);
+
+        ItemColorSizeCount::create([
+            'item_id' => $product->id,
+            'color_id' => $color->id,
+            'size' => 'M',
+            'count' => 10,
         ]);
 
         CartItem::create([

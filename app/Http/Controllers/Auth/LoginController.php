@@ -9,19 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function __construct(private GuestCartService $guestCartService) {}
+    public function __construct() {}
 
     public function __invoke(Request $request)
     {
         $credentials = $request->validate([
             'email'    => 'required|email',
-            'password' => 'required',
+            'Password' => 'required',
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            $this->guestCartService->mergeIntoDb(Auth::id());
 
             if (Auth::user()->is_admin) {
                 return redirect()->route('admin.dashboard');

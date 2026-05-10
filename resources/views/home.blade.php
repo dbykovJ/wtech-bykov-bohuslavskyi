@@ -24,23 +24,25 @@
 
                         <div class="hero__stats">
                             <div>
-                                <div class="hero__stat-num">200+</div>
+                                <div class="hero__stat-num">3+</div>
                                 <div class="hero__stat-label">International Brands</div>
                             </div>
                             <div class="hero__stat-divider"></div>
                             <div>
-                                <div class="hero__stat-num">2,000+</div>
+                                <div class="hero__stat-num">10+</div>
                                 <div class="hero__stat-label">High Quality Products</div>
                             </div>
                             <div class="hero__stat-divider"></div>
                             <div>
-                                <div class="hero__stat-num">30,000+</div>
+                                <div class="hero__stat-num">2+</div>
                                 <div class="hero__stat-label">Happy Customers</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="placeholder hero__image"></div>
+                    <div class="placeholder hero__image">
+                        <img src="{{ asset('assets/ishowspeed.png') }}" alt="The best website ever" class="hero__image" />
+                    </div>
                 </div>
             </div>
         </section>
@@ -50,27 +52,36 @@
                 <h2 id="top-brand-seller" class="section-heading">TOP BRAND SELLER</h2>
 
                 <div class="brands-grid">
-                    <div class="placeholder brands-grid__main"></div>
                     <div class="brands-grid__center">
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                    </div>
-                    <div class="brands-grid__right">
-                        <div class="placeholder"></div>
-                        <div class="placeholder"></div>
-                    </div>
-                </div>
+                        @php
+                            $brandImages = [
+                                [
+                                    'path' =>'assets/icons/brands/fortnite.svg',
+                                    'name' => 'Fortnite'
+                                ],
+                                [
+                                    'path' => 'assets/icons/brands/brawlstars.svg',
+                                    'name' => 'Brawl Stars'
+                                ],
+                                [
+                                    'path' => 'assets/icons/brands/clashroyal.svg',
+                                    'name' => 'Clash Royal'
+                                ],
+                                [
+                                    'path' => 'assets/icons/brands/minecraft.svg',
+                                    'name' => 'Minecraft'
+                                ],
+                            ]
+                        @endphp
 
-                <div class="brands-grid--mobile">
-                    <div class="placeholder"></div>
-                    <div class="placeholder"></div>
-                    <div class="placeholder"></div>
-                    <div class="placeholder"></div>
+                        @foreach($brandImages as $brandImage)
+                            <div class="brand-logo">
+                                <img src="{{ asset($brandImage['path']) }}" alt="{{ $brandImage['name'] }}" class="brand-logo__image" />
+                            </div>
+
+                        @endforeach
                 </div>
+            </div>
             </div>
         </section>
 

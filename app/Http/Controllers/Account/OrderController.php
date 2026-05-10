@@ -17,7 +17,7 @@ class OrderController extends Controller
         $orders = $user->orders()
             ->with(['items.product.images', 'items.review'])
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('account.orders', [
             'orders' => $orders,

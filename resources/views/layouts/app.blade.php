@@ -8,16 +8,17 @@
     @stack('styles')
 </head>
 <body>
-    @include('partials.banner')
-    @include('partials.navbar')
+@include('partials.banner')
+@include('partials.navbar')
 
-    @yield('content')
+@yield('content')
 
-    @include('partials.footer')
+@include('partials.footer')
 
-    <script src="{{ asset('js/shared/close.js') }}"></script>
-    <script src="{{ asset('js/shared/burger.js') }}"></script>
-    <script src="{{ asset('js/shared/scrollTo.js') }}"></script>
-    @stack('scripts')
+<script src="{{ asset('js/shared/close.js') }}"></script>
+<script src="{{ asset('js/shared/burger.js') }}"></script>
+<script src="{{ asset('js/shared/scrollTo.js') }}"></script>
+<script src="{{ asset('js/shared/successBubble.js') }}"></script>
+@stack('scripts')
 </body>
 </html>

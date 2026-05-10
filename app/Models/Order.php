@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\OrderItem;
-use App\Models\Payment;
+use App\Enums\DeliveryMethod;
+use App\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +23,7 @@ class Order extends Model
         'subtotal',
         'delivery_fee',
         'total',
+        'shipping_method',
         'shipping_full_name',
         'shipping_email',
         'shipping_phone',
@@ -30,13 +31,14 @@ class Order extends Model
         'shipping_city',
         'shipping_postal_code',
         'shipping_country',
-        'stripe_checkout_session_id',
-        'stripe_payment_intent_id',
         'paid_at',
+        'payment_method',
     ];
 
     protected $casts = [
         'paid_at' => 'datetime',
+        'shipping_method' => DeliveryMethod::class,
+        'payment_method' => PaymentMethod::class,
     ];
 
     public function user(): BelongsTo
@@ -54,5 +56,3 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 }
-
-

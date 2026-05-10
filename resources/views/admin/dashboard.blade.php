@@ -97,7 +97,7 @@
             @php
                 $statusMap = [
                     'pending_payment' => ['label' => 'Pending',    'class' => 'badge--pending'],
-                    'paid'            => ['label' => 'Processing', 'class' => 'badge--processing'],
+                    'paid'            => ['label' => 'Paid',       'class' => 'badge--processing'],
                     'processing'      => ['label' => 'Processing', 'class' => 'badge--processing'],
                     'shipped'         => ['label' => 'In Transit', 'class' => 'badge--in-transit'],
                     'delivered'       => ['label' => 'Delivered',  'class' => 'badge--delivered'],

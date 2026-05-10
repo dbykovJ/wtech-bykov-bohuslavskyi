@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Color;
+use App\Models\ItemColorSizeCount;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\Storage\SupabaseStorageService;
@@ -26,7 +28,8 @@ class AdminProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.product-edit', compact('categories'));
+        $colors     = Color::orderBy('name')->get();
+        return view('admin.product-edit', compact('categories', 'colors'));
     }
 
     public function store(Request $request)
@@ -34,12 +37,18 @@ class AdminProductController extends Controller
         $validated = $request->validate($this->rules());
         $this->validateUploadedImages($request->file('images', []));
 
+        $uploadedImages = $this->normalizeUploadedFiles($request->file('images', []));
+        if (count($uploadedImages) < 2) {
+            return back()->withErrors(['images' => 'At least 2 images are required.'])->withInput();
+        }
+
         DB::transaction(function () use ($validated, $request) {
-            $productData         = collect($validated)->except(['remove_image_ids'])->toArray();
+            $productData         = collect($validated)->except(['remove_image_ids', 'variants'])->toArray();
             $productData['slug'] = Str::slug($productData['name']);
 
             $product = Product::create($productData);
             $this->storeUploadedImages($product, $request->file('images', []));
+            $this->syncVariants($product, $request->input('variants', []));
         });
 
         return redirect()->route('admin.products.index')
@@ -48,9 +57,10 @@ class AdminProductController extends Controller
 
     public function edit(string $id)
     {
-        $product    = Product::with('images')->findOrFail($id);
+        $product    = Product::with(['images', 'colorSizes'])->findOrFail($id);
         $categories = Category::all();
-        return view('admin.product-edit', compact('product', 'categories'));
+        $colors     = Color::orderBy('name')->get();
+        return view('admin.product-edit', compact('product', 'categories', 'colors'));
     }
 
     public function update(Request $request, string $id)
@@ -61,13 +71,22 @@ class AdminProductController extends Controller
         $this->validateUploadedImages($request->file('images', []));
         $removeImageIds = collect($validated['remove_image_ids'] ?? [])->map(fn ($id) => (int) $id)->all();
 
+        $newImages       = $this->normalizeUploadedFiles($request->file('images', []));
+        $remainingCount  = $product->images()->whereNotIn('id', $removeImageIds)->count();
+        $totalAfter      = $remainingCount + count($newImages);
+
+        if ($totalAfter < 2) {
+            return back()->withErrors(['images' => 'At least 2 images are required.'])->withInput();
+        }
+
         DB::transaction(function () use ($validated, $request, $product, $removeImageIds) {
-            $productData         = collect($validated)->except(['remove_image_ids'])->toArray();
+            $productData         = collect($validated)->except(['remove_image_ids', 'variants'])->toArray();
             $productData['slug'] = Str::slug($productData['name']);
             $product->update($productData);
 
             $this->removeProductImages($product, $removeImageIds);
             $this->storeUploadedImages($product, $request->file('images', []));
+            $this->syncVariants($product, $request->input('variants', []));
         });
 
         return redirect()->route('admin.products.edit', $product->id)
@@ -94,7 +113,6 @@ class AdminProductController extends Controller
             'name'               => 'required|string|max:255',
             'description'        => 'nullable|string',
             'price'              => 'required|numeric|min:0',
-            'stock'              => 'required|integer|min:0',
             'category_id'        => 'required|exists:categories,id',
             'remove_image_ids'   => 'nullable|array',
             'remove_image_ids.*' => 'integer',
@@ -146,6 +164,36 @@ class AdminProductController extends Controller
                 ['image' => $file],
                 ['image' => 'required|image|max:4096']
             )->validate();
+        }
+    }
+
+    private function syncVariants(Product $product, array $variants): void
+    {
+        ItemColorSizeCount::where('item_id', $product->id)->delete();
+
+        $seen = [];
+
+        foreach ($variants as $variant) {
+            $colorId = (int) ($variant['color_id']);
+            $size    = $variant['size'];
+            $count   = (int) ($variant['count'] ?? 0);
+
+            if (!$colorId || !$size || $count < 0) {
+                continue;
+            }
+
+            $key = "{$colorId}_{$size}";
+            if (isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
+
+            ItemColorSizeCount::create([
+                'item_id'  => $product->id,
+                'color_id' => $colorId,
+                'size'     => $size,
+                'count'    => $count,
+            ]);
         }
     }
 

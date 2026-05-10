@@ -20,7 +20,7 @@ class EnsureUserIsAdmin
         /** @var User|null $user */
         $user = Auth::user();
 
-        if(!Auth::check() || !$user->isAdmin()) {
+        if(!$user->isAdmin()) {
             abort(403, 'Unauthorized');
         }
 

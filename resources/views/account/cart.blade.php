@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('css/account.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/user-cart.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}"/>
 @endpush
 
 @section('content')
@@ -14,7 +15,7 @@
             <h1 class="cart-title heading">YOUR CART</h1>
 
             @if (session('success'))
-                <div class="promo-success-bubble" data-promo-success-bubble>
+                <div class="success-bubble" data-success-bubble>
                     {{ session('success') }}
                 </div>
             @endif
@@ -140,7 +141,7 @@
                                                value="{{ old('promo_code', $cartSummary['promo_code'] ?? '') }}"/>
                                     </div>
                                     @error('promo_code')
-                                    <div class="promo-error-bubble" data-promo-error-bubble>
+                                    <div class="error-bubble" data-promo-error-bubble>
                                         {{ $message }}
                                     </div>
                                     @enderror
@@ -159,7 +160,7 @@
                             </form>
                         @endif
 
-                        <button class="checkout-btn" onclick="window.location.href='{{ route('payment') }}'">
+                        <button class="checkout-btn" onclick="window.location.href='{{ route('checkout.personal-data') }}'">
                             Go to Checkout
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -200,18 +201,6 @@
             promoErrorBubble.addEventListener('mouseenter', function () {
                 window.clearTimeout(hideTimer);
                 hidePromoErrorBubble();
-            }, {once: true});
-        }
-
-        const promoSuccessBubble = document.querySelector('[data-promo-success-bubble]');
-
-        if (promoSuccessBubble) {
-            const hideSuccess = () => promoSuccessBubble.classList.add('promo-success-bubble--hidden');
-            const successTimer = window.setTimeout(hideSuccess, 4000);
-
-            promoSuccessBubble.addEventListener('mouseenter', function () {
-                window.clearTimeout(successTimer);
-                hideSuccess();
             }, {once: true});
         }
     </script>

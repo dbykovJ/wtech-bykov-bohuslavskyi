@@ -11,7 +11,8 @@ use App\Services\Checkout\CheckoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use RuntimeException;
+use App\Enums\PaymentMethod;
+use Illuminate\Validation\Rule;
 
 class CheckoutController extends Controller
 {
@@ -22,7 +23,7 @@ class CheckoutController extends Controller
     ) {
     }
 
-    public function payment()
+    public function personalData()
     {
         $cartData = Auth::check()
             ? $this->cartItemService->getCart()
@@ -42,53 +43,85 @@ class CheckoutController extends Controller
                 ->first();
         }
 
-        return view('payment', [
+        return view('personal-data', [
             'cartItems'   => $cartData['items'],
             'cartSummary' => $cartData['summary'],
             'lastOrder'   => $lastOrder,
+            'address'     => session('checkout_address', []),
         ]);
     }
 
-    public function start(StartCheckoutRequest $request)
+    public function storePersonalData(StartCheckoutRequest $request)
     {
-        try {
-            $checkoutUrl = $this->checkoutService->createStripeSessionForUser(
-                Auth::user(),
-                $request->validated()
-            );
+        $cartData = Auth::check()
+            ? $this->cartItemService->getCart()
+            : $this->guestCartService->getCart();
 
-            return redirect()->away($checkoutUrl);
-        } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->withInput();
-        } catch (RuntimeException $e) {
-            return redirect()->back()->withErrors([
-                'checkout' => $e->getMessage(),
-            ])->withInput();
+        if ($cartData['items']->isEmpty()) {
+            return redirect()->route('cart')->withErrors([
+                'checkout' => 'Your cart is empty.',
+            ]);
         }
+
+        $request->session()->put('checkout_address', $request->validated());
+
+        return redirect()->route('payment');
     }
 
-    public function success(Request $request)
+    public function payment()
     {
-        $sessionId = (string) $request->query('session_id', '');
+        $cartData = Auth::check()
+            ? $this->cartItemService->getCart()
+            : $this->guestCartService->getCart();
 
-        $query = Order::where('stripe_checkout_session_id', $sessionId);
-
-        if (Auth::check()) {
-            $query->where('user_id', Auth::id());
-        }
-
-        $order = $query->first();
-
-        if (!$order) {
-            return redirect()->route('payment')->withErrors([
-                'checkout' => 'We could not verify your Stripe session.',
+        if ($cartData['items']->isEmpty()) {
+            return redirect()->route('cart')->withErrors([
+                'checkout' => 'Your cart is empty.',
             ]);
         }
 
-        if ($order->status !== 'paid') {
-            return redirect()->route('payment')->withErrors([
-                'checkout' => 'Payment is still processing. Please refresh in a few seconds.',
+        $address = session('checkout_address');
+        if (!$address || !is_array($address)) {
+            return redirect()->route('checkout.personal-data')->withErrors([
+                'checkout' => 'Please confirm your personal data first.',
             ]);
+        }
+
+        return view('payment', [
+            'cartItems'   => $cartData['items'],
+            'cartSummary' => $cartData['summary'],
+            'address'     => $address,
+        ]);
+    }
+
+    public function pay(Request $request)
+    {
+        $request->merge([
+            'cardholder_name' => trim((string) $request->input('cardholder_name')),
+            'card_number' => preg_replace('/\s+/', '', (string) $request->input('card_number')),
+            'card_expiry' => str_replace(' ', '', (string) $request->input('card_expiry')),
+            'card_cvc' => preg_replace('/\s+/', '', (string) $request->input('card_cvc')),
+        ]);
+
+        $data = $request->validate([
+            'payment_method' => ['required', Rule::enum(PaymentMethod::class)],
+            'cardholder_name' => ['required_if:payment_method,' . PaymentMethod::card->value, 'string', 'max:120'],
+            'card_number' => ['required_if:payment_method,' . PaymentMethod::card->value, 'regex:/^\d{16}$/'],
+            'card_expiry' => ['required_if:payment_method,' . PaymentMethod::card->value, 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
+            'card_cvc' => ['required_if:payment_method,' . PaymentMethod::card->value, 'regex:/^\d{3,4}$/'],
+        ]);
+
+        $address = $request->session()->get('checkout_address');
+        if (!$address || !is_array($address)) {
+            return redirect()->route('checkout.personal-data')->withErrors([
+                'checkout' => 'Please confirm your personal data first.',
+            ]);
+        }
+
+        try {
+            $this->checkoutService->processPaymentForUser(Auth::user(), $address, $data['payment_method']);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         }
 
         if (Auth::check()) {
@@ -97,16 +130,8 @@ class CheckoutController extends Controller
             $this->guestCartService->clear();
         }
 
-        if (!session('success')) {
-            return redirect()->route('cart');
-        }
+        $request->session()->forget('checkout_address');
 
-        return view('order-confirm');    }
-
-    public function cancel()
-    {
-        return redirect()->route('payment')->withErrors([
-            'checkout' => 'Payment was cancelled.',
-        ]);
+        return redirect()->route('order-confirm')->with('success', 'Payment accepted. Your order is confirmed.');
     }
 }

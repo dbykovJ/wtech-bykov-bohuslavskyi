@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Cart\PromoCode\Admin;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Cart\PromoCode\Controller;
+use App\Http\Controllers\Controller;
 use App\Models\Color;
 use App\Services\Color\ColorService;
 use App\Support\ApiResponse;
@@ -33,9 +33,8 @@ class AdminColorController extends Controller
      */
     public function store(Request $request)
     {
-        $color = $this->service->createColor($request->all());
+        $color = $this->service->createColor($request);
         return ApiResponse::created($color);
-
     }
 
     /**

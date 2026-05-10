@@ -13,19 +13,14 @@ class AdminOrderController extends Controller
     {
         $query = Order::with(['user', 'items.product.category']);
 
-        // Status filter
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+        $query->where('status', $request->status);
 
-        // Category / type filter
         if ($request->filled('type')) {
             $query->whereHas('items.product.category', fn ($q) =>
                 $q->where('name', $request->type)
             );
         }
 
-        // Search by customer name or order ID
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -35,7 +30,6 @@ class AdminOrderController extends Controller
             });
         }
 
-        // Date ordering / range
         match ($request->date) {
             'oldest'     => $query->oldest(),
             'this_week'  => $query->latest()->where('created_at', '>=', now()->startOfWeek()),
@@ -43,7 +37,6 @@ class AdminOrderController extends Controller
             default      => $query->latest(),
         };
 
-        // Total price range filter
         if ($request->filled('min_total')) {
             $query->where('total', '>=', (float) $request->input('min_total'));
         }
@@ -57,7 +50,7 @@ class AdminOrderController extends Controller
 
         $statuses = [
             'pending_payment' => 'Pending',
-            'paid'            => 'Paid',
+            'paid'           => 'Paid',
             'processing'      => 'Processing',
             'shipped'         => 'In Transit',
             'delivered'       => 'Delivered',

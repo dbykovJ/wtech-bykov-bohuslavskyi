@@ -21,40 +21,40 @@
 
         <div class="payment-layout">
             <div class="payment-methods">
-                <label class="payment-option">
-                    <div class="payment-option__left">
-                        <div class="placeholder payment-option__logo"></div>
-                        <span class="payment-option__name">Address delivery</span>
+                <label class="option-single-choice">
+                    <div class="option-single-choice__left">
+                        <div class="placeholder option-single-choice__logo"></div>
+                        <span class="option-single-choice__name">Address delivery</span>
                     </div>
-                    <input type="radio" name="delivery" value="address" class="payment-option__radio" checked />
-                    <span class="payment-option__custom-radio"></span>
+                    <input type="radio" name="delivery" value="address" class="option-single-choice__radio" checked />
+                    <span class="option-single-choice__custom-radio"></span>
                 </label>
 
-                <label class="payment-option">
-                    <div class="payment-option__left">
-                        <div class="placeholder payment-option__logo"></div>
-                        <span class="payment-option__name">Pickup Box Delivery</span>
+                <label class="option-single-choice">
+                    <div class="option-single-choice__left">
+                        <div class="placeholder option-single-choice__logo"></div>
+                        <span class="option-single-choice__name">Pickup Box Delivery</span>
                     </div>
-                    <input type="radio" name="delivery" value="pickup" class="payment-option__radio" />
-                    <span class="payment-option__custom-radio"></span>
+                    <input type="radio" name="delivery" value="pickup" class="option-single-choice__radio" />
+                    <span class="option-single-choice__custom-radio"></span>
                 </label>
 
-                <label class="payment-option">
-                    <div class="payment-option__left">
-                        <div class="placeholder payment-option__logo"></div>
-                        <span class="payment-option__name">UPC courier</span>
+                <label class="option-single-choice">
+                    <div class="option-single-choice__left">
+                        <div class="placeholder option-single-choice__logo"></div>
+                        <span class="option-single-choice__name">UPC courier</span>
                     </div>
-                    <input type="radio" name="delivery" value="upc" class="payment-option__radio" />
-                    <span class="payment-option__custom-radio"></span>
+                    <input type="radio" name="delivery" value="upc" class="option-single-choice__radio" />
+                    <span class="option-single-choice__custom-radio"></span>
                 </label>
 
-                <label class="payment-option">
-                    <div class="payment-option__left">
-                        <div class="placeholder payment-option__logo"></div>
-                        <span class="payment-option__name">AlzaBox</span>
+                <label class="option-single-choice">
+                    <div class="option-single-choice__left">
+                        <div class="placeholder option-single-choice__logo"></div>
+                        <span class="option-single-choice__name">AlzaBox</span>
                     </div>
-                    <input type="radio" name="delivery" value="alzabox" class="payment-option__radio" />
-                    <span class="payment-option__custom-radio"></span>
+                    <input type="radio" name="delivery" value="alzabox" class="option-single-choice__radio" />
+                    <span class="option-single-choice__custom-radio"></span>
                 </label>
             </div>
 

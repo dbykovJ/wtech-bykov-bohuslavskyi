@@ -36,28 +36,8 @@
                         </div>
                         <div>
                             <span>Total orders</span>
-                            <strong>12</strong>
+                            <strong>{{ Auth::user()->orders()->count()  }}</strong>
                         </div>
-                    </div>
-                </div>
-
-                <div class="account-card">
-                    <h2 class="account-card__title">Security &amp; preferences</h2>
-                    <div class="account-security__list">
-                        <div class="account-security__item">
-                            <strong>Password:</strong> Last changed 3 months ago
-                        </div>
-                        <div class="account-security__item">
-                            <strong>Email notifications:</strong> Enabled for orders and offers
-                        </div>
-                    </div>
-                    <div class="account-security__actions">
-                        <button class="account-btn" type="button" onclick="window.location.href='{{ route('account.personal-data') }}'">
-                            Change password
-                        </button>
-                        <button class="account-btn account-btn--secondary" type="button" onclick="window.location.href='{{ route('register') }}'">
-                            Manage email preferences
-                        </button>
                     </div>
                 </div>
             </section>

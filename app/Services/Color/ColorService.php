@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Services\Color;
+
 use App\Models\Color;
+use Illuminate\Http\Request;
 
 class ColorService
 {
@@ -10,17 +12,16 @@ class ColorService
         return Color::all();
     }
 
-    public function createColor($request){
-
+    public function createColor(Request $request): Color
+    {
         $validated = $request->validate([
-            'name' => 'required|string|max:32',
-            'hex_code' => 'required|string|max:6|min:6|unique:colors,hex_code|regex:/^[0-9a-fA-F]{6}$/',
+            'name'     => 'required|string|max:32',
+            'hex_code' => 'required|string|size:6|unique:colors,hex_code|regex:/^[0-9a-fA-F]{6}$/',
         ]);
 
         return Color::create([
-            'name' => $validated->name,
-            'hex_code' => $validated->hex_code,
+            'name'     => $validated['name'],
+            'hex_code' => $validated['hex_code'],
         ]);
     }
-
 }

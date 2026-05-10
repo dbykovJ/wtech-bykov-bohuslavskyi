@@ -41,17 +41,9 @@ class GuestCartService
         $activeSalesScope = fn ($q) => $q->where('sales.valid_to', '>', $now)
             ->where('sales.valid_from', '<', $now);
 
-        $productIds = [];
-        $colorIds = [];
 
-        foreach ($sessionItems as $item) {
-            if (is_array($item) && isset($item['product_id']) && isset($item['color_id'])) {
-                $productIds[] = $item['product_id'];
-                $colorIds[] = $item['color_id'];
-            }
-        }
-        $productIds = array_unique($productIds);
-        $colorIds   = array_unique($colorIds);
+        $productIds = collect($sessionItems)->pluck('product_id')->unique()->all();
+        $colorIds   = collect($sessionItems)->pluck('color_id')->unique()->all();
 
         $products = Product::with(['images', 'allSales' => $activeSalesScope])
             ->whereIn('id', $productIds)->get()->keyBy('id');

@@ -16,7 +16,6 @@ class AdminDashboardController extends Controller
         $totalSales  = Order::whereNotIn('status', ['pending_payment', 'cancelled'])->sum('total');
         $totalPending = Order::where('status', 'pending_payment')->count();
 
-        // Sales by day for the current month
         $salesData = Order::whereNotIn('status', ['pending_payment', 'cancelled'])
             ->whereRaw('EXTRACT(MONTH FROM created_at) = ?', [now()->month])
             ->whereRaw('EXTRACT(YEAR FROM created_at) = ?', [now()->year])

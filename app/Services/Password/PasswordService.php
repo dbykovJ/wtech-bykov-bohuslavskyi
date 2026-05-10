@@ -12,6 +12,6 @@ class PasswordService
         $user->password = $newPassword;
         $user->save();
 
-        Auth::logoutOtherDevices($newPassword);
+        Auth::login($user);
     }
 }

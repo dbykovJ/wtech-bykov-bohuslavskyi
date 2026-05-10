@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return (bool) $this->is_admin;
+        return $this->is_admin;
     }
 
     public function cartItems(): HasMany
@@ -66,5 +66,10 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function getAuthPassword(): string
+    {
+        return $this->getAttributes()['Password'];
     }
 }

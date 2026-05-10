@@ -15,7 +15,22 @@
             @csrf
             <div class="auth-fields">
                 <input class="auth-input" id="email" type="email" name="email" placeholder="Username" value="{{ old('email') }}" required autofocus />
-                <input class="auth-input" id="password" type="password" name="password" placeholder="Password" required />
+
+                @error('email')
+                <div class="error-bubble">{{ $message }}</div>
+                @enderror
+
+                <input class="auth-input" id="Password" type="Password" name="Password" placeholder="Password" required />
+
+                @error('Password')
+                <div class="error-bubble">{{ $message }}</div>
+                @enderror
+            </div>
+
+
+            <div>
+                <input type="checkbox" name="remember" id="remember" />
+                <label for="remember">Remember me</label>
             </div>
 
             <button class="auth-submit" type="submit">Login</button>
