@@ -125,6 +125,7 @@ class CheckoutController extends Controller
         }
 
         if (Auth::check()) {
+            $this->cartItemService->clear();
             $this->cartItemService->removePromoCode();
         } else {
             $this->guestCartService->clear();
