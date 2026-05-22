@@ -1,2 +1,1 @@
-release: php artisan migrate --force
-web: php artisan serve --port=$PORT --host=0.0.0.0
+web: php artisan migrate --force && php artisan serve --port=$PORT --host=0.0.0.0
