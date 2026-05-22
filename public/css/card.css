@@ -1,0 +1,87 @@
+.option-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.option-card--section {
+    padding: 20px;
+}
+
+.option-card__title {
+    margin: 0 0 14px;
+    font-size: 18px;
+}
+
+.option-single-choice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    cursor: pointer;
+    position: relative;
+}
+
+.option-single-choice--active {
+    border: 1px solid #111;
+    border-radius: 12px;
+}
+
+.option-single-choice:last-child {
+    border-bottom: none;
+}
+
+.option-single-choice:hover {
+    background: #fafafa;
+}
+
+.option-single-choice__left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.option-single-choice__logo {
+    width: 42px;
+    height: 28px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.option-single-choice__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+}
+
+.option-single-choice__radio {
+    display: none;
+}
+
+.option-single-choice__custom-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.15s;
+}
+
+.option-single-choice__radio:checked ~ .option-single-choice__custom-radio {
+    border-color: #111;
+}
+
+.option-single-choice__radio:checked ~ .option-single-choice__custom-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #111;
+}
+

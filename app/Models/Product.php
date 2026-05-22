@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Product extends Model
+{
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'stock',
+        'slug',
+        'category_id',
+        'rating',
+    ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function sales(): BelongsToMany
+    {
+        return $this->belongsToMany(Sale::class, 'products_on_sales', 'product_id', 'sale_id')
+            ->whereNull('sales.promo_code');
+    }
+
+    public function allSales(): BelongsToMany
+    {
+        return $this->belongsToMany(Sale::class, 'products_on_sales', 'product_id', 'sale_id');
+    }
+
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function getFirstImage()
+    {
+        return $this->relationLoaded('images')
+            ? $this->images->first()
+            : $this->images()->first();
+    }
+
+    public function colorSizes(): BelongsToMany
+    {
+        return $this->belongsToMany(Color::class, 'item_color_size_counts', 'item_id', 'color_id')
+            ->withPivot('size', 'count');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+}

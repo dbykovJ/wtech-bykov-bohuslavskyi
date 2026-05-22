@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"d:\\\\Work\\\\wtech-bykov-bohuslavskyi\" -Depth 2)",
+      "Bash(Select-Object -Property FullName, PSIsContainer)",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\Work\\\\wtech-bykov-bohuslavskyi\" -Depth 1 | Where-Object { $_.PSIsContainer } | Select-Object Name)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git merge *)",
+      "Bash(git reset *)",
+      "Bash(git clean *)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Process npm -ErrorAction SilentlyContinue)"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+@extends('layouts.app')
+
+@section('title', 'My Account — SUPERSELL')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/account.css') }}" />
+@endpush
+
+@section('content')
+<main class="account-main">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{{ route('home') }}">Home</a>
+            <span class="breadcrumb__sep">›</span>
+            <span class="breadcrumb__current">My Account</span>
+        </div>
+
+        <h1 class="account-title heading">MY ACCOUNT</h1>
+
+        <div class="account-layout">
+            @include('partials.account-nav')
+
+            <section class="account-content">
+                <div class="account-card">
+                    <h2 class="account-card__title">Profile</h2>
+                    <div class="account-profile__header">
+                        <div>
+                            <div class="account-profile__name">{{ Auth::user()->name  }}</div>
+                            <div class="account-profile__email">{{ Auth::user()->email  }}</div>
+                        </div>
+                    </div>
+                    <div class="account-profile__meta">
+                        <div>
+                            <span>Member since:</span>
+                            <strong>{{ Auth::user()->created_at->format('M Y') }}</strong>
+                        </div>
+                        <div>
+                            <span>Total orders</span>
+                            <strong>{{ Auth::user()->orders()->count()  }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+@endsection
+
+@push('scripts')
+<script>
+    document.querySelector('.account-menu-toggle').addEventListener('click', function () {
+        document.querySelector('.account-nav').classList.toggle('account-nav--open');
+    });
+</script>
+@endpush
