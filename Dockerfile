@@ -26,10 +26,6 @@ COPY . .
 # Install PHP dependencies (ignore platform to avoid Windows/Linux lock file conflicts)
 RUN composer install --no-interaction --optimize-autoloader --ignore-platform-reqs
 
-# Install Node dependencies and build frontend
-RUN npm install
-RUN npm run build
-
 # Generate app key
 RUN php artisan key:generate
 
