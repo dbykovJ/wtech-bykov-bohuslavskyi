@@ -23,8 +23,8 @@ WORKDIR /app
 # Copy application files
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-interaction --optimize-autoloader
+# Install PHP dependencies (ignore platform to avoid Windows/Linux lock file conflicts)
+RUN composer install --no-interaction --optimize-autoloader --ignore-platform-reqs
 
 # Install Node dependencies and build frontend
 RUN npm install
