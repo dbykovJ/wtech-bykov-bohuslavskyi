@@ -17,3 +17,9 @@ yarn-error.log
 .c9/
 *.launch
 *.sublime-workspace
+
+# Large media files
+*.mp4
+*.mov
+*.avi
+*.mkv
