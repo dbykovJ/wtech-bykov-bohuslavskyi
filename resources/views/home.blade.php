@@ -64,7 +64,7 @@
 
                     <div class="hero__media">
                         <video class="hero__video" autoplay muted loop playsinline>
-                            <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
+                            <source src="https://res.cloudinary.com/dhecryc7b/video/upload/q_auto/f_auto/v1780518381/Screen_Recording_2026-05-14_175039_eps40w.mp4" type="video/mp4">
                             <img src="{{ asset('assets/ishowspeed.png') }}" alt="The best website ever" class="hero__image" />
                         </video>
                     </div>
