@@ -34,7 +34,7 @@ class CheckoutService
 
             if ($cartData['items']->isEmpty()) {
                 throw ValidationException::withMessages([
-                    'checkout' => 'Your cart is empty.',
+                    'checkout' => 'Ваш кошик порожній.',
                 ]);
             }
 
@@ -94,7 +94,7 @@ class CheckoutService
 
                 if (!$stockRow || $stockRow->count < $item->quantity) {
                     throw ValidationException::withMessages([
-                        'checkout' => 'Some items are out of stock. Please review your cart.',
+                        'checkout' => 'Деяких товарів немає в наявності. Будь ласка, перегляньте свій кошик.',
                     ]);
                 }
 
@@ -138,7 +138,7 @@ class CheckoutService
 
         if (abs($expectedTotal - $actualTotal) > 0.009) {
             throw ValidationException::withMessages([
-                'checkout' => 'Cart totals changed. Please review your cart and try checkout again.',
+                'checkout' => 'Сума кошика змінилася. Будь ласка, перегляньте кошик і спробуйте оформити замовлення знову.',
             ]);
         }
     }

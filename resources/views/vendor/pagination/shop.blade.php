@@ -1,13 +1,13 @@
 @if ($paginator->hasPages())
-    <nav class="shop-pagination" role="navigation" aria-label="Shop pagination">
+    <nav class="shop-pagination" role="navigation" aria-label="Пагінація магазину">
         <ul class="shop-pagination__list">
             @if ($paginator->onFirstPage())
                 <li>
-                    <span class="pagination__btn pagination__btn--disabled" aria-disabled="true" aria-label="Previous page">&lsaquo;</span>
+                    <span class="pagination__btn pagination__btn--disabled" aria-disabled="true" aria-label="Попередня сторінка">&lsaquo;</span>
                 </li>
             @else
                 <li>
-                    <a class="pagination__btn" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="Previous page">&lsaquo;</a>
+                    <a class="pagination__btn" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="Попередня сторінка">&lsaquo;</a>
                 </li>
             @endif
 
@@ -33,11 +33,11 @@
 
             @if ($paginator->hasMorePages())
                 <li>
-                    <a class="pagination__btn" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="Next page">&rsaquo;</a>
+                    <a class="pagination__btn" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="Наступна сторінка">&rsaquo;</a>
                 </li>
             @else
                 <li>
-                    <span class="pagination__btn pagination__btn--disabled" aria-disabled="true" aria-label="Next page">&rsaquo;</span>
+                    <span class="pagination__btn pagination__btn--disabled" aria-disabled="true" aria-label="Наступна сторінка">&rsaquo;</span>
                 </li>
             @endif
         </ul>

@@ -1,22 +1,24 @@
 <nav class="navbar">
     <div class="container navbar__inner">
-        <a href="{{ route('home') }}" class="navbar__logo heading">SUPERSELL</a>
+        <a href="{{ route('home') }}" class="navbar__logo heading">
+            <img draggable="false" src="{{ asset('assets/logo.svg') }}" alt="SUPERSELL" class="navbar__logo-image" />
+        </a>
 
         <div class="navbar__links">
-            <a href="{{ route('category') }}" class="navbar__link">Shop</a>
-            <a href="{{ route('home') }}#top-brand-seller" class="navbar__link">Brands</a>
-            <a href="{{ route('home') }}#on-sale" class="navbar__link">On Sale</a>
-            <a href="{{ route('home') }}#new-arrivals" class="navbar__link">New Arrivals</a>
+            <a href="{{ route('category') }}" class="navbar__link">Магазин</a>
+            <a href="{{ route('home') }}#top-brand-seller" class="navbar__link">Бренди</a>
+            <a href="{{ route('home') }}#on-sale" class="navbar__link">Знижки</a>
+            <a href="{{ route('home') }}#new-arrivals" class="navbar__link">Новинки</a>
         </div>
 
         <div class="navbar__search">
             <form action="{{ route('category') }}" method="GET" class="navbar__search-inner">
-                <img draggable="false" src="{{ asset('assets/icons/search.svg') }}" alt="search" />
+                <img draggable="false" src="{{ asset('assets/icons/search.svg') }}" alt="пошук" />
                 <input
                     id="search-input"
                     type="search"
                     name="search"
-                    placeholder="Search for Products"
+                    placeholder="Пошук товарів"
                     value="{{ request('search') }}"
                 />
             </form>
@@ -24,20 +26,20 @@
 
         <div class="navbar__icons">
             <a href="{{ route('cart') }}">
-                <img draggable="false" src="{{ asset('assets/icons/shopping-cart.svg') }}" alt="Cart" />
+                <img draggable="false" src="{{ asset('assets/icons/shopping-cart.svg') }}" alt="Кошик" />
             </a>
             @auth
                 <a href="{{ route('account') }}">
                     <img draggable="false" class="navbar__user-icon" src="{{ asset('assets/icons/user.svg') }}"
-                         alt="Account" />
+                         alt="Акаунт" />
                 </a>
             @else
                 <a href="{{ route('login') }}">
                     <img draggable="false" class="navbar__user-icon" src="{{ asset('assets/icons/user.svg') }}"
-                         alt="Account" />
+                         alt="Акаунт" />
                 </a>
             @endauth
-            <button class="navbar__burger" aria-label="Menu">
+            <button class="navbar__burger" aria-label="Меню">
                 <span></span>
                 <span></span>
                 <span></span>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Account — SUPERSELL')
+@section('title', 'Мій акаунт — SUPERSELL')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/account.css') }}" />
@@ -10,19 +10,19 @@
 <main class="account-main">
     <div class="container">
         <div class="breadcrumb">
-            <a href="{{ route('home') }}">Home</a>
+            <a href="{{ route('home') }}">Головна</a>
             <span class="breadcrumb__sep">›</span>
-            <span class="breadcrumb__current">My Account</span>
+            <span class="breadcrumb__current">Мій акаунт</span>
         </div>
 
-        <h1 class="account-title heading">MY ACCOUNT</h1>
+        <h1 class="account-title heading">МІЙ АКАУНТ</h1>
 
         <div class="account-layout">
             @include('partials.account-nav')
 
             <section class="account-content">
                 <div class="account-card">
-                    <h2 class="account-card__title">Profile</h2>
+                    <h2 class="account-card__title">Профіль</h2>
                     <div class="account-profile__header">
                         <div>
                             <div class="account-profile__name">{{ Auth::user()->name  }}</div>
@@ -31,11 +31,11 @@
                     </div>
                     <div class="account-profile__meta">
                         <div>
-                            <span>Member since:</span>
-                            <strong>{{ Auth::user()->created_at->format('M Y') }}</strong>
+                            <span>Учасник з:</span>
+                            <strong>{{ Auth::user()->created_at->format('m.Y') }}</strong>
                         </div>
                         <div>
-                            <span>Total orders</span>
+                            <span>Всього замовлень</span>
                             <strong>{{ Auth::user()->orders()->count()  }}</strong>
                         </div>
                     </div>

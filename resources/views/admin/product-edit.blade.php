@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', isset($product) ? 'SuperDash — Edit Product' : 'SuperDash — Add Product')
+@section('title', isset($product) ? 'SuperDash — Редагування товару' : 'SuperDash — Додавання товару')
 
 @section('content')
     <div class="edit-header">
         <a href="{{ route('admin.products.index') }}" class="back-link">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
         </a>
-        <h1 class="admin-page-title">{{ isset($product) ? $product->name . ': Edit' : 'Add Product' }}</h1>
+        <h1 class="admin-page-title">{{ isset($product) ? $product->name . ': Редагування' : 'Додавання товару' }}</h1>
     </div>
 
     @if(session('success'))
@@ -43,8 +43,8 @@
                             <div class="photo-preview-slot" data-image-id="{{ $image->id }}">
                                 <img src="{{ $image->public_url }}"
                                      class="photo-upload__preview"
-                                     alt="Product image" />
-                                <button type="button" class="photo-preview-remove" data-remove-existing aria-label="Remove image">&times;</button>
+                                     alt="Зображення товару" />
+                                <button type="button" class="photo-preview-remove" data-remove-existing aria-label="Видалити зображення">&times;</button>
                             </div>
                         @endforeach
                     @endif
@@ -54,7 +54,7 @@
             <label class="photo-upload__trigger" for="photo-input-0" id="photo-upload-trigger">
                 <div class="photo-upload__icon">
                 </div>
-                <span class="photo-upload__label">Upload Photos</span>
+                <span class="photo-upload__label">Завантажити фото</span>
             </label>
             <div id="photo-inputs" style="display: none;">
                 <input type="file"
@@ -72,20 +72,20 @@
 
         <div class="form-grid">
             <div class="form-field">
-                <label class="form-label" for="item-name">Item Name</label>
+                <label class="form-label" for="item-name">Назва товару</label>
                 <input class="form-input" type="text" id="item-name" name="name"
                        value="{{ old('name', $product->name ?? '') }}"
-                       placeholder="Enter item name" required />
+                       placeholder="Введіть назву товару" required />
             </div>
 
             <div class="form-field">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Опис</label>
                 <textarea class="form-input form-textarea" id="description" name="description"
-                          placeholder="Enter item description">{{ old('description', $product->description ?? '') }}</textarea>
+                          placeholder="Введіть опис товару">{{ old('description', $product->description ?? '') }}</textarea>
             </div>
 
             <div class="form-field">
-                <label class="form-label" for="price">Price</label>
+                <label class="form-label" for="price">Ціна</label>
                 <div class="input-prefix-wrap">
                     <span class="input-prefix">$</span>
                     <input class="form-input input-with-prefix" type="number" id="price" name="price"
@@ -95,9 +95,9 @@
             </div>
 
             <div class="form-field">
-                <label class="form-label" for="category_id">Category</label>
+                <label class="form-label" for="category_id">Категорія</label>
                 <select class="form-input form-select" id="category_id" name="category_id">
-                    <option value="">Select category</option>
+                    <option value="">Оберіть категорію</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}"
                             {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
@@ -110,8 +110,8 @@
 
         <div class="form-field" style="margin-top: 8px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-                <label class="form-label" style="margin:0;">Colour &amp; Size Variants</label>
-                <button type="button" id="add-variant-btn" class="btn-primary" style="padding:6px 14px; font-size:13px;">+ Add Variant</button>
+                <label class="form-label" style="margin:0;">Варіанти кольору та розміру</label>
+                <button type="button" id="add-variant-btn" class="btn-primary" style="padding:6px 14px; font-size:13px;">+ Додати варіант</button>
             </div>
 
             <div id="variants-container">
@@ -125,7 +125,7 @@
                     @foreach($existingVariants as $i => $variant)
                         <div class="variant-row" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:center; margin-bottom:8px; padding:12px; background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb;">
                             <select name="variants[{{ $i }}][color_id]" class="form-input" required>
-                                <option value="">Select colour</option>
+                                <option value="">Оберіть колір</option>
                                 @foreach($colors as $color)
                                     <option value="{{ $color->id }}" {{ $variant['color_id'] == $color->id ? 'selected' : '' }}>
                                         {{ $color->name }}
@@ -133,12 +133,12 @@
                                 @endforeach
                             </select>
                             <select name="variants[{{ $i }}][size]" class="form-input" required>
-                                <option value="">Select size</option>
+                                <option value="">Оберіть розмір</option>
                                 @foreach(['XS','S','M','L','XL','XXL'] as $size)
                                     <option value="{{ $size }}" {{ $variant['size'] === $size ? 'selected' : '' }}>{{ $size }}</option>
                                 @endforeach
                             </select>
-                            <input type="number" name="variants[{{ $i }}][count]" class="form-input" placeholder="Stock" min="0" value="{{ $variant['count'] }}" required />
+                            <input type="number" name="variants[{{ $i }}][count]" class="form-input" placeholder="Наявність" min="0" value="{{ $variant['count'] }}" required />
                             <button type="button" class="remove-variant-btn" style="padding:8px 12px; background:#fee2e2; color:#dc2626; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:700;">&times;</button>
                         </div>
                     @endforeach
@@ -148,27 +148,27 @@
             <template id="variant-row-template">
                 <div class="variant-row" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:center; margin-bottom:8px; padding:12px; background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb;">
                     <select name="" class="form-input variant-color" required>
-                        <option value="">Select colour</option>
+                        <option value="">Оберіть колір</option>
                         @foreach($colors as $color)
                             <option value="{{ $color->id }}">{{ $color->name }}</option>
                         @endforeach
                     </select>
                     <select name="" class="form-input variant-size" required>
-                        <option value="">Select size</option>
+                        <option value="">Оберіть розмір</option>
                         @foreach(['XS','S','M','L','XL','XXL'] as $size)
                             <option value="{{ $size }}">{{ $size }}</option>
                         @endforeach
                     </select>
-                    <input type="number" name="" class="form-input variant-count" placeholder="Stock" min="0" required />
+                    <input type="number" name="" class="form-input variant-count" placeholder="Наявність" min="0" required />
                     <button type="button" class="remove-variant-btn" style="padding:8px 12px; background:#fee2e2; color:#dc2626; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:700;">&times;</button>
                 </div>
             </template>
         </div>
 
         <div class="form-actions">
-            <a href="{{ route('admin.products.index') }}" class="btn-ghost">Cancel</a>
+            <a href="{{ route('admin.products.index') }}" class="btn-ghost">Скасувати</a>
             <button type="submit" class="btn-primary btn-primary--large">
-                {{ isset($product) ? 'Save Changes' : 'Add Product' }}
+                {{ isset($product) ? 'Зберегти зміни' : 'Додати товар' }}
             </button>
         </div>
     </form>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Your Cart — SUPERSELL')
+@section('title', 'Ваш кошик — SUPERSELL')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/account.css') }}"/>
@@ -12,7 +12,7 @@
 @section('content')
     <main class="cart-main">
         <div class="container">
-            <h1 class="cart-title heading">YOUR CART</h1>
+            <h1 class="cart-title heading">ВАШ КОШИК</h1>
 
             @if (session('success'))
                 <div class="success-bubble" data-success-bubble>
@@ -20,17 +20,18 @@
                 </div>
             @endif
 
-            @auth
-                @include('partials.account-nav')
-            @else
-                <div class="cart-auth-prompt">
-                    <a href="{{ route('login') }}">
-                        <p>Please log in to view and manage your account.</p>
-                    </a>
-                </div>
-            @endauth
+            <div class="cart-body">
+                @auth
+                    @include('partials.account-nav')
+                @else
+                    <div class="cart-auth-prompt">
+                        <a href="{{ route('login') }}">
+                            <p>Будь ласка, увійдіть, щоб переглядати та керувати своїм акаунтом.</p>
+                        </a>
+                    </div>
+                @endauth
 
-            <div class="cart-layout {{ $cartItems->isEmpty() ? 'cart-layout--empty' : '' }}">
+                <div class="cart-layout {{ $cartItems->isEmpty() ? 'cart-layout--empty' : '' }}">
                 <div class="cart-items">
                     @forelse ($cartItems as $item)
                         <div class="cart-item">
@@ -47,7 +48,7 @@
                                     <div class="cart-item__name">{{ $item->product->name }}</div>
                                     <form method="POST" action="/cart/{{ $item->id }}">
                                         @csrf @method('DELETE')
-                                        <button class="cart-item__delete" aria-label="Remove item">
+                                        <button class="cart-item__delete" aria-label="Видалити товар">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                  stroke-linejoin="round">
@@ -60,8 +61,8 @@
                                     </form>
                                 </div>
                                 <div class="cart-item__meta">
-                                    <span>Size: <strong>{{ $item->size->value }}</strong></span>
-                                    <span>Color: <strong>{{ $item->color->name }}</strong></span>
+                                    <span>Розмір: <strong>{{ $item->size->value }}</strong></span>
+                                    <span>Колір: <strong>{{ $item->color->name }}</strong></span>
                                 </div>
                                 <div class="cart-item__bottom">
                                     <div class="cart-item__pricing">
@@ -88,32 +89,32 @@
                             </div>
                         </div>
                     @empty
-                        <p>Your cart is empty.</p>
+                        <p>Ваш кошик порожній.</p>
                     @endforelse
                 </div>
                 @if ($cartItems->isNotEmpty())
                     <div class="order-summary">
-                        <h2 class="order-summary__title">Order Summary</h2>
+                        <h2 class="order-summary__title">Підсумок замовлення</h2>
 
                         <div class="order-summary__rows">
                             <div class="order-summary__row">
-                                <span>Subtotal</span>
+                                <span>Проміжна сума</span>
                                 <span>${{ number_format($cartSummary['subtotal_before_discount'] ?? 0, 2) }}</span>
                             </div>
                             <div class="order-summary__row">
-                                <span>Sale Discount</span>
+                                <span>Знижка розпродажу</span>
                                 <span
                                     class="order-summary__discount">-${{ number_format($cartSummary['sales_discount_total'] ?? 0, 2) }}</span>
                             </div>
                             @if (!empty($cartSummary['promo_code']) && ($cartSummary['promo_discount_total'] ?? 0) >= 0.01)
                                 <div class="order-summary__row">
-                                    <span>Promo Discount ({{ $cartSummary['promo_code'] }})</span>
+                                    <span>Промо-знижка ({{ $cartSummary['promo_code'] }})</span>
                                     <span
                                         class="order-summary__discount">-${{ number_format($cartSummary['promo_discount_total'] ?? 0, 2) }}</span>
                                 </div>
                             @endif
                             <div class="order-summary__row">
-                                <span>Delivery Fee</span>
+                                <span>Вартість доставки</span>
                                 <span>${{ number_format($cartSummary['delivery_fee'] ?? 0, 2) }}</span>
                             </div>
                         </div>
@@ -121,7 +122,7 @@
                         <div class="order-summary__divider"></div>
 
                         <div class="order-summary__total">
-                            <span>Total</span>
+                            <span>Разом</span>
                             <span>${{ number_format($cartSummary['total'] ?? 0, 2) }}</span>
                         </div>
 
@@ -137,7 +138,7 @@
                                                 d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
                                             <circle cx="7" cy="7" r="1" fill="#aaa" stroke="none"/>
                                         </svg>
-                                        <input type="text" name="promo_code" placeholder="Add promo code"
+                                        <input type="text" name="promo_code" placeholder="Введіть промокод"
                                                value="{{ old('promo_code', $cartSummary['promo_code'] ?? '') }}"/>
                                     </div>
                                     @error('promo_code')
@@ -146,7 +147,7 @@
                                     </div>
                                     @enderror
                                 </div>
-                                <button type="submit" class="promo-apply-btn">Apply</button>
+                                <button type="submit" class="promo-apply-btn">Застосувати</button>
                             </form>
                         </div>
 
@@ -154,14 +155,14 @@
                             <form method="POST" action="{{ route('cart.promo.remove') }}" class="promo-remove-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="promo-apply-btn promo-apply-btn--full">Remove Promo
+                                <button type="submit" class="promo-apply-btn promo-apply-btn--full">Видалити промокод
                                     ({{ $cartSummary['promo_code'] }})
                                 </button>
                             </form>
                         @endif
 
                         <button class="checkout-btn" onclick="window.location.href='{{ route('checkout.personal-data') }}'">
-                            Go to Checkout
+                            Оформити замовлення
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -169,6 +170,7 @@
                         </button>
                     </div>
                 @endif
+                </div>
             </div>
         </div>
     </main>

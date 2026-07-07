@@ -27,7 +27,7 @@ class ReviewController extends Controller
         if (ProductReview::where('user_id', Auth::id())
             ->where('order_item_id', $item->id)
             ->exists()) {
-            return back()->withErrors(['review' => 'You have already reviewed this item.']);
+            return back()->withErrors(['review' => 'Ви вже залишили відгук про цей товар.']);
         }
 
         ProductReview::create([
@@ -40,7 +40,7 @@ class ReviewController extends Controller
 
         $this->updateProductRating($item->product_id);
 
-        return back()->with('success', 'Review submitted!');
+        return back()->with('success', 'Відгук надіслано!');
     }
 
     public function destroy(ProductReview $review)
@@ -52,7 +52,7 @@ class ReviewController extends Controller
 
         $this->updateProductRating($productId);
 
-        return back()->with('success', 'Review deleted.');
+        return back()->with('success', 'Відгук видалено.');
     }
 
     private function updateProductRating(int $productId): void

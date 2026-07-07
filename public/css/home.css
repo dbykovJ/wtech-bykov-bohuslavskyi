@@ -12,7 +12,7 @@
 .hero__title {
     font-family: 'Integral CF', sans-serif;
     font-weight: 900;
-    font-size: 58px;
+    font-size: 48px;
     line-height: 1.03;
     letter-spacing: -1px;
     margin-bottom: 14px;
@@ -131,8 +131,7 @@
 
 
 .brands-grid__center {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     align-items: center;
     justify-items: center;
     gap: 40px;
@@ -205,7 +204,7 @@
     }
 
     .hero__title {
-        font-size: 38px;
+        font-size: 32px;
     }
 
     .hero__media {
@@ -238,7 +237,7 @@
 
 @media (max-width: 480px) {
     .hero__title {
-        font-size: 32px;
+        font-size: 26px;
     }
 
 

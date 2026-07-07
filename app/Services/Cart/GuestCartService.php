@@ -244,13 +244,13 @@ class GuestCartService
 
         if (! $stock) {
             throw ValidationException::withMessages([
-                'size' => 'The selected color and size combination is not available.',
+                'size' => 'Обрана комбінація кольору та розміру недоступна.',
             ]);
         }
 
         if ($count > $stock) {
             throw ValidationException::withMessages([
-                'count' => "Only {$stock} items available for this combination.",
+                'count' => "Доступно лише {$stock} шт. для цієї комбінації.",
             ]);
         }
     }

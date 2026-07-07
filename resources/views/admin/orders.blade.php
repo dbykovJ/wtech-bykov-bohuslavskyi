@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'SuperDash — Orders')
+@section('title', 'SuperDash — Замовлення')
 
 @section('content')
-<h1 class="admin-page-title">Order Lists</h1>
+<h1 class="admin-page-title">Список замовлень</h1>
 
 @php
     $statusBadge = [
@@ -16,10 +16,10 @@
         'cancelled'       => 'badge--cancelled',
     ];
     $dateLabels = [
-        'newest'     => 'Newest first',
-        'oldest'     => 'Oldest first',
-        'this_week'  => 'This week',
-        'this_month' => 'This month',
+        'newest'     => 'Спочатку нові',
+        'oldest'     => 'Спочатку старі',
+        'this_week'  => 'Цього тижня',
+        'this_month' => 'Цього місяця',
     ];
 @endphp
 
@@ -36,7 +36,7 @@
                 type="text"
                 name="search"
                 value="{{ request('search') }}"
-                placeholder="Search by name or order ID…"
+                placeholder="Пошук за ім'ям або номером замовлення…"
                 style="width:100%;padding:8px 12px 8px 36px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
                 onchange="document.getElementById('filter-form').submit()">
         </div>
@@ -45,7 +45,7 @@
                 type="number"
                 name="min_total"
                 value="{{ request('min_total') }}"
-                placeholder="Min total"
+                placeholder="Мін. сума"
                 min="0"
                 step="0.01"
                 style="width:120px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
@@ -54,7 +54,7 @@
                 type="number"
                 name="max_total"
                 value="{{ request('max_total') }}"
-                placeholder="Max total"
+                placeholder="Макс. сума"
                 min="0"
                 step="0.01"
                 style="width:120px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"
@@ -69,13 +69,13 @@
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                 </svg>
             </span>
-            <span class="filter-by-label">Filter By</span>
+            <span class="filter-by-label">Фільтрувати за</span>
 
             {{-- Date --}}
             <div class="filter-dropdown" id="filter-date">
                 <button type="button" class="filter-btn{{ request('date') ? ' filter-btn--active' : '' }}"
                         onclick="toggleDropdown('date-menu')">
-                    <span>{{ $dateLabels[request('date')] ?? 'Date' }}</span>
+                    <span>{{ $dateLabels[request('date')] ?? 'Дата' }}</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
@@ -92,7 +92,7 @@
             <div class="filter-dropdown" id="filter-type">
                 <button type="button" class="filter-btn{{ request('type') ? ' filter-btn--active' : '' }}"
                         onclick="toggleDropdown('type-menu')">
-                    <span>{{ request('type') ?? 'Order Type' }}</span>
+                    <span>{{ request('type') ?? 'Тип замовлення' }}</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
@@ -109,7 +109,7 @@
             <div class="filter-dropdown" id="filter-status">
                 <button type="button" class="filter-btn{{ request('status') ? ' filter-btn--active' : '' }}"
                         onclick="toggleDropdown('status-menu')">
-                    <span>{{ $statuses[request('status')] ?? 'Order Status' }}</span>
+                    <span>{{ $statuses[request('status')] ?? 'Статус замовлення' }}</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
@@ -127,7 +127,7 @@
                 <polyline points="1 4 1 10 7 10"/>
                 <path d="M3.51 15a9 9 0 1 0 .49-3.51"/>
             </svg>
-            Reset Filter
+            Скинути фільтр
         </a>
     </div>
 
@@ -145,12 +145,12 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>NAME</th>
-                <th>ADDRESS</th>
-                <th>DATE</th>
-                <th>TYPE</th>
-                <th>PRICE</th>
-                <th>STATUS</th>
+                <th>ІМ'Я</th>
+                <th>АДРЕСА</th>
+                <th>ДАТА</th>
+                <th>ТИП</th>
+                <th>ЦІНА</th>
+                <th>СТАТУС</th>
             </tr>
         </thead>
         <tbody>
@@ -167,14 +167,14 @@
                 <td>#{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ $name }}</td>
                 <td>{{ $address }}</td>
-                <td>{{ $order->created_at->format('d M Y') }}</td>
+                <td>{{ $order->created_at->format('d.m.Y') }}</td>
                 <td>{{ $category }}</td>
                 <td>${{ number_format($order->total, 2) }}</td>
                 <td><span class="badge {{ $badge }}">{{ $label }}</span></td>
             </tr>
             @empty
             <tr>
-                <td colspan="7" style="text-align:center;color:#9ca3af;padding:32px 0;">No orders found.</td>
+                <td colspan="7" style="text-align:center;color:#9ca3af;padding:32px 0;">Замовлень не знайдено.</td>
             </tr>
             @endforelse
         </tbody>
@@ -183,7 +183,7 @@
     @if ($orders->total())
     <div class="table-footer">
         <span class="table-showing">
-            Showing {{ $orders->firstItem() }}–{{ $orders->lastItem() }} of {{ $orders->total() }}
+            Показано {{ $orders->firstItem() }}–{{ $orders->lastItem() }} з {{ $orders->total() }}
         </span>
         <div class="pagination">
             @if ($orders->onFirstPage())

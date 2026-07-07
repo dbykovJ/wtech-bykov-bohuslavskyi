@@ -19,7 +19,7 @@ class PromoCodeController extends Controller
         $service = Auth::check() ? $cartService : $guestService;
         $service->applyPromoCode($request->input('promo_code'));
 
-        return redirect()->route('cart')->with('success', 'Promo code applied!');
+        return redirect()->route('cart')->with('success', 'Промокод застосовано!');
     }
 
     public function remove(AuthorizedCartService $cartService, GuestCartService $guestService): RedirectResponse

@@ -30,7 +30,7 @@ class LoginController extends Controller
         }
 
         return back()
-            ->withErrors(['email' => 'The provided credentials do not match our records.'])
+            ->withErrors(['email' => 'Введені облікові дані не збігаються з нашими записами.'])
             ->onlyInput('email');
     }
 }

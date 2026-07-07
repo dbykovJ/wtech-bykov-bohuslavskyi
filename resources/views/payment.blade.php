@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Payment — SUPERSELL')
+@section('title', 'Оплата — SUPERSELL')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/card.css') }}" />
@@ -11,14 +11,14 @@
     <main class="payment-main">
         <div class="container">
             <div class="breadcrumb">
-                <a href="{{ route('cart') }}">Cart</a>
+                <a href="{{ route('cart') }}">Кошик</a>
                 <span class="breadcrumb__sep">›</span>
-                <a href="{{ route('checkout.personal-data') }}">Personal data</a>
+                <a href="{{ route('checkout.personal-data') }}">Особисті дані</a>
                 <span class="breadcrumb__sep">›</span>
-                <span class="breadcrumb__current">Payment</span>
+                <span class="breadcrumb__current">Оплата</span>
             </div>
 
-            <h1 class="payment-title heading">CHECKOUT</h1>
+            <h1 class="payment-title heading">ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</h1>
 
             @if ($errors->has('checkout'))
                 <p class="payment-alert payment-alert--error">{{ $errors->first('checkout') }}</p>
@@ -30,14 +30,14 @@
                 <div class="payment-layout">
                     <div class="payment-methods">
                         <div class="option-card option-card--section">
-                            <h2 class="option-card__title">Payment Method</h2>
+                            <h2 class="option-card__title">Спосіб оплати</h2>
 
                             <label class="option-single-choice">
                                 <div class="option-single-choice__left">
                                     <div class="placeholder option-single-choice__logo">
                                         <img src="{{ asset('assets/icons/payment/credit-card.svg') }}" alt="Card" class="option-single-choice__logo" />
                                     </div>
-                                    <span class="option-single-choice__name">Card</span>
+                                    <span class="option-single-choice__name">Картка</span>
                                 </div>
                                 <input type="radio" name="payment_method" value="Credit Card" class="option-single-choice__radio" checked />
                                 <span class="option-single-choice__custom-radio"></span>
@@ -69,22 +69,22 @@
                         </div>
 
                         <div class="option-card option-card--section payment-card-details" data-payment-details="card">
-                            <h2 class="option-card__title">Card Details</h2>
+                            <h2 class="option-card__title">Дані картки</h2>
 
                             <div class="checkout-grid">
                                 <div class="checkout-field checkout-field--full">
-                                    <label for="cardholder_name">Cardholder name</label>
-                                    <input id="cardholder_name" name="cardholder_name" type="text" autocomplete="cc-name" placeholder="Jane Doe" />
+                                    <label for="cardholder_name">Ім'я власника картки</label>
+                                    <input id="cardholder_name" name="cardholder_name" type="text" autocomplete="cc-name" placeholder="Іван Іваненко" />
                                 </div>
                                 <div class="checkout-field checkout-field--full">
-                                    <label for="card_number">Card number</label>
+                                    <label for="card_number">Номер картки</label>
                                     <input id="card_number" name="card_number" type="text" inputmode="numeric" autocomplete="cc-number"
                                            placeholder="1234 5678 9012 3456" pattern="^\d{4}( \d{4}){3}$" maxlength="19" />
                                 </div>
                                 <div class="checkout-field">
-                                    <label for="card_expiry">Expiry</label>
+                                    <label for="card_expiry">Термін дії</label>
                                     <input id="card_expiry" name="card_expiry" type="text" inputmode="numeric" autocomplete="cc-exp"
-                                           placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" maxlength="5" />
+                                           placeholder="ММ/РР" pattern="^(0[1-9]|1[0-2])\/\d{2}$" maxlength="5" />
                                 </div>
                                 <div class="checkout-field">
                                     <label for="card_cvc">CVC</label>
@@ -97,25 +97,25 @@
 
                     {{-- Order Summary --}}
                     <div class="order-summary">
-                        <h2 class="order-summary__title">Order Summary</h2>
+                        <h2 class="order-summary__title">Підсумок замовлення</h2>
 
                         <div class="order-summary__rows">
                             <div class="order-summary__row">
-                                <span>Subtotal</span>
+                                <span>Проміжна сума</span>
                                 <span>${{ number_format($cartSummary['subtotal_before_discount'] ?? 0, 2) }}</span>
                             </div>
                             <div class="order-summary__row">
-                                <span>Sale Discount</span>
+                                <span>Знижка розпродажу</span>
                                 <span class="order-summary__discount">-${{ number_format($cartSummary['sales_discount_total'] ?? 0, 2) }}</span>
                             </div>
                             @if (!empty($cartSummary['promo_code']) && ($cartSummary['promo_discount_total'] ?? 0) >= 0.01)
                                 <div class="order-summary__row">
-                                    <span>Promo ({{ $cartSummary['promo_code'] }})</span>
+                                    <span>Промокод ({{ $cartSummary['promo_code'] }})</span>
                                     <span class="order-summary__discount">-${{ number_format($cartSummary['promo_discount_total'], 2) }}</span>
                                 </div>
                             @endif
                             <div class="order-summary__row">
-                                <span>Delivery Fee</span>
+                                <span>Вартість доставки</span>
                                 <span>${{ number_format($cartSummary['delivery_fee'] ?? 0, 2) }}</span>
                             </div>
                         </div>
@@ -123,12 +123,12 @@
                         <div class="order-summary__divider"></div>
 
                         <div class="order-summary__total">
-                            <span>Total</span>
+                            <span>Разом</span>
                             <span>${{ number_format($cartSummary['total'] ?? 0, 2) }}</span>
                         </div>
 
                         <button type="submit" class="place-order-btn">
-                            Pay now
+                            Оплатити
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>

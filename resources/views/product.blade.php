@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Product — SUPERSELL')
+@section('title', 'Товар — SUPERSELL')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
@@ -12,11 +12,11 @@
 
         <div class="container">
             <nav class="breadcrumb">
-                <a href="{{ route('home') }}">Home</a>
+                <a href="{{ route('home') }}">Головна</a>
                 <span>›</span>
-                <a href="{{ route('category') }}">Shop</a>
+                <a href="{{ route('category') }}">Магазин</a>
                 <span>›</span>
-                <a href="{{ route('category') }}">T-shirts</a>
+                <a href="{{ route('category') }}">Футболки</a>
                 <span>›</span>
                 <span class="breadcrumb__current">{{ $product->name }}</span>
             </nav>
@@ -86,7 +86,7 @@
                         @endphp
 
                         <div class="product-info__section">
-                            <span class="product-info__label">Choose Colors</span>
+                            <span class="product-info__label">Оберіть колір</span>
                             <div class="product-colors" id="product-colors" data-color-sizes='@json($product->colorGroups)'
                                 data-default-color-id="{{ $defaultColorId }}">
                                 @foreach ($product->colorGroups as $colorId => $group)
@@ -108,7 +108,7 @@
                         <div class="product-info__divider"></div>
 
                         <div class="product-info__section">
-                            <span class="product-info__label">Choose Size</span>
+                            <span class="product-info__label">Оберіть розмір</span>
                             <div class="product-sizes" id="product-sizes">
                                 @forelse($defaultSizes as $size)
                                     @php
@@ -122,12 +122,12 @@
                                         {{ $size['label'] }}
                                     </button>
                                 @empty
-                                    <span class="product-sizes__empty">No sizes available for this color.</span>
+                                    <span class="product-sizes__empty">Для цього кольору немає доступних розмірів.</span>
                                 @endforelse
                             </div>
 
                             <div id="stock-info" class="product-stock-info">
-                                Select a size to see availability
+                                Оберіть розмір, щоб побачити наявність
                             </div>
                         </div>
                     @endif
@@ -151,7 +151,7 @@
                                     <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                                 </svg>
-                                Add to Cart
+                                Додати в кошик
                             </button>
                         </form>
 
@@ -161,7 +161,7 @@
 
             <div class="reviews-header">
                 <div class="reviews-header__line"></div>
-                <span class="reviews-header__title">Rating &amp; Reviews</span>
+                <span class="reviews-header__title">Рейтинг і відгуки</span>
                 <div class="reviews-header__line"></div>
                 <div class="reviews-header__nav">
                     <button class="reviews-nav-btn">&#8592;</button>
@@ -171,10 +171,10 @@
 
             <section class="reviews">
                 <div class="reviews__toolbar">
-                    <span class="reviews__count">All Reviews <span class="reviews__count-num">({{ $product->reviews->count() }})</span></span>
+                    <span class="reviews__count">Усі відгуки <span class="reviews__count-num">({{ $product->reviews->count() }})</span></span>
                     <div class="reviews__toolbar-right">
                         <div class="reviews__sort">
-                            Latest
+                            Найновіші
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <polyline points="6 9 12 15 18 9" />
@@ -191,7 +191,7 @@
                                 @if (Auth::check() && Auth::id() === $review->user_id)
                                     <form method="POST" action="{{ route('reviews.destroy', $review) }}" style="display: inline;">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="review-card__more" onclick="return confirm('Delete this review?')">×</button>
+                                        <button type="submit" class="review-card__more" onclick="return confirm('Видалити цей відгук?')">×</button>
                                     </form>
                                 @endif
                             </div>
@@ -199,14 +199,14 @@
                             @if ($review->body)
                                 <p class="review-card__text">"{{ $review->body }}"</p>
                             @endif
-                            <span class="review-card__date">Posted on {{ $review->created_at->format('F j, Y') }}</span>
+                            <span class="review-card__date">Опубліковано {{ $review->created_at->format('d.m.Y') }}</span>
                         </div>
                     @empty
                         @if (Auth::check())
-                            <p style="grid-column: 1/-1; text-align: center; color: #999;">No reviews yet. Be the first to review this product!</p>
+                            <p style="grid-column: 1/-1; text-align: center; color: #999;">Відгуків поки немає. Станьте першим, хто залишить відгук про цей товар!</p>
                         @else
                             <p style="grid-column: 1/-1; text-align: center; color: #999;">
-                                <a href="{{ route('login') }}">Log in</a> to see and write reviews.
+                                <a href="{{ route('login') }}">Увійдіть</a>, щоб переглядати та писати відгуки.
                             </p>
                         @endif
                     @endforelse
@@ -214,21 +214,21 @@
 
                 @if (Auth::check())
                     <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f9f9f9;">
-                        <h3 style="margin-top: 0; font-size: 16px;">Write a Review</h3>
-                        <p style="margin: 10px 0; font-size: 14px; color: #666;">Have you purchased this product? Share your experience!</p>
-                        <a href="{{ route('account.orders') }}" class="account-btn" style="display: inline-block; padding: 10px 20px;">Leave a Review</a>
+                        <h3 style="margin-top: 0; font-size: 16px;">Написати відгук</h3>
+                        <p style="margin: 10px 0; font-size: 14px; color: #666;">Ви придбали цей товар? Поділіться своїми враженнями!</p>
+                        <a href="{{ route('account.orders') }}" class="account-btn" style="display: inline-block; padding: 10px 20px;">Залишити відгук</a>
                     </div>
                 @else
                     <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f0f0f0;">
                         <p style="margin: 0; font-size: 14px; color: #666;">
-                            <a href="{{ route('login') }}" style="color: #333; font-weight: 500;">Log in</a> to write a review based on your purchase.
+                            <a href="{{ route('login') }}" style="color: #333; font-weight: 500;">Увійдіть</a>, щоб написати відгук на основі вашої покупки.
                         </p>
                     </div>
                 @endif
             </section>
 
             <section class="also-like">
-                <h2 class="section-heading">YOU MIGHT ALSO LIKE</h2>
+                <h2 class="section-heading">ВАМ ТАКОЖ МОЖЕ СПОДОБАТИСЬ</h2>
                 <div class="also-like__grid">
                     @foreach ($similar as $item)
                     @php
@@ -354,12 +354,12 @@
                 const size = getSelectedSize();
 
                 if (!size) {
-                    stockInfoEl.textContent = 'Select a size to see availability';
+                    stockInfoEl.textContent = 'Оберіть розмір, щоб побачити наявність';
                     currentMaxQty = Infinity;
                     return;
                 }
 
-                stockInfoEl.textContent = 'In stock: ' + size.count;
+                stockInfoEl.textContent = 'В наявності: ' + size.count;
                 currentMaxQty = size.count;
 
                 const qtyEl = document.getElementById('qty');
@@ -396,7 +396,7 @@
                 const group = colorSizes[colorId];
                 if (!group || !Array.isArray(group.sizes) || group.sizes.length === 0) {
                     sizesContainer.innerHTML =
-                        '<span class="product-sizes__empty">No sizes available for this color.</span>';
+                        '<span class="product-sizes__empty">Для цього кольору немає доступних розмірів.</span>';
                     return;
                 }
 

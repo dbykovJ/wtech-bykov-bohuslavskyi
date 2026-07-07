@@ -31,7 +31,7 @@ class CheckoutController extends Controller
 
         if ($cartData['items']->isEmpty()) {
             return redirect()->route('cart')->withErrors([
-                'checkout' => 'Your cart is empty.',
+                'checkout' => 'Ваш кошик порожній.',
             ]);
         }
 
@@ -59,7 +59,7 @@ class CheckoutController extends Controller
 
         if ($cartData['items']->isEmpty()) {
             return redirect()->route('cart')->withErrors([
-                'checkout' => 'Your cart is empty.',
+                'checkout' => 'Ваш кошик порожній.',
             ]);
         }
 
@@ -76,14 +76,14 @@ class CheckoutController extends Controller
 
         if ($cartData['items']->isEmpty()) {
             return redirect()->route('cart')->withErrors([
-                'checkout' => 'Your cart is empty.',
+                'checkout' => 'Ваш кошик порожній.',
             ]);
         }
 
         $address = session('checkout_address');
         if (!$address || !is_array($address)) {
             return redirect()->route('checkout.personal-data')->withErrors([
-                'checkout' => 'Please confirm your personal data first.',
+                'checkout' => 'Будь ласка, спочатку підтвердьте свої особисті дані.',
             ]);
         }
 
@@ -114,7 +114,7 @@ class CheckoutController extends Controller
         $address = $request->session()->get('checkout_address');
         if (!$address || !is_array($address)) {
             return redirect()->route('checkout.personal-data')->withErrors([
-                'checkout' => 'Please confirm your personal data first.',
+                'checkout' => 'Будь ласка, спочатку підтвердьте свої особисті дані.',
             ]);
         }
 
@@ -132,6 +132,6 @@ class CheckoutController extends Controller
 
         $request->session()->forget('checkout_address');
 
-        return redirect()->route('order-confirm')->with('success', 'Payment accepted. Your order is confirmed.');
+        return redirect()->route('order-confirm')->with('success', 'Оплату прийнято. Ваше замовлення підтверджено.');
     }
 }

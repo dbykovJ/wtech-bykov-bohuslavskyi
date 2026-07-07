@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Your Data — SUPERSELL')
+@section('title', 'Ваші дані — SUPERSELL')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/card.css') }}"/>
@@ -11,26 +11,26 @@
     <main class="personal-main">
         <div class="container">
             <div class="breadcrumb">
-                <a href="{{ route('cart') }}">Cart</a>
+                <a href="{{ route('cart') }}">Кошик</a>
                 <span class="breadcrumb__sep">›</span>
-                <span class="breadcrumb__current">Personal data</span>
+                <span class="breadcrumb__current">Особисті дані</span>
             </div>
 
-            <h1 class="personal-title heading">YOUR DATA</h1>
+            <h1 class="personal-title heading">ВАШІ ДАНІ</h1>
 
             <div class="personal-layout">
                 <div class="personal-left">
                     <form class="personal-form" method="POST" action="{{ route('checkout.personal-data.store') }}" novalidate>
 
                         <div class="option-card option-card--section">
-                            <h2 class="option-card__title">Delivery Method</h2>
+                            <h2 class="option-card__title">Спосіб доставки</h2>
 
                             <label class="option-single-choice">
                                 <div class="option-single-choice__left">
                                     <div class="placeholder option-single-choice__logo">
-                                        <img src="{{ asset('assets/icons/delivery/truck.svg') }}" alt="Truck Icon" class="option-single-choice__logo"/>
+                                        <img src="{{ asset('assets/icons/delivery/truck.svg') }}" alt="Іконка вантажівки" class="option-single-choice__logo"/>
                                     </div>
-                                    <span class="option-single-choice__name">Truck</span>
+                                    <span class="option-single-choice__name">Вантажівка</span>
                                 </div>
                                 <input type="radio" name="delivery_method" value="truck"
                                        class="option-single-choice__radio" checked/>
@@ -40,9 +40,9 @@
                             <label class="option-single-choice">
                                 <div class="option-single-choice__left">
                                     <div class="placeholder option-single-choice__logo">
-                                        <img src="{{ asset('assets/icons/delivery/mail.svg') }}" alt="Post Courier Icon" class="option-single-choice__logo"/>
+                                        <img src="{{ asset('assets/icons/delivery/mail.svg') }}" alt="Іконка поштового кур'єра" class="option-single-choice__logo"/>
                                     </div>
-                                    <span class="option-single-choice__name">Post courier</span>
+                                    <span class="option-single-choice__name">Поштовий кур'єр</span>
                                 </div>
                                 <input type="radio" name="delivery_method" value="post"
                                        class="option-single-choice__radio"/>
@@ -52,9 +52,9 @@
                             <label class="option-single-choice">
                                 <div class="option-single-choice__left">
                                     <div class="placeholder option-single-choice__logo">
-                                        <img src="{{ asset('assets/icons/delivery/box.svg') }}" alt="Drop Box Icon" class="option-single-choice__logo"/>
+                                        <img src="{{ asset('assets/icons/delivery/box.svg') }}" alt="Іконка поштомату" class="option-single-choice__logo"/>
                                     </div>
-                                    <span class="option-single-choice__name">Drop box near you</span>
+                                    <span class="option-single-choice__name">Поштомат поруч із вами</span>
                                 </div>
                                 <input type="radio" name="delivery_method" value="drop box"
                                        class="option-single-choice__radio"/>
@@ -73,7 +73,7 @@
                                 type="text"
                                 name="full_name"
                                 class="personal-input @error('full_name') is-error @enderror"
-                                placeholder="Full Name"
+                                placeholder="Повне ім'я"
                                 value="{{ old('full_name', $address['full_name'] ?? $lastOrder?->shipping_full_name ?? auth()->user()?->name) }}"
                                 required
                                 maxlength="120"
@@ -87,7 +87,7 @@
                                 type="email"
                                 name="email"
                                 class="personal-input @error('email') is-error @enderror"
-                                placeholder="E-mail"
+                                placeholder="Електронна пошта"
                                 value="{{ old('email', $address['email'] ?? $lastOrder?->shipping_email ?? auth()->user()?->email) }}"
                                 required
                                 maxlength="120"
@@ -101,7 +101,7 @@
                                 type="text"
                                 name="street"
                                 class="personal-input @error('street') is-error @enderror"
-                                placeholder="Address"
+                                placeholder="Адреса"
                                 value="{{ old('street', $address['street'] ?? $lastOrder?->shipping_street ?? auth()->user()?->address) }}"
                                 required
                                 maxlength="150"
@@ -117,7 +117,7 @@
                                         type="number"
                                         name="postal_code"
                                         class="personal-input @error('postal_code') is-error @enderror"
-                                        placeholder="Post Code"
+                                        placeholder="Поштовий індекс"
                                         value="{{ old('postal_code', $address['postal_code'] ?? $lastOrder?->shipping_postal_code ?? auth()->user()?->postcode) }}"
                                         required
                                         min="0"
@@ -134,7 +134,7 @@
                                         type="text"
                                         name="city"
                                         class="personal-input @error('city') is-error @enderror"
-                                        placeholder="City"
+                                        placeholder="Місто"
                                         value="{{ old('city', $address['city'] ?? $lastOrder?->shipping_city ?? auth()->user()?->city) }}"
                                         required
                                         maxlength="100"
@@ -164,11 +164,11 @@
                                         type="tel"
                                         name="phone"
                                         class="personal-input @error('phone') is-error @enderror"
-                                        placeholder="Phone (with country code)"
+                                        placeholder="Телефон (з кодом країни)"
                                         inputmode="tel"
                                         pattern="^\+[0-9]{3}( [0-9]{3}){3}$"
                                         maxlength="16"
-                                        title="Format: +123 456 789 012"
+                                        title="Формат: +123 456 789 012"
                                         value="{{ old('phone', $address['phone'] ?? $lastOrder?->shipping_phone) }}"
                                         required
                                         autocomplete="tel"
@@ -180,7 +180,7 @@
                             </div>
 
                             <button type="submit" class="finish-order-btn">
-                                Continue to payment
+                                Перейти до оплати
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -191,21 +191,21 @@
                 </div>
 
                 <div class="order-summary">
-                    <h2 class="order-summary__title">Order Summary</h2>
+                    <h2 class="order-summary__title">Підсумок замовлення</h2>
 
                     <div class="order-summary__rows">
                         <div class="order-summary__row">
-                            <span>Subtotal</span>
+                            <span>Проміжна сума</span>
                             <span>${{ number_format($cartSummary['subtotal_before_discount'] ?? 0, 2) }}</span>
                         </div>
                         <div class="order-summary__row">
-                            <span>Discount</span>
+                            <span>Знижка</span>
                             <span class="order-summary__discount">
                                 -${{ number_format($cartSummary['discount_total'] ?? 0, 2) }}
                             </span>
                         </div>
                         <div class="order-summary__row">
-                            <span>Delivery Fee</span>
+                            <span>Вартість доставки</span>
                             <span>${{ number_format($cartSummary['delivery_fee'] ?? 0, 2) }}</span>
                         </div>
                     </div>
@@ -213,7 +213,7 @@
                     <div class="order-summary__divider"></div>
 
                     <div class="order-summary__total">
-                        <span>Total</span>
+                        <span>Разом</span>
                         <span>${{ number_format($cartSummary['total'] ?? 0, 2) }}</span>
                     </div>
                 </div>

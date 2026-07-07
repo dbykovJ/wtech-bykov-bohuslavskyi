@@ -24,6 +24,6 @@ class RegisterController extends Controller
 
         $this->guestCartService->mergeIntoDb($user->id);
 
-        return redirect()->route('home')->with('success', 'Welcome to SuperSell!');
+        return redirect()->route('home')->with('success', 'Ласкаво просимо до SuperSell!');
     }
 }

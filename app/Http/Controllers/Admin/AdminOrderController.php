@@ -49,13 +49,13 @@ class AdminOrderController extends Controller
         $categories = Category::orderBy('name')->pluck('name');
 
         $statuses = [
-            'pending_payment' => 'Pending',
-            'paid'           => 'Paid',
-            'processing'      => 'Processing',
-            'shipped'         => 'In Transit',
-            'delivered'       => 'Delivered',
-            'completed'       => 'Completed',
-            'cancelled'       => 'Cancelled',
+            'pending_payment' => 'Очікує оплати',
+            'paid'           => 'Оплачено',
+            'processing'      => 'В обробці',
+            'shipped'         => 'В дорозі',
+            'delivered'       => 'Доставлено',
+            'completed'       => 'Завершено',
+            'cancelled'       => 'Скасовано',
         ];
 
         return view('admin.orders', compact('orders', 'categories', 'statuses'));

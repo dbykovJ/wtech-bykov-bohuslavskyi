@@ -1,27 +1,27 @@
 @extends('layouts.admin')
 
-@section('title', 'SuperDash — Dashboard')
+@section('title', 'SuperDash — Панель')
 
 @push('styles')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 
 @section('content')
-<h1 class="admin-page-title">Dashboard</h1>
+<h1 class="admin-page-title">Панель</h1>
 
 
 <a href="{{ route('account') }}" class="reset-filter-btn" style="margin-bottom:16px; display:inline-flex; align-items:center; gap:8px;">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="15 18 9 12 15 6"/>
     </svg>
-    Back to Account
+    Назад до акаунта
 </a>
 
 <div class="stat-cards">
     <div class="stat-card">
         <div class="stat-card__top">
             <div>
-                <p class="stat-card__label">Total Users</p>
+                <p class="stat-card__label">Всього користувачів</p>
                 <p class="stat-card__value">{{ number_format($totalUsers) }}</p>
             </div>
             <div class="stat-card__icon stat-card__icon--purple">
@@ -33,7 +33,7 @@
     <div class="stat-card">
         <div class="stat-card__top">
             <div>
-                <p class="stat-card__label">Total Orders</p>
+                <p class="stat-card__label">Всього замовлень</p>
                 <p class="stat-card__value">{{ number_format($totalOrders) }}</p>
             </div>
             <div class="stat-card__icon stat-card__icon--orange">
@@ -45,7 +45,7 @@
     <div class="stat-card">
         <div class="stat-card__top">
             <div>
-                <p class="stat-card__label">Total Sales</p>
+                <p class="stat-card__label">Загальні продажі</p>
                 <p class="stat-card__value">${{ number_format($totalSales, 2) }}</p>
             </div>
             <div class="stat-card__icon stat-card__icon--green">
@@ -57,7 +57,7 @@
     <div class="stat-card">
         <div class="stat-card__top">
             <div>
-                <p class="stat-card__label">Pending Orders</p>
+                <p class="stat-card__label">Замовлення в очікуванні</p>
                 <p class="stat-card__value">{{ number_format($totalPending) }}</p>
             </div>
             <div class="stat-card__icon stat-card__icon--peach">
@@ -69,7 +69,7 @@
 
 <div class="card">
     <div class="card__header">
-        <h2 class="card__title">Sales This Month — {{ now()->format('F Y') }}</h2>
+        <h2 class="card__title">Продажі цього місяця — {{ now()->format('m.Y') }}</h2>
     </div>
     <div class="chart-wrapper">
         <canvas id="salesChart"></canvas>
@@ -78,31 +78,31 @@
 
 <div class="card">
     <div class="card__header">
-        <h2 class="card__title">Recent Orders</h2>
-        <a href="{{ route('admin.orders') }}" class="admin-select" style="text-decoration:none;">View all</a>
+        <h2 class="card__title">Останні замовлення</h2>
+        <a href="{{ route('admin.orders') }}" class="admin-select" style="text-decoration:none;">Переглянути всі</a>
     </div>
     <table class="admin-table">
         <thead>
             <tr>
-                <th>Order #</th>
-                <th>Customer</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Status</th>
+                <th>№ замовлення</th>
+                <th>Клієнт</th>
+                <th>Локація</th>
+                <th>Дата</th>
+                <th>Сума</th>
+                <th>Статус</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($recentOrders as $order)
             @php
                 $statusMap = [
-                    'pending_payment' => ['label' => 'Pending',    'class' => 'badge--pending'],
-                    'paid'            => ['label' => 'Paid',       'class' => 'badge--processing'],
-                    'processing'      => ['label' => 'Processing', 'class' => 'badge--processing'],
-                    'shipped'         => ['label' => 'In Transit', 'class' => 'badge--in-transit'],
-                    'delivered'       => ['label' => 'Delivered',  'class' => 'badge--delivered'],
-                    'completed'       => ['label' => 'Completed',  'class' => 'badge--completed'],
-                    'cancelled'       => ['label' => 'Cancelled',  'class' => 'badge--cancelled'],
+                    'pending_payment' => ['label' => 'Очікує оплати', 'class' => 'badge--pending'],
+                    'paid'            => ['label' => 'Оплачено',      'class' => 'badge--processing'],
+                    'processing'      => ['label' => 'В обробці',     'class' => 'badge--processing'],
+                    'shipped'         => ['label' => 'В дорозі',      'class' => 'badge--in-transit'],
+                    'delivered'       => ['label' => 'Доставлено',    'class' => 'badge--delivered'],
+                    'completed'       => ['label' => 'Завершено',     'class' => 'badge--completed'],
+                    'cancelled'       => ['label' => 'Скасовано',     'class' => 'badge--cancelled'],
                 ];
                 $s = $statusMap[$order->status] ?? ['label' => ucfirst($order->status), 'class' => 'badge--pending'];
                 $address = implode(', ', array_filter([$order->shipping_city, $order->shipping_country])) ?: '—';
@@ -111,13 +111,13 @@
                 <td>#{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ $order->shipping_full_name ?? $order->user?->name ?? '—' }}</td>
                 <td>{{ $address }}</td>
-                <td>{{ $order->created_at->format('d M Y') }}</td>
+                <td>{{ $order->created_at->format('d.m.Y') }}</td>
                 <td>${{ number_format($order->total, 2) }}</td>
                 <td><span class="badge {{ $s['class'] }}">{{ $s['label'] }}</span></td>
             </tr>
             @empty
             <tr>
-                <td colspan="6" style="text-align:center; color:#9ca3af;">No orders yet.</td>
+                <td colspan="6" style="text-align:center; color:#9ca3af;">Замовлень поки немає.</td>
             </tr>
             @endforelse
         </tbody>
@@ -133,7 +133,7 @@
         data: {
             labels: @json($chartLabels),
             datasets: [{
-                label: 'Sales ($)',
+                label: 'Продажі ($)',
                 data: @json($chartData),
                 borderColor: '#6366f1',
                 backgroundColor: 'rgba(99,102,241,0.1)',

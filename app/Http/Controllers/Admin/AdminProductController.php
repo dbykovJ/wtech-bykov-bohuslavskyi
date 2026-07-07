@@ -39,7 +39,7 @@ class AdminProductController extends Controller
 
         $uploadedImages = $this->normalizeUploadedFiles($request->file('images', []));
         if (count($uploadedImages) < 2) {
-            return back()->withErrors(['images' => 'At least 2 images are required.'])->withInput();
+            return back()->withErrors(['images' => 'Потрібно щонайменше 2 зображення.'])->withInput();
         }
 
         DB::transaction(function () use ($validated, $request) {
@@ -52,7 +52,7 @@ class AdminProductController extends Controller
         });
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product created successfully.');
+            ->with('success', 'Товар успішно створено.');
     }
 
     public function edit(string $id)
@@ -76,7 +76,7 @@ class AdminProductController extends Controller
         $totalAfter      = $remainingCount + count($newImages);
 
         if ($totalAfter < 2) {
-            return back()->withErrors(['images' => 'At least 2 images are required.'])->withInput();
+            return back()->withErrors(['images' => 'Потрібно щонайменше 2 зображення.'])->withInput();
         }
 
         DB::transaction(function () use ($validated, $request, $product, $removeImageIds) {
@@ -90,7 +90,7 @@ class AdminProductController extends Controller
         });
 
         return redirect()->route('admin.products.edit', $product->id)
-            ->with('success', 'Product updated successfully.');
+            ->with('success', 'Товар успішно оновлено.');
     }
 
     public function destroy(string $id)
@@ -104,7 +104,7 @@ class AdminProductController extends Controller
         $product->delete();
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product deleted successfully.');
+            ->with('success', 'Товар успішно видалено.');
     }
 
     private function rules(): array

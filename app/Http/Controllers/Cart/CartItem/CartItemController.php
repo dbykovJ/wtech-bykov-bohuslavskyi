@@ -43,7 +43,7 @@ class CartItemController extends Controller
                 $this->guestCartService->add($validated);
             }
 
-            return redirect()->route('cart')->with('success', 'Item added to cart!');
+            return redirect()->route('cart')->with('success', 'Товар додано до кошика!');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors());
         }
@@ -57,7 +57,7 @@ class CartItemController extends Controller
             $this->guestCartService->remove($cartItemId);
         }
 
-        return redirect()->back()->with('success', 'Item removed from cart!');
+        return redirect()->back()->with('success', 'Товар видалено з кошика!');
     }
 
     public function update(Request $request, string $cartItemId)
@@ -72,7 +72,7 @@ class CartItemController extends Controller
             $this->guestCartService->updateQuantity($cartItemId, $validated['count']);
         }
 
-        return redirect()->back()->with('success', 'Cart updated!');
+        return redirect()->back()->with('success', 'Кошик оновлено!');
     }
 
     public function clear()
@@ -83,7 +83,7 @@ class CartItemController extends Controller
             $this->guestCartService->clear();
         }
 
-        return redirect()->back()->with('success', 'Cart cleared!');
+        return redirect()->back()->with('success', 'Кошик очищено!');
     }
 
     public function applyPromo(Request $request)
@@ -98,7 +98,7 @@ class CartItemController extends Controller
             } else {
                 $this->guestCartService->applyPromoCode($validated['promo_code']);
             }
-            return redirect()->back()->with('success', 'Promo code applied.');
+            return redirect()->back()->with('success', 'Промокод застосовано.');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors());
         }
@@ -111,6 +111,6 @@ class CartItemController extends Controller
         } else {
             $this->guestCartService->removePromoCode();
         }
-        return redirect()->back()->with('success', 'Promo code removed.');
+        return redirect()->back()->with('success', 'Промокод видалено.');
     }
 }

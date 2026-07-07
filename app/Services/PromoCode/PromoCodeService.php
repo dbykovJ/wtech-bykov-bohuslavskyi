@@ -16,7 +16,7 @@ class PromoCodeService
 
         if ($normalized === '') {
             throw ValidationException::withMessages([
-                'promo_code' => 'Please enter a promo code.',
+                'promo_code' => 'Будь ласка, введіть промокод.',
             ]);
         }
 
@@ -24,13 +24,13 @@ class PromoCodeService
 
         if ($sales->isEmpty()) {
             throw ValidationException::withMessages([
-                'promo_code' => 'Promo code is invalid or expired.',
+                'promo_code' => 'Промокод недійсний або термін його дії закінчився.',
             ]);
         }
 
         if ($sales->count() > 1) {
             throw ValidationException::withMessages([
-                'promo_code' => 'Promo code is duplicated in the system. Please contact support.',
+                'promo_code' => 'Промокод дублюється в системі. Будь ласка, зверніться до підтримки.',
             ]);
         }
 
@@ -44,7 +44,7 @@ class PromoCodeService
 
         if (! $hasEligibleProduct) {
             throw ValidationException::withMessages([
-                'promo_code' => 'This promo code does not apply to products in your cart.',
+                'promo_code' => 'Цей промокод не застосовується до товарів у вашому кошику.',
             ]);
         }
 

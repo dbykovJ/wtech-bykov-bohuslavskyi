@@ -45,9 +45,11 @@ main {
     min-height: 380px;
 }
 
-.product-gallery-image__main{
+.product-gallery-image__main {
     width: 400px;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
 }
 
 .product-info {
@@ -256,6 +258,10 @@ main {
     background: #333;
 }
 
+.reviews {
+    margin-bottom: 60px;
+}
+
 .reviews-header {
     display: flex;
     align-items: center;
@@ -459,9 +465,11 @@ main {
 
 .product-card__img {
     width: 100%;
-    aspect-ratio: 3/4;
+    /* height: 350px; */
+    aspect-ratio: 3.5/4;
     border-radius: 14px;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 
 .product-card__info {
@@ -492,6 +500,10 @@ main {
         min-height: 280px;
     }
 
+    .reviews {
+        margin-bottom: 35px;
+    }
+
     .reviews__grid {
         grid-template-columns: 1fr;
     }
@@ -513,5 +525,9 @@ main {
     .also-like__grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
+    }
+
+    .reviews {
+        margin-bottom: 15px;
     }
 }

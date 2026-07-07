@@ -21,7 +21,7 @@ class PasswordController extends Controller
 
         $this->passwordService->updatePassword(Auth::user(), $validated['password']);
 
-        return back()->with('success', 'Password updated successfully.');
+        return back()->with('success', 'Пароль успішно оновлено.');
     }
 }
 

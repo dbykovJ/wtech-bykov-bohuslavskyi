@@ -36,6 +36,6 @@ class OrderController extends Controller
             return redirect()->route('account.orders')->withErrors($e->errors());
         }
 
-        return redirect()->route('account.cart')->with('success', 'Items added to your cart.');
+        return redirect()->route('account.cart')->with('success', 'Товари додано до кошика.');
     }
 }

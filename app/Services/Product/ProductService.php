@@ -111,12 +111,12 @@ class ProductService
     private function getSizeLabel(string $code): string
     {
         return match ($code) {
-            'XS' => 'X-Small',
-            'S' => 'Small',
-            'M' => 'Medium',
-            'L' => 'Large',
-            'XL' => 'X-Large',
-            'XXL' => 'XX-Large',
+            'XS' => 'Дуже малий',
+            'S' => 'Малий',
+            'M' => 'Середній',
+            'L' => 'Великий',
+            'XL' => 'Дуже великий',
+            'XXL' => 'Надвеликий',
             default => $code,
         };
     }

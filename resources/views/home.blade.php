@@ -13,15 +13,15 @@
                 <div class="hero__grid">
                     <div>
                         <h1 class="hero__title">
-                            FIND CLOTHES<br />THAT MATCH<br />YOUR STYLE
+                            ЗНАЙДИ ОДЯГ,<br />ЩО ПАСУЄ<br />ТВОЄМУ СТИЛЮ
                         </h1>
                         <p class="hero__desc">
-                            Browse through our diverse range of meticulously
-                            crafted garments, designed to bring out your
-                            individuality and cater to your sense of style.
+                            Перегляньте наш різноманітний асортимент ретельно
+                            виготовленого одягу, створеного, щоб підкреслити вашу
+                            індивідуальність і відповідати вашому відчуттю стилю.
                         </p>
                         <div class="hero__actions">
-                            <a href="{{ route('category') }}" class="hero__cta">Shop Now</a>
+                            <a href="{{ route('category') }}" class="hero__cta">До покупок</a>
 
                             <div class="hero__socials">
                                 <a href="#" class="hero__social-link" aria-label="Instagram">
@@ -46,18 +46,18 @@
 
                         <div class="hero__stats">
                             <div>
-                                <div class="hero__stat-num">3+</div>
-                                <div class="hero__stat-label">International Brands</div>
+                                <div class="hero__stat-num">30+</div>
+                                <div class="hero__stat-label">Міжнародних брендів</div>
                             </div>
                             <div class="hero__stat-divider"></div>
                             <div>
-                                <div class="hero__stat-num">10+</div>
-                                <div class="hero__stat-label">High Quality Products</div>
+                                <div class="hero__stat-num">1k+</div>
+                                <div class="hero__stat-label">Якісних товарів</div>
                             </div>
                             <div class="hero__stat-divider"></div>
                             <div>
-                                <div class="hero__stat-num">2+</div>
-                                <div class="hero__stat-label">Happy Customers</div>
+                                <div class="hero__stat-num">2k+</div>
+                                <div class="hero__stat-label">Задоволених клієнтів</div>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="hero__media">
                         <video class="hero__video" autoplay muted loop playsinline>
                             <source src="https://res.cloudinary.com/dhecryc7b/video/upload/q_auto/f_auto/v1780518381/Screen_Recording_2026-05-14_175039_eps40w.mp4" type="video/mp4">
-                            <img src="{{ asset('assets/ishowspeed.png') }}" alt="The best website ever" class="hero__image" />
+                            <img src="{{ asset('assets/ishowspeed.png') }}" alt="Найкращий сайт" class="hero__image" />
                         </video>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
 
         <section class="brands-section">
             <div class="container">
-                <h2 id="top-brand-seller" class="section-heading">TOP SELLERS</h2>
+                <h2 id="top-brand-seller" class="section-heading">ТОП ПРОДАЖІВ</h2>
 
                 <div class="brands-grid">
                     <div class="brands-grid__center">
@@ -121,7 +121,7 @@
 
         <section class="products-section">
             <div class="container">
-                <h2 id="on-sale" class="section-heading">ON SALE</h2>
+                <h2 id="on-sale" class="section-heading">РОЗПРОДАЖ</h2>
                 <div class="products-grid">
                     @foreach($productsOnSale as $productOnSale)
                         @php
@@ -153,7 +153,7 @@
 
         <section class="products-section products-section--last">
             <div class="container">
-                <h2 id="new-arrivals" class="section-heading">NEW ARRIVALS</h2>
+                <h2 id="new-arrivals" class="section-heading">НОВИНКИ</h2>
                 <div class="products-grid">
                     @foreach($newArrivals as $newArrival)
                         @php

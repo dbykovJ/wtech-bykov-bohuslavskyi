@@ -146,19 +146,19 @@ class AuthorizedCartService
 
         if (!$stock) {
             throw ValidationException::withMessages([
-                'size' => 'The selected color and size combination is not available.'
+                'size' => 'Обрана комбінація кольору та розміру недоступна.'
             ]);
         }
 
         if ($count < 1) {
             throw ValidationException::withMessages([
-                'count' => 'Count must be at least 1.'
+                'count' => "Кількість має бути не менше 1."
             ]);
         }
 
         if ($count > $stock) {
             throw ValidationException::withMessages([
-                'count' => "Only {$stock} items available for this combination."
+                'count' => "Доступно лише {$stock} шт. для цієї комбінації."
             ]);
         }
     }

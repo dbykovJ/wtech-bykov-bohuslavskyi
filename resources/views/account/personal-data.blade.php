@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Your Data — SUPERSELL')
+@section('title', 'Ваші дані — SUPERSELL')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/account.css') }}"/>
@@ -11,7 +11,7 @@
 @section('content')
     <main class="personal-main">
         <div class="container">
-            <h1 class="personal-title heading">YOUR DATA</h1>
+            <h1 class="personal-title heading">ВАШІ ДАНІ</h1>
 
             @include('partials.account-nav')
 
@@ -26,7 +26,7 @@
                     @endif
 
                     <div class="personal-form-box">
-                        <h2 class="personal-form-box__title">Personal Details</h2>
+                        <h2 class="personal-form-box__title">Особисті дані</h2>
 
                         <form class="personal-form" method="POST" action="{{ route('account.personal-data.update') }}"
                               novalidate>
@@ -39,7 +39,7 @@
                                     type="text"
                                     name="name"
                                     class="personal-input @error('name') is-error @enderror"
-                                    placeholder="Full Name"
+                                    placeholder="Повне ім'я"
                                     value="{{ old('name', $user->name) }}"
                                     required
                                     maxlength="64"
@@ -55,7 +55,7 @@
                                     type="email"
                                     name="email"
                                     class="personal-input @error('email') is-error @enderror"
-                                    placeholder="E-mail"
+                                    placeholder="Електронна пошта"
                                     value="{{ old('email', $user->email) }}"
                                     required
                                     maxlength="128"
@@ -71,7 +71,7 @@
                                     type="text"
                                     name="address"
                                     class="personal-input @error('address') is-error @enderror"
-                                    placeholder="Address"
+                                    placeholder="Адреса"
                                     value="{{ old('address', $user->address) }}"
                                     maxlength="255"
                                     autocomplete="street-address"
@@ -86,7 +86,7 @@
                                     type="number"
                                     name="postcode"
                                     class="personal-input @error('postcode') is-error @enderror"
-                                    placeholder="Post Code"
+                                    placeholder="Поштовий індекс"
                                     value="{{ old('postcode', $user->postcode) }}"
                                     min="0"
                                     max="9999999"
@@ -103,7 +103,7 @@
                                     type="text"
                                     name="city"
                                     class="personal-input @error('city') is-error @enderror"
-                                    placeholder="City"
+                                    placeholder="Місто"
                                     value="{{ old('city', $user->city) }}"
                                     maxlength="128"
                                     autocomplete="address-level2"
@@ -127,12 +127,12 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="account-btn">Save details</button>
+                            <button type="submit" class="account-btn">Зберегти дані</button>
                         </form>
                     </div>
 
                     <div class="personal-form-box">
-                        <h2 class="personal-form-box__title">Change Password</h2>
+                        <h2 class="personal-form-box__title">Зміна пароля</h2>
 
                         <form class="personal-form" method="POST" action="{{ route('account.password.update') }}"
                               novalidate>
@@ -142,7 +142,7 @@
                                 type="password"
                                 name="current_password"
                                 class="personal-input @error('current_password') is-error @enderror"
-                                placeholder="Current password"
+                                placeholder="Поточний пароль"
                                 required
                                 autocomplete="current-password"
                             />
@@ -155,7 +155,7 @@
                                 name="password"
                                 id="new_password"
                                 class="personal-input @error('password') is-error @enderror"
-                                placeholder="New password (min. 8 characters)"
+                                placeholder="Новий пароль (мін. 8 символів)"
                                 required
                                 minlength="8"
                                 autocomplete="new-password"
@@ -169,7 +169,7 @@
                                 name="password_confirmation"
                                 id="password_confirmation"
                                 class="personal-input @error('password_confirmation') is-error @enderror"
-                                placeholder="Confirm new password"
+                                placeholder="Підтвердьте новий пароль"
                                 required
                                 minlength="8"
                                 autocomplete="new-password"
@@ -178,7 +178,7 @@
                             <div class="error-bubble">{{ $message }}</div>
                             @enderror
 
-                            <button type="submit" class="account-btn">Change password</button>
+                            <button type="submit" class="account-btn">Змінити пароль</button>
                         </form>
                     </div>
 
@@ -199,7 +199,7 @@
 
         confirmInput?.addEventListener('input', () => {
             if (confirmInput.value && confirmInput.value !== newPassword.value) {
-                confirmInput.setCustomValidity('Passwords do not match.');
+                confirmInput.setCustomValidity('Паролі не збігаються.');
             } else {
                 confirmInput.setCustomValidity('');
             }
@@ -207,7 +207,7 @@
 
         newPassword?.addEventListener('input', () => {
             if (confirmInput.value && confirmInput.value !== newPassword.value) {
-                confirmInput.setCustomValidity('Passwords do not match.');
+                confirmInput.setCustomValidity('Паролі не збігаються.');
             } else {
                 confirmInput.setCustomValidity('');
             }

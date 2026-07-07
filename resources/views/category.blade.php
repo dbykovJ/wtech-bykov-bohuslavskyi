@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Shop — SUPERSELL')
+@section('title', 'Магазин — SUPERSELL')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/category.css') }}" />
@@ -10,24 +10,24 @@
     <main class="category-main">
         <div class="container">
             <div class="breadcrumb">
-                <a href="{{ route('home') }}">Home</a>
-                <span class="breadcrumb__current">Shop</span>
+                <a href="{{ route('home') }}">Головна</a>
+                <span class="breadcrumb__current">Магазин</span>
             </div>
 
             <div class="category-layout">
                 <form action="{{ route('category') }}" method="GET" id="filter-form">
                     <aside class="filters">
                         <div class="filters__header">
-                            <span class="filters__title">Filters</span>
-                            <a href="{{ route('category') }}" class="filters__reset">Reset All</a>
+                            <span class="filters__title">Фільтри</span>
+                            <a href="{{ route('category') }}" class="filters__reset">Скинути все</a>
                         </div>
 
                         <div class="filters__section">
-                            <div class="filters__section-title">Categories</div>
+                            <div class="filters__section-title">Категорії</div>
                             <div class="filters__categories">
                                 <div class="filters__category-item {{ !request('category') ? 'active' : '' }}"
                                      onclick="setCategory('')">
-                                    <span>All</span>
+                                    <span>Усі</span>
                                     <span class="filters__category-radio {{ !request('category') ? 'filters__category-radio--active' : '' }}"></span>
                                 </div>
                                 @foreach($categories as $cat)
@@ -42,10 +42,10 @@
                         </div>
 
                         <div class="filters__section">
-                            <div class="filters__section-title">Price Range</div>
+                            <div class="filters__section-title">Діапазон цін</div>
                             <div class="filters__price-inputs">
                                 <div class="filters__price-box">
-                                    <span class="filters__price-label">Min</span>
+                                    <span class="filters__price-label">Від</span>
                                     <input type="number" name="min_price" placeholder="$0"
                                            value="{{ request('min_price') }}"
                                            min="0" step="1"
@@ -53,7 +53,7 @@
                                 </div>
                                 <span class="filters__price-sep">—</span>
                                 <div class="filters__price-box">
-                                    <span class="filters__price-label">Max</span>
+                                    <span class="filters__price-label">До</span>
                                     <input type="number" name="max_price" placeholder="$999"
                                            value="{{ request('max_price') }}"
                                            min="0" step="1"
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="filters__section">
-                            <button type="submit" class="filters__apply-btn">Apply Filters</button>
+                            <button type="submit" class="filters__apply-btn">Застосувати фільтри</button>
                         </div>
                     </aside>
                 </form>
@@ -71,39 +71,39 @@
                 <div class="products-area">
                     <div class="products-area__header">
                         <div>
-                            <h1 class="products-area__title">Shop</h1>
+                            <h1 class="products-area__title">Магазин</h1>
                             <div class="products-area__meta">
                                 @php
                                     $firstItem = $products->firstItem() ?? 0;
                                     $lastItem = $products->lastItem() ?? 0;
                                 @endphp
                                 @if(request('search'))
-                                    Showing {{ $firstItem }}-{{ $lastItem }}
-                                    of {{ $products->total() }} Products for "{{ request('search') }}"
+                                    Показано {{ $firstItem }}-{{ $lastItem }}
+                                    з {{ $products->total() }} товарів за запитом "{{ request('search') }}"
                                 @else
-                                    Showing {{ $firstItem }}-{{ $lastItem }}
-                                    of {{ $products->total() }} Products
+                                    Показано {{ $firstItem }}-{{ $lastItem }}
+                                    з {{ $products->total() }} товарів
                                 @endif
                             </div>
                         </div>
                         <div class="products-area__sort">
-                            Sort by:
+                            Сортувати за:
                             <div class="select">
                                 <div class="select__selected">
                                 <span>{{ match(request('sort')) {
-                                    'price_asc'  => 'Price: Low to High',
-                                    'price_desc' => 'Price: High to Low',
-                                    'newest'     => 'Newest',
-                                    default      => 'Newest'
+                                    'price_asc'  => 'Ціна: від низької до високої',
+                                    'price_desc' => 'Ціна: від високої до низької',
+                                    'newest'     => 'Найновіші',
+                                    default      => 'Найновіші'
                                 } }}</span>
                                     <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                                         <path d="M1 1l4 4 4-4" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </div>
                                 <ul class="select__dropdown">
-                                    <li onclick="setSort('newest')" class="{{ request('sort', 'newest') === 'newest' ? 'active' : '' }}">Newest</li>
-                                    <li onclick="setSort('price_asc')" class="{{ request('sort') === 'price_asc' ? 'active' : '' }}">Price: Low to High</li>
-                                    <li onclick="setSort('price_desc')" class="{{ request('sort') === 'price_desc' ? 'active' : '' }}">Price: High to Low</li>
+                                    <li onclick="setSort('newest')" class="{{ request('sort', 'newest') === 'newest' ? 'active' : '' }}">Найновіші</li>
+                                    <li onclick="setSort('price_asc')" class="{{ request('sort') === 'price_asc' ? 'active' : '' }}">Ціна: від низької до високої</li>
+                                    <li onclick="setSort('price_desc')" class="{{ request('sort') === 'price_desc' ? 'active' : '' }}">Ціна: від високої до низької</li>
                                 </ul>
                             </div>
                             <input type="hidden" name="sort" id="sort-input" value="{{ request('sort') }}" form="filter-form" />
@@ -139,7 +139,7 @@
                                 </div>
                             </a>
                         @empty
-                            <p style="color: #888; font-size: 14px;">No products found.</p>
+                            <p style="color: #888; font-size: 14px;">Товарів не знайдено.</p>
                         @endforelse
                     </div>
 

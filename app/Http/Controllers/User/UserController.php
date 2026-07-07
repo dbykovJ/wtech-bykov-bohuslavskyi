@@ -35,6 +35,6 @@ class UserController extends Controller
     {
         $this->service->updatePersonalData(Auth::user(), $request);
 
-        return back()->with('success', 'Your details have been updated.');
+        return back()->with('success', 'Ваші дані оновлено.');
     }
 }
