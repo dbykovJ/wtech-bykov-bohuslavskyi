@@ -19,7 +19,13 @@ class ProductService
      */
     public function getProduct($id)
     {
-        $product = Product::with('colorSizes', 'sales', 'images', 'reviews.user')->findOrFail($id);
+        $product = Product::with([
+            'colorSizes',
+            'sales' => fn ($q) => $q->where('sales.valid_to', '>', now())
+                ->where('sales.valid_from', '<', now()),
+            'images',
+            'reviews.user',
+        ])->findOrFail($id);
 
         if ($product->colorSizes->isNotEmpty()) {
             $order = array_flip(self::SIZE_ORDER);

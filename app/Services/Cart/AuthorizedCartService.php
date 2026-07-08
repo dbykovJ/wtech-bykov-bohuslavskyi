@@ -35,10 +35,14 @@ class AuthorizedCartService
         $appliedPromoSale = $this->getAppliedPromoSale();
         $loyaltyDiscountPercent = $this->loyalty->getDiscountPercent($user);
 
+        $now = now();
+        $activeSalesScope = fn ($q) => $q->where('sales.valid_to', '>', $now)
+            ->where('sales.valid_from', '<', $now);
+
         $cartItems = $user->cartItems()
             ->with([
                 'product.images',
-                'product.allSales',
+                'product.allSales' => $activeSalesScope,
                 'color',
             ])
             ->get()
