@@ -22,7 +22,16 @@
                         </p>
                         <div class="hero__actions">
                             <a href="{{ route('category') }}" class="hero__cta">До покупок</a>
-                            <a href="{{ route('account') }}" class="hero__loyalty-cta">Створити картку лояльності</a>
+                            <a href="{{ route('account') }}" class="hero__loyalty-cta">
+                                Створити картку лояльності
+                                <span class="hero__loyalty-badge" aria-hidden="true">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="19" y1="5" x2="5" y2="19"></line>
+                                        <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                                        <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                                    </svg>
+                                </span>
+                            </a>
                         </div>
 
                         <div class="hero__stats">
