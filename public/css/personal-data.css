@@ -61,7 +61,7 @@
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 13px;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
     color: #111;
     outline: none;
     transition: border-color 0.15s;
@@ -117,7 +117,7 @@
 
 .order-summary__title {
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .order-summary__rows {
@@ -159,9 +159,9 @@
     border-radius: 30px;
     padding: 16px 24px;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 500;
     cursor: pointer;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -182,7 +182,7 @@ select[name="country"] {
     border-radius: 8px;
     padding: 12px 40px 12px 16px;
     font-size: 13px;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
     color: #111;
     cursor: pointer;
     outline: none;

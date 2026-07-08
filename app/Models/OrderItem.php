@@ -18,6 +18,7 @@ class OrderItem extends Model
         'unit_price_before_discount',
         'unit_sales_discount_percent',
         'unit_promo_discount_percent',
+        'unit_loyalty_discount_percent',
         'unit_discount_percent',
         'unit_price_after_discount',
         'line_total',

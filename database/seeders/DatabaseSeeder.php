@@ -12,13 +12,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            AdminSeeder::class,
             CategorySeeder::class,
             ColorSeeder::class,
             ProductSeeder::class,
             ProductImageSeeder::class,
             SaleSeeder::class,
-            UserWithCartSeeder::class,
         ]);
+
+        // AdminSeeder / UserWithCartSeeder create accounts with a known
+        // default password — never run them against a production database.
+        if (! app()->environment('production')) {
+            $this->call([
+                AdminSeeder::class,
+                UserWithCartSeeder::class,
+            ]);
+        }
     }
 }

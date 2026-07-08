@@ -24,7 +24,7 @@
                     @endphp
                     @if ($imagePath)
                         <img
-                            style="border-radius: 12px; background: none; object-fit: contain;"
+                            style="border-radius: 12px; background: none; object-fit: cover; padding-top: 14px;"
                             src="{{ $imagePath }}"
                             alt="{{ $product->name }}"
                             class="product-card__img" />

@@ -63,7 +63,7 @@
 
  .account-nav__title {
      font-size: 15px;
-     font-weight: 700;
+     font-weight: 500;
      margin-bottom: 12px;
  }
 
@@ -125,7 +125,7 @@
 
  .account-card__title {
      font-size: 18px;
-     font-weight: 700;
+     font-weight: 500;
      margin-bottom: 12px;
  }
 
@@ -138,7 +138,7 @@
 
  .account-profile__name {
      font-size: 16px;
-     font-weight: 700;
+     font-weight: 500;
  }
 
  .account-profile__email {
@@ -221,7 +221,7 @@
      font-size: 13px;
      font-weight: 600;
      cursor: pointer;
-     font-family: 'Satoshi', sans-serif;
+     font-family: 'Raleway', sans-serif;
  }
 
  .account-btn--secondary {
@@ -236,6 +236,58 @@
 
  .account-btn--secondary:hover {
      background: #e5e5e5;
+ }
+
+ .loyalty-intro {
+     font-size: 13px;
+     color: #555;
+     line-height: 1.6;
+     margin-bottom: 14px;
+     max-width: 480px;
+ }
+
+ .loyalty-progress {
+     display: flex;
+     gap: 4px;
+     margin-bottom: 14px;
+ }
+
+ .loyalty-progress__segment {
+     flex: 1;
+     height: 10px;
+     background: #f0f0f0;
+     border-radius: 6px;
+     overflow: hidden;
+ }
+
+ .loyalty-progress__fill {
+     height: 100%;
+     background: #FFC633;
+     border-radius: 6px;
+     transition: width 0.2s;
+ }
+
+ .loyalty-progress__meta {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 12px 24px;
+     font-size: 13px;
+     color: #555;
+     margin-bottom: 10px;
+ }
+
+ .loyalty-progress__meta span {
+     color: #777;
+ }
+
+ .loyalty-progress__meta strong {
+     margin-left: 4px;
+     color: #111;
+ }
+
+ .loyalty-progress__note {
+     font-size: 13px;
+     color: #777;
  }
 
  @media (max-width: 900px) {

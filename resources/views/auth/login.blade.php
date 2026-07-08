@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Вхід — SUPERSELL')
+@section('title', 'Вхід — Look of Today')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
@@ -20,9 +20,9 @@
                 <div class="error-bubble">{{ $message }}</div>
                 @enderror
 
-                <input class="auth-input" id="Password" type="Password" name="Password" placeholder="Пароль" required />
+                <input class="auth-input" id="password" type="password" name="password" placeholder="Пароль" required />
 
-                @error('Password')
+                @error('password')
                 <div class="error-bubble">{{ $message }}</div>
                 @enderror
             </div>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -27,6 +28,7 @@ class User extends Authenticatable
         'postcode',
         'country',
         'is_admin',
+        'loyalty_card_created_at',
     ];
 
     /**
@@ -50,6 +52,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'loyalty_card_created_at' => 'datetime',
         ];
     }
 
@@ -68,8 +71,8 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function getAuthPassword(): string
+    public function newsletterSubscription(): HasOne
     {
-        return $this->getAttributes()['Password'];
+        return $this->hasOne(NewsletterSubscription::class);
     }
 }

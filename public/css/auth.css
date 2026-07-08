@@ -24,7 +24,7 @@
 }
 
 .auth-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size: 50px;
     font-weight: 700;
     text-align: center;
@@ -51,7 +51,7 @@
     height: 40px;
     border: 2px solid #252526;
     border-radius: 20px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-weight: 500;
     font-size: 15px;
     padding: 0 14px;
@@ -74,7 +74,7 @@
     height: 38px;
     background: #4C4848;
     color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size: 15px;
     font-weight: 500;
     text-transform: uppercase;
@@ -89,7 +89,7 @@
 }
 
 .auth-footer-text {
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size: 16px;
     color: #111;
     text-align: center;
@@ -118,7 +118,7 @@
     height: 40px;
     border: 2px solid #252526;
     border-radius: 10px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-weight: 500;
     font-size: 15px;
     padding: 0 14px;
@@ -148,7 +148,7 @@
     height: 38px;
     background: #7F7D83;
     color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size: 15px;
     font-weight: 500;
     border: none;
@@ -166,7 +166,7 @@
     height: 38px;
     background: #4C4848;
     color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size: 15px;
     font-weight: 500;
     border: none;

@@ -9,6 +9,7 @@ use App\Models\ItemColorSizeCount;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\Storage\SupabaseStorageService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -97,11 +98,21 @@ class AdminProductController extends Controller
     {
         $product = Product::with('images')->findOrFail($id);
 
+        try {
+            $product->delete();
+        } catch (QueryException $e) {
+            if ($e->getCode() === '23503') {
+                return back()->withErrors([
+                    'product' => 'Неможливо видалити товар: він фігурує в історії замовлень.',
+                ]);
+            }
+
+            throw $e;
+        }
+
         foreach ($product->images as $image) {
             $this->storage->delete($image->image_url);
         }
-
-        $product->delete();
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Товар успішно видалено.');

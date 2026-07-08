@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Про нас і допомога — SUPERSELL')
+@section('title', 'Про нас і допомога — Look of Today')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/about.css') }}" />
@@ -47,7 +47,7 @@
             <section class="info-content">
                 <article id="about" class="info-section">
                     <h2 class="info-section__title">Про нас</h2>
-                    <div class="info-section__meta">Компанія &bull; Про SUPERSELL</div>
+                    <div class="info-section__meta">Компанія &bull; Про Look of Today</div>
                     <div class="info-section__body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et orci eget mi gravida ultricies. Nulla facilisi. Integer varius lorem at libero rutrum, sed aliquet nibh dictum. In dui mauris, blandit a suscipit sed, sodales in eros.</p>
                         <p>Nam congue, leo nec hendrerit fermentum, velit urna porttitor arcu, lacinia lacinia lorem ipsum a libero. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus vulputate, orci vel euismod venenatis, dui erat dignissim velit, a luctus sapien purus sed ipsum.</p>
@@ -65,7 +65,7 @@
 
                 <article id="works" class="info-section">
                     <h2 class="info-section__title">Як це працює</h2>
-                    <div class="info-section__meta">Компанія &bull; Як працює SUPERSELL</div>
+                    <div class="info-section__meta">Компанія &bull; Як працює Look of Today</div>
                     <div class="info-section__body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non dolor nibh. Sed aliquet urna id nisl efficitur, nec bibendum eros placerat.</p>
                         <p>Curabitur auctor, nibh id aliquet sagittis, enim libero euismod leo, nec convallis libero ante id leo. Sed faucibus, lectus ac malesuada maximus, nunc purus volutpat lectus, sit amet cursus arcu risus vel lectus.</p>
@@ -74,7 +74,7 @@
 
                 <article id="career" class="info-section">
                     <h2 class="info-section__title">Кар'єра</h2>
-                    <div class="info-section__meta">Компанія &bull; Кар'єра в SUPERSELL</div>
+                    <div class="info-section__meta">Компанія &bull; Кар'єра в Look of Today</div>
                     <div class="info-section__body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sodales leo eu purus posuere, in malesuada dui volutpat. Maecenas tempus urna eget est venenatis, at consequat lectus convallis.</p>
                         <p>Integer sed posuere elit. Phasellus sed libero lectus. Vivamus egestas consequat sodales. Maecenas euismod efficitur orci, at elementum neque rhoncus sed.</p>

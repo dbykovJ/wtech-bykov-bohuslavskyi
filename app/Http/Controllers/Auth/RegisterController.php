@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\NewsletterSubscription;
 use App\Services\Cart\GuestCartService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
@@ -24,6 +25,10 @@ class RegisterController extends Controller
 
         $this->guestCartService->mergeIntoDb($user->id);
 
-        return redirect()->route('home')->with('success', 'Ласкаво просимо до SuperSell!');
+        $subscription = NewsletterSubscription::firstOrNew(['email' => strtolower(trim($user->email))]);
+        $subscription->user_id = $user->id;
+        $subscription->save();
+
+        return redirect()->route('home')->with('success', 'Ласкаво просимо до Look of Today!');
     }
 }

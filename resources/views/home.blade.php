@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'SUPERSELL')
+@section('title', 'Look of Today')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}" />
@@ -22,26 +22,7 @@
                         </p>
                         <div class="hero__actions">
                             <a href="{{ route('category') }}" class="hero__cta">До покупок</a>
-
-                            <div class="hero__socials">
-                                <a href="#" class="hero__social-link" aria-label="Instagram">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                        <circle cx="17.5" cy="6.5" r="1.5"></circle>
-                                    </svg>
-                                </a>
-                                <a href="#" class="hero__social-link" aria-label="Facebook">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M18 2h-3a6 6 0 0 0-6 6v3H7v4h2v8h4v-8h3l1-4h-4V8a2 2 0 0 1 2-2h3z"></path>
-                                    </svg>
-                                </a>
-                                <a href="#" class="hero__social-link" aria-label="Twitter">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2s9 5 20 5a9.5 9.5 0 0 0-9-5.5c4.75 2.25 7-7 7-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                                    </svg>
-                                </a>
-                            </div>
+                            <a href="{{ route('account') }}" class="hero__loyalty-cta">Створити картку лояльності</a>
                         </div>
 
                         <div class="hero__stats">

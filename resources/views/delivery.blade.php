@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Доставка — SUPERSELL')
+@section('title', 'Доставка — Look of Today')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/payment.css') }}" />

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Ваші дані — SUPERSELL')
+@section('title', 'Ваші дані — Look of Today')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/card.css') }}"/>

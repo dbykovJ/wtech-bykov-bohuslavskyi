@@ -1,7 +1,5 @@
 
-@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
-@import url('https://api.fontshare.com/v2/css?f[]=integral-cf@700,800,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Forum&family=Raleway:wght@400;500;600;700;800&display=swap');
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -11,7 +9,7 @@
 }
 
 body {
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
     color: #111;
     background: #fff;
 }
@@ -37,8 +35,8 @@ button {
 }
 
 .heading {
-    font-family: 'Integral CF', sans-serif;
-    font-weight: 900;
+    font-family: 'Forum', sans-serif;
+    font-weight: 700;
 }
 
 .banner {
@@ -85,8 +83,8 @@ button {
 }
 
 .navbar__logo {
-    font-family: 'Integral CF', sans-serif;
-    font-weight: 900;
+    font-family: 'Forum', sans-serif;
+    font-weight: 700;
     font-size: 20px;
     letter-spacing: 2px;
     white-space: nowrap;
@@ -110,7 +108,6 @@ button {
 
 .navbar__link {
     font-size: 13.5px;
-    font-weight: 600;
     color: #111;
     display: flex;
     align-items: center;
@@ -150,7 +147,7 @@ button {
     color: #111;
     width: 100%;
     outline: none;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .navbar__search-inner input::placeholder {
@@ -204,8 +201,8 @@ button {
 }
 
 .footer__newsletter-title {
-    font-family: 'Integral CF', sans-serif;
-    font-weight: 900;
+    font-family: 'Forum', sans-serif;
+    font-weight: 700;
     color: #fff;
     font-size: 36px;
     line-height: 1.1;
@@ -240,7 +237,7 @@ button {
     font-size: 13px;
     width: 100%;
     outline: none;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .footer__email-input input::placeholder {
@@ -250,13 +247,13 @@ button {
 .footer__subscribe-btn {
     background: #fff;
     color: #111;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 14px;
     border: none;
     border-radius: 30px;
     padding: 13px 24px;
     cursor: pointer;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .footer__body {
@@ -271,8 +268,8 @@ button {
 }
 
 .footer__brand-logo {
-    font-family: 'Integral CF', sans-serif;
-    font-weight: 900;
+    font-family: 'Forum', sans-serif;
+    font-weight: 700;
     font-size: 20px;
     letter-spacing: 2px;
     margin-bottom: 12px;
@@ -350,14 +347,14 @@ button {
     background: #FF3333;
     color: #fff;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 500;
     padding: 2px 7px;
     border-radius: 20px;
 }
 
 .section-heading {
-    font-family: 'Integral CF', sans-serif;
-    font-weight: 900;
+    font-family: 'Forum', sans-serif;
+    font-weight: 700;
     text-align: center;
     font-size: 34px;
     margin-bottom: 28px;
@@ -374,7 +371,7 @@ button {
 }
 
 .product-name {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 14px;
     margin-bottom: 5px;
 }

@@ -22,7 +22,7 @@
 
 .order-card__id {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .order-card__date {
@@ -32,7 +32,7 @@
 
 .order-card__status {
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 500;
     padding: 3px 8px;
     border-radius: 999px;
 }
@@ -116,7 +116,7 @@
 
 .order-modal__title {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .order-modal__subtitle {
@@ -141,7 +141,7 @@
 
 .order-modal__section-title {
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 8px;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .order-modal__item-price {
-    font-weight: 700;
+    font-weight: 500;
     color: #111;
 }
 
@@ -188,7 +188,7 @@
 }
 
 .order-modal__summary-total {
-    font-weight: 700;
+    font-weight: 500;
     color: #111;
 }
 

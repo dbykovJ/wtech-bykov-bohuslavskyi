@@ -1,7 +1,7 @@
 <nav class="navbar">
     <div class="container navbar__inner">
         <a href="{{ route('home') }}" class="navbar__logo heading">
-            <img draggable="false" src="{{ asset('assets/logo.svg') }}" alt="SUPERSELL" class="navbar__logo-image" />
+            <img draggable="false" src="{{ asset('assets/logo.svg') }}" alt="Look of Today" class="navbar__logo-image" />
         </a>
 
         <div class="navbar__links">

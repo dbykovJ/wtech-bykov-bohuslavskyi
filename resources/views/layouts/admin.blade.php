@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@yield('title', 'SuperDash — SUPERSELL')</title>
+    <title>@yield('title', 'SuperDash — Look of Today')</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/logo-single.svg') }}" />
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
     @stack('styles')
 </head>

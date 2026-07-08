@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StripeWebhookEvent extends Model
+class PaymentWebhookEvent extends Model
 {
     protected $fillable = [
         'event_id',
@@ -18,4 +18,3 @@ class StripeWebhookEvent extends Model
         'processed_at' => 'datetime',
     ];
 }
-

@@ -15,7 +15,7 @@ class LoginController extends Controller
     {
         $credentials = $request->validate([
             'email'    => 'required|email',
-            'Password' => 'required',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {

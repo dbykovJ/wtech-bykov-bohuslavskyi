@@ -78,6 +78,11 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+
 }
 
 .product-card__image {
@@ -88,15 +93,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 12px;
+    padding: 14px 12px 0 12px;
     overflow: hidden;
+    object-fit: cover;
 }
 
 .product-card__img {
     position: absolute;
-    inset: 0;
+    top: 14px;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 14px);
     object-fit: cover;
 }
 

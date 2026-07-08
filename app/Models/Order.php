@@ -19,6 +19,8 @@ class Order extends Model
         'subtotal_before_discount',
         'sales_discount_total',
         'promo_discount_total',
+        'loyalty_discount_percent',
+        'loyalty_discount_total',
         'discount_total',
         'subtotal',
         'delivery_fee',
@@ -33,6 +35,7 @@ class Order extends Model
         'shipping_country',
         'paid_at',
         'payment_method',
+        'payment_transaction_id',
     ];
 
     protected $casts = [

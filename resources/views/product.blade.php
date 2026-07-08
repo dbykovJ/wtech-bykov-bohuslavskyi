@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Товар — SUPERSELL')
+@section('title', 'Товар — Look of Today')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
@@ -81,8 +81,16 @@
                             $defaultGroup =
                                 $defaultColorId !== null ? $product->colorGroups[$defaultColorId] ?? null : null;
                             $defaultSizes = $defaultGroup['sizes'] ?? collect();
-                            // Do not pre-select any size; customer must choose
-                            $defaultSizeCode = null;
+
+                            // Pre-select the first in-stock size for this color.
+                            $defaultSize = null;
+                            foreach ($defaultSizes as $size) {
+                                if ($size['in_stock'] ?? false) {
+                                    $defaultSize = $size;
+                                    break;
+                                }
+                            }
+                            $defaultSizeCode = $defaultSize['code'] ?? null;
                         @endphp
 
                         <div class="product-info__section">
@@ -109,7 +117,7 @@
 
                         <div class="product-info__section">
                             <span class="product-info__label">Оберіть розмір</span>
-                            <div class="product-sizes" id="product-sizes">
+                            <div class="product-sizes" id="product-sizes" data-default-size-code="{{ $defaultSizeCode }}">
                                 @forelse($defaultSizes as $size)
                                     @php
                                         $isDisabled = !($size['in_stock'] ?? false);
@@ -127,7 +135,11 @@
                             </div>
 
                             <div id="stock-info" class="product-stock-info">
-                                Оберіть розмір, щоб побачити наявність
+                                @if ($defaultSize)
+                                    В наявності: {{ $defaultSize['count'] }}
+                                @else
+                                    Оберіть розмір, щоб побачити наявність
+                                @endif
                             </div>
                         </div>
                     @endif
@@ -144,7 +156,7 @@
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="color_id" id="input-color-id" value="{{ $defaultColorId ?? '' }}">
-                            <input type="hidden" name="size" id="input-size" value="">
+                            <input type="hidden" name="size" id="input-size" value="{{ $defaultSizeCode ?? '' }}">
                             <input type="hidden" name="count" id="input-count" value="1">
                             <button type="submit" class="add-to-cart-btn">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -328,8 +340,17 @@
             }
 
             let selectedColorId = colorsContainer.dataset.defaultColorId || null;
-            // No default size; user must actively choose one
-            let selectedSizeCode = null;
+            let selectedSizeCode = sizesContainer.dataset.defaultSizeCode || null;
+
+            function firstInStockSizeCode(colorId) {
+                const group = colorSizes[colorId];
+                if (!group || !Array.isArray(group.sizes)) {
+                    return null;
+                }
+
+                const match = group.sizes.find(function(s) { return s.in_stock; });
+                return match ? match.code : null;
+            }
 
             function getSelectedSize() {
                 if (!selectedColorId || !selectedSizeCode) {
@@ -434,10 +455,10 @@
 
                     btn.classList.add('product-color--active');
                     selectedColorId = btn.dataset.colorId;
-                    selectedSizeCode = null;
+                    selectedSizeCode = firstInStockSizeCode(selectedColorId);
 
                     document.getElementById('input-color-id').value = selectedColorId || '';
-                    document.getElementById('input-size').value = '';
+                    document.getElementById('input-size').value = selectedSizeCode || '';
                     renderSizesForColor(selectedColorId);
 
                     updateStockInfo();

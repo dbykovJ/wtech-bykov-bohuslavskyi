@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Реєстрація — SUPERSELL')
+@section('title', 'Реєстрація — Look of Today')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}" />

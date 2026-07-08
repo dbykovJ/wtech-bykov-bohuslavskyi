@@ -124,7 +124,7 @@
                 @if($existingVariants->isNotEmpty())
                     @foreach($existingVariants as $i => $variant)
                         <div class="variant-row" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:center; margin-bottom:8px; padding:12px; background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb;">
-                            <select name="variants[{{ $i }}][color_id]" class="form-input" required>
+                            <select name="variants[{{ $i }}][color_id]" class="form-input variant-color" required>
                                 <option value="">Оберіть колір</option>
                                 @foreach($colors as $color)
                                     <option value="{{ $color->id }}" {{ $variant['color_id'] == $color->id ? 'selected' : '' }}>
@@ -132,13 +132,13 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <select name="variants[{{ $i }}][size]" class="form-input" required>
+                            <select name="variants[{{ $i }}][size]" class="form-input variant-size" required>
                                 <option value="">Оберіть розмір</option>
                                 @foreach(['XS','S','M','L','XL','XXL'] as $size)
                                     <option value="{{ $size }}" {{ $variant['size'] === $size ? 'selected' : '' }}>{{ $size }}</option>
                                 @endforeach
                             </select>
-                            <input type="number" name="variants[{{ $i }}][count]" class="form-input" placeholder="Наявність" min="0" value="{{ $variant['count'] }}" required />
+                            <input type="number" name="variants[{{ $i }}][count]" class="form-input variant-count" placeholder="Наявність" min="0" value="{{ $variant['count'] }}" required />
                             <button type="button" class="remove-variant-btn" style="padding:8px 12px; background:#fee2e2; color:#dc2626; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:700;">&times;</button>
                         </div>
                     @endforeach

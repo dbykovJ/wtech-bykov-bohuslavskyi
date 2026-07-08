@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Магазин — SUPERSELL')
+@section('title', 'Магазин — Look of Today')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/category.css') }}" />

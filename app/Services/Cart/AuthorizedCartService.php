@@ -6,6 +6,7 @@ use App\Models\CartItem;
 use App\Models\ItemColorSizeCount;
 use App\Models\Sale;
 use App\Models\User;
+use App\Services\Loyalty\LoyaltyService;
 use App\Services\PromoCode\PromoCodeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -16,7 +17,10 @@ class AuthorizedCartService
 {
     private const DELIVERY_FEE = 15.00;
 
-    public function __construct(private PromoCodeService $promo) {}
+    public function __construct(
+        private PromoCodeService $promo,
+        private LoyaltyService $loyalty,
+    ) {}
 
     public function getCart(): array
     {
@@ -29,6 +33,7 @@ class AuthorizedCartService
     public function getCartForUser(User $user): array
     {
         $appliedPromoSale = $this->getAppliedPromoSale();
+        $loyaltyDiscountPercent = $this->loyalty->getDiscountPercent($user);
 
         $cartItems = $user->cartItems()
             ->with([
@@ -37,7 +42,7 @@ class AuthorizedCartService
                 'color',
             ])
             ->get()
-            ->map(function (CartItem $item) use ($appliedPromoSale) {
+            ->map(function (CartItem $item) use ($appliedPromoSale, $loyaltyDiscountPercent) {
                 $baseUnitPrice = (float) $item->product->price;
                 $activeSales = $item->product->allSales;
                 $salesDiscountPercent = max(min((float) $activeSales->whereNull('promo_code')->sum('discount'), 100.0), 0.0);
@@ -47,13 +52,16 @@ class AuthorizedCartService
                     $promoDiscountPercent = max(min((float) $appliedPromoSale->discount, 100.0), 0.0);
                 }
 
-                // Apply promo discount to the already discounted sale price (non-additive).
+                // Each discount source stacks non-additively on the previous step's price.
                 $unitPriceAfterSales = round($baseUnitPrice * (1 - ($salesDiscountPercent / 100)), 2);
-                $discountedUnitPrice = round(max($unitPriceAfterSales * (1 - ($promoDiscountPercent / 100)), 0.0), 2);
+                $unitPriceAfterPromo = round(max($unitPriceAfterSales * (1 - ($promoDiscountPercent / 100)), 0.0), 2);
+                $discountedUnitPrice = round(max($unitPriceAfterPromo * (1 - ($loyaltyDiscountPercent / 100)), 0.0), 2);
+
                 $lineBaseSubtotal = round($baseUnitPrice * $item->count, 2);
                 $lineSubtotal = round($discountedUnitPrice * $item->count, 2);
                 $lineSaleDiscount = round(($baseUnitPrice - $unitPriceAfterSales) * $item->count, 2);
-                $linePromoDiscount = round(($unitPriceAfterSales - $discountedUnitPrice) * $item->count, 2);
+                $linePromoDiscount = round(($unitPriceAfterSales - $unitPriceAfterPromo) * $item->count, 2);
+                $lineLoyaltyDiscount = round(($unitPriceAfterPromo - $discountedUnitPrice) * $item->count, 2);
                 $discountPercent = $baseUnitPrice > 0
                     ? min(round((1 - ($discountedUnitPrice / $baseUnitPrice)) * 100, 2), 100.0)
                     : 0.0;
@@ -61,12 +69,14 @@ class AuthorizedCartService
                 $item->setAttribute('discount_percent', $discountPercent);
                 $item->setAttribute('sales_discount_percent', $salesDiscountPercent);
                 $item->setAttribute('promo_discount_percent', $promoDiscountPercent);
+                $item->setAttribute('loyalty_discount_percent', $loyaltyDiscountPercent);
                 $item->setAttribute('base_unit_price', $baseUnitPrice);
                 $item->setAttribute('discounted_unit_price', $discountedUnitPrice);
                 $item->setAttribute('line_base_subtotal', $lineBaseSubtotal);
                 $item->setAttribute('line_subtotal', $lineSubtotal);
                 $item->setAttribute('line_sales_discount', $lineSaleDiscount);
                 $item->setAttribute('line_promo_discount', $linePromoDiscount);
+                $item->setAttribute('line_loyalty_discount', $lineLoyaltyDiscount);
 
                 return $item;
             });
@@ -83,6 +93,7 @@ class AuthorizedCartService
         $subtotal = round((float) $cartItems->sum('line_subtotal'), 2);
         $salesDiscountTotal = round((float) $cartItems->sum('line_sales_discount'), 2);
         $promoDiscountTotal = round((float) $cartItems->sum('line_promo_discount'), 2);
+        $loyaltyDiscountTotal = round((float) $cartItems->sum('line_loyalty_discount'), 2);
         $discountTotal = round($subtotalBeforeDiscount - $subtotal, 2);
         $deliveryFee = $cartItems->isEmpty() ? 0.0 : self::DELIVERY_FEE;
         $total = round($subtotal + $deliveryFee, 2);
@@ -93,6 +104,7 @@ class AuthorizedCartService
             'subtotal' => $subtotal,
             'sales_discount_total' => $salesDiscountTotal,
             'promo_discount_total' => $promoDiscountTotal,
+            'loyalty_discount_total' => $loyaltyDiscountTotal,
             'discount_total' => $discountTotal,
             'delivery_fee' => $deliveryFee,
             'total' => $total,

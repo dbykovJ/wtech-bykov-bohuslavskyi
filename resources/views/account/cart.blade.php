@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Ваш кошик — SUPERSELL')
+@section('title', 'Ваш кошик — Look of Today')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/account.css') }}"/>
@@ -111,6 +111,13 @@
                                     <span>Промо-знижка ({{ $cartSummary['promo_code'] }})</span>
                                     <span
                                         class="order-summary__discount">-${{ number_format($cartSummary['promo_discount_total'] ?? 0, 2) }}</span>
+                                </div>
+                            @endif
+                            @if (($cartSummary['loyalty_discount_total'] ?? 0) >= 0.01)
+                                <div class="order-summary__row">
+                                    <span>Знижка за лояльність</span>
+                                    <span
+                                        class="order-summary__discount">-${{ number_format($cartSummary['loyalty_discount_total'], 2) }}</span>
                                 </div>
                             @endif
                             <div class="order-summary__row">

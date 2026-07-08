@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Замовлення підтверджено — SUPERSELL')
+@section('title', 'Замовлення підтверджено — Look of Today')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/order-confirm.css') }}" />
@@ -10,10 +10,17 @@
 <main class="confirm-main">
     <div class="container">
         <div class="confirm-box">
-            <h1 class="confirm-title heading">ДЯКУЄМО ЗА ПОКУПКИ В SUPERSELL</h1>
-
-            @if (session('success'))
-                <p style="margin: 12px 0; color: #0a7a3f;">{{ session('success') }}</p>
+            @if ($order && $order->status === 'paid')
+                <h1 class="confirm-title heading">ДЯКУЄМО ЗА ПОКУПКИ В LOOK OF TODAY</h1>
+                <p style="margin: 12px 0; color: #0a7a3f;">Оплату прийнято. Замовлення №{{ $order->id }} підтверджено.</p>
+            @elseif ($order)
+                <h1 class="confirm-title heading">ОБРОБЛЯЄМО ВАШ ПЛАТІЖ</h1>
+                <p style="margin: 12px 0; color: #666;">Замовлення №{{ $order->id }} створено. Ми підтвердимо оплату протягом кількох секунд і надішлемо повідомлення на {{ $order->shipping_email }}.</p>
+            @else
+                <h1 class="confirm-title heading">ДЯКУЄМО ЗА ПОКУПКИ В LOOK OF TODAY</h1>
+                @if (session('success'))
+                    <p style="margin: 12px 0; color: #0a7a3f;">{{ session('success') }}</p>
+                @endif
             @endif
 
             <div class="confirm-actions">

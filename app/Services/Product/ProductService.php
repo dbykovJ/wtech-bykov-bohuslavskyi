@@ -60,13 +60,9 @@ class ProductService
 
             // Default color is simply the first color in the list
             $product->defaultColorId = $groups->keys()->first();
-
-            // Do NOT pre-select any size; let the customer choose manually
-            $product->defaultSizeCode = null;
         } else {
             $product->colorGroups = collect();
             $product->defaultColorId = null;
-            $product->defaultSizeCode = null;
         }
 
         return $product;
