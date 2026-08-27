@@ -9,15 +9,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
+            $table->dropIndex(['stripe_checkout_session_id']);
+            $table->dropIndex(['stripe_payment_intent_id']);
             $table->dropColumn('stripe_checkout_session_id');
             $table->renameColumn('stripe_payment_intent_id', 'payment_transaction_id');
+            $table->index('payment_transaction_id');
         });
     }
 
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
+            $table->dropIndex(['payment_transaction_id']);
             $table->renameColumn('payment_transaction_id', 'stripe_payment_intent_id');
+            $table->index('stripe_payment_intent_id');
             $table->string('stripe_checkout_session_id')->nullable()->index();
         });
     }

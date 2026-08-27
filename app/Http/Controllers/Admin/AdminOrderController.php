@@ -90,7 +90,6 @@ class AdminOrderController extends Controller
             ],
         ]);
 
-        $previousStatus = $order->status;
         $timestamps = [];
 
         if ($validated['status'] === 'shipped' && !$order->shipped_at) {
@@ -102,7 +101,13 @@ class AdminOrderController extends Controller
 
         $order->update([...$validated, ...$timestamps]);
 
-        if ($previousStatus !== $order->status) {
+        $shouldNotifyCustomer = $order->wasChanged([
+            'status',
+            'delivery_carrier',
+            'tracking_number',
+        ]);
+
+        if ($shouldNotifyCustomer) {
             try {
                 Mail::to($order->shipping_email)->send(
                     new OrderDeliveryStatusMail($order->loadMissing(['items.product', 'items.color']))
@@ -113,7 +118,17 @@ class AdminOrderController extends Controller
                     'status' => $order->status,
                     'exception' => $exception,
                 ]);
+
+                return redirect()->route('admin.orders.show', $order)->with(
+                    'error',
+                    'Замовлення збережено, але email клієнту не надіслано. Перевірте налаштування пошти та спробуйте ще раз.'
+                );
             }
+
+            return redirect()->route('admin.orders.show', $order)->with(
+                'success',
+                "Замовлення оновлено. Email надіслано на {$order->shipping_email}."
+            );
         }
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Замовлення оновлено.');

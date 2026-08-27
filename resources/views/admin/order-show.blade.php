@@ -12,6 +12,7 @@
 </div>
 
 @if (session('success')) <div class="admin-success">{{ session('success') }}</div> @endif
+@if (session('error')) <div class="field-error">{{ session('error') }}</div> @endif
 
 <div class="admin-order-grid">
     <section class="admin-detail-card">
