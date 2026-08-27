@@ -34,10 +34,28 @@
                         </div>
                         <p class="payment-panel__hint">Скопіюйте номер картки, відкрийте застосунок свого банку та переказуйте точну суму замовлення.</p>
 
-                        @if (config('services.manual_payment.card_number'))
+                        @php
+                            $paymentCards = config('services.manual_payment.cards', []);
+                            $selectedBank = old('payment_bank', array_key_first($paymentCards));
+                            $selectedCard = $paymentCards[$selectedBank] ?? reset($paymentCards);
+                        @endphp
+
+                        @if ($paymentCards)
+                            <div class="bank-select-wrap">
+                                <label for="payment_bank">Оберіть банк</label>
+                                <select id="payment_bank" name="payment_bank" class="bank-select" required>
+                                    @foreach ($paymentCards as $bankKey => $bank)
+                                        <option value="{{ $bankKey }}" data-card-number="{{ $bank['number'] }}" @selected($selectedBank === $bankKey)>
+                                            {{ $bank['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('payment_bank') <span class="field-error">Оберіть банк для переказу.</span> @enderror
+
                             <div class="recipient-card">
-                                <div class="recipient-card__label">Картка для оплати</div>
-                                <div class="recipient-card__number" id="recipient-card-number">{{ config('services.manual_payment.card_number') }}</div>
+                                <div class="recipient-card__label" id="recipient-bank-name">{{ $selectedCard['name'] }}</div>
+                                <div class="recipient-card__number" id="recipient-card-number">{{ implode(' ', str_split(preg_replace('/\s+/', '', $selectedCard['number']), 4)) }}</div>
                                 @if (config('services.manual_payment.card_holder'))
                                     <div class="recipient-card__holder">{{ config('services.manual_payment.card_holder') }}</div>
                                 @endif
@@ -84,7 +102,7 @@
                         </div>
                         <div class="order-summary__divider"></div>
                         <div class="order-summary__total"><span>До сплати</span><span>${{ number_format($cartSummary['total'] ?? 0, 2) }}</span></div>
-                        <button type="submit" class="place-order-btn" @disabled(!config('services.manual_payment.card_number'))>
+                        <button type="submit" class="place-order-btn" @disabled(!config('services.manual_payment.cards'))>
                             <span>Підтвердити оплату</span>
                             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
@@ -98,6 +116,15 @@
 @push('scripts')
     <script>
         const copyButton = document.querySelector('[data-copy-card]');
+        const bankSelect = document.querySelector('#payment_bank');
+        const formatCardNumber = (number) => number.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim();
+
+        bankSelect?.addEventListener('change', () => {
+            const option = bankSelect.selectedOptions[0];
+            document.querySelector('#recipient-bank-name').textContent = option.textContent.trim();
+            document.querySelector('#recipient-card-number').textContent = formatCardNumber(option.dataset.cardNumber);
+        });
+
         copyButton?.addEventListener('click', async () => {
             const cardNumber = document.querySelector('#recipient-card-number')?.textContent.trim();
             if (!cardNumber) return;

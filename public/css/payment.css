@@ -14,6 +14,10 @@
 .payment-return-note p { margin: 0; font-size: 13px; line-height: 1.55; }
 .payment-return-note strong { color: #111; font-weight: 600; }
 .recipient-card { position: relative; margin: 0 0 24px; overflow: hidden; border-radius: 16px; background: #151515; padding: 24px; color: #fff; }
+.bank-select-wrap { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.bank-select-wrap label { color: #292929; font-size: 13px; font-weight: 600; }
+.bank-select { width: 100%; height: 50px; box-sizing: border-box; border: 1px solid #d5d5d5; border-radius: 10px; background: #fff; padding: 0 42px 0 15px; color: #111; cursor: pointer; font: inherit; font-size: 15px; }
+.bank-select:focus { outline: none; border-color: #111; box-shadow: 0 0 0 3px rgba(0,0,0,.07); }
 .recipient-card::after { position: absolute; right: -45px; bottom: -70px; width: 180px; height: 180px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; content: ''; }
 .recipient-card__label { color: #aaa; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 .recipient-card__number { position: relative; z-index: 1; margin-top: 15px; font-size: clamp(20px, 3vw, 28px); font-weight: 600; letter-spacing: .08em; overflow-wrap: anywhere; }

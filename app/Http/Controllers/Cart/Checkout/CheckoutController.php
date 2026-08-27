@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 class CheckoutController extends Controller
 {
@@ -106,13 +107,16 @@ class CheckoutController extends Controller
             ]);
         }
 
-        if (! config('services.manual_payment.card_number')) {
+        $paymentCards = config('services.manual_payment.cards', []);
+
+        if ($paymentCards === []) {
             return redirect()->back()->withErrors([
                 'checkout' => 'Номер картки для оплати ще не налаштовано.',
             ]);
         }
 
-        $request->validate([
+        $validatedPayment = $request->validate([
+            'payment_bank' => ['required', Rule::in(array_keys($paymentCards))],
             'payment_confirmed' => ['accepted'],
         ]);
 
@@ -121,7 +125,7 @@ class CheckoutController extends Controller
             $this->checkoutService->confirmPayment(
                 $order,
                 PaymentMethod::card,
-                'manual-card-transfer',
+                'manual-'.$validatedPayment['payment_bank'],
                 'manual-'.Str::uuid(),
             );
         } catch (ValidationException $e) {

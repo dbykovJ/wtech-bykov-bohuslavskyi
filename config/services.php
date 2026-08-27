@@ -40,8 +40,17 @@ return [
     ],
 
     'manual_payment' => [
-        'card_number' => env('PAYMENT_CARD_NUMBER'),
         'card_holder' => env('PAYMENT_CARD_HOLDER'),
+        'cards' => [
+            'monobank' => [
+                'name' => 'Monobank',
+                'number' => env('MONOBANK_CARD_NUMBER', '4874070053562474'),
+            ],
+            'privatbank' => [
+                'name' => 'PrivatBank',
+                'number' => env('PRIVATBANK_CARD_NUMBER', '5457082540175424'),
+            ],
+        ],
     ],
 
     'slack' => [
