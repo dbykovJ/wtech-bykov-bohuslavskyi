@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class ShopController extends Controller
 {
@@ -68,7 +69,7 @@ class ShopController extends Controller
             ->paginate(self::PRODUCTS_PER_PAGE)
             ->withQueryString();
 
-        $categories = Category::all();
+        $categories = Cache::remember('catalog.categories', now()->addHour(), fn () => Category::orderBy('name')->get());
 
         return view('category', compact('products', 'categories'));
     }

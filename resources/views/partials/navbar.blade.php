@@ -48,31 +48,3 @@
     </div>
 </nav>
 
-
-@push('scripts')
-    <script>
-        const searchInput = document.getElementById("search-input");
-
-        if (searchInput) {
-            let searchTimer;
-
-            searchInput.addEventListener("input", function () {
-                clearTimeout(searchTimer);
-
-                const query = this.value.trim();
-
-                // if (query.length < 2) {
-                //     return;
-                // }
-
-                searchTimer = setTimeout(() => {
-                    const baseUrl = "{{ route('category') }}";
-                    const url = baseUrl + "?search=" + encodeURIComponent(query);
-
-                    window.location.href = url;
-                }, 400);
-            });
-        }
-    </script>
-@endpush
-

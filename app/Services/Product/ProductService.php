@@ -4,6 +4,7 @@ namespace App\Services\Product;
 
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class ProductService
 {
@@ -76,7 +77,7 @@ class ProductService
 
     public static function getOnSale($limit = 4)
     {
-        return Product::with(['colorSizes', 'images'])
+        return Cache::remember("catalog.home.on-sale.{$limit}", now()->addMinutes(10), fn () => Product::with(['colorSizes', 'images'])
             ->join('products_on_sales', 'products.id', '=', 'products_on_sales.product_id')
             ->join('sales', 'sales.id', '=', 'products_on_sales.sale_id')
             ->where('sales.valid_to', '>', now())
@@ -86,13 +87,13 @@ class ProductService
             ->selectRaw('products.*, (SUM(sales.discount)/100) as total_discount')
             ->orderBy('total_discount', 'desc')
             ->limit($limit)
-            ->get();
+            ->get());
     }
 
 
     public static function getNewArrivals($limit = 4)
     {
-        return Product::with([
+        return Cache::remember("catalog.home.new-arrivals.{$limit}", now()->addMinutes(10), fn () => Product::with([
             'sales' => function ($query) {
             $query->where('sales.valid_to', '>', now())
                 ->where('sales.valid_from', '<', now())
@@ -103,8 +104,16 @@ class ProductService
         ])
             ->orderBy('products.created_at', 'desc')
             ->limit($limit)
-            ->get();
+            ->get());
 
+    }
+
+    public static function clearPublicCache(): void
+    {
+        foreach ([4, 8, 12] as $limit) {
+            Cache::forget("catalog.home.on-sale.{$limit}");
+            Cache::forget("catalog.home.new-arrivals.{$limit}");
+        }
     }
 
     /**

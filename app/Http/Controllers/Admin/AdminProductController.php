@@ -9,6 +9,7 @@ use App\Models\ItemColorSizeCount;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\Storage\SupabaseStorageService;
+use App\Services\Product\ProductService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -52,6 +53,8 @@ class AdminProductController extends Controller
             $this->syncVariants($product, $request->input('variants', []));
         });
 
+        ProductService::clearPublicCache();
+
         return redirect()->route('admin.products.index')
             ->with('success', 'Товар успішно створено.');
     }
@@ -90,6 +93,8 @@ class AdminProductController extends Controller
             $this->syncVariants($product, $request->input('variants', []));
         });
 
+        ProductService::clearPublicCache();
+
         return redirect()->route('admin.products.edit', $product->id)
             ->with('success', 'Товар успішно оновлено.');
     }
@@ -113,6 +118,8 @@ class AdminProductController extends Controller
         foreach ($product->images as $image) {
             $this->storage->delete($image->image_url);
         }
+
+        ProductService::clearPublicCache();
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Товар успішно видалено.');
