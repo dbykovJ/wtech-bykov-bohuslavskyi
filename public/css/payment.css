@@ -13,6 +13,16 @@
 .payment-return-note svg { width: 21px; flex: 0 0 21px; margin-top: 1px; }
 .payment-return-note p { margin: 0; font-size: 13px; line-height: 1.55; }
 .payment-return-note strong { color: #111; font-weight: 600; }
+.recipient-card { position: relative; margin: 0 0 24px; overflow: hidden; border-radius: 16px; background: #151515; padding: 24px; color: #fff; }
+.recipient-card::after { position: absolute; right: -45px; bottom: -70px; width: 180px; height: 180px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; content: ''; }
+.recipient-card__label { color: #aaa; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.recipient-card__number { position: relative; z-index: 1; margin-top: 15px; font-size: clamp(20px, 3vw, 28px); font-weight: 600; letter-spacing: .08em; overflow-wrap: anywhere; }
+.recipient-card__holder { position: relative; z-index: 1; margin-top: 10px; color: #cfcfcf; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.copy-card-btn { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; background: transparent; padding: 10px 15px; color: #fff; cursor: pointer; font: inherit; font-size: 12px; }
+.copy-card-btn:hover { background: rgba(255,255,255,.1); }
+.copy-card-btn svg { width: 17px; }
+.payment-confirmation { display: flex; align-items: flex-start; gap: 11px; color: #242424; cursor: pointer; font-size: 14px; line-height: 1.45; }
+.payment-confirmation input { width: 18px; height: 18px; flex: 0 0 18px; margin: 1px 0 0; accent-color: #111; }
 .card-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
 .card-field { display: flex; min-width: 0; flex-direction: column; gap: 8px; }
 .card-field--full { grid-column: 1 / -1; }
@@ -47,6 +57,7 @@
 .place-order-btn { display: flex; width: 100%; min-height: 54px; align-items: center; justify-content: center; gap: 12px; border: 0; border-radius: 999px; background: #111; padding: 14px 22px; color: #fff; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; transition: background-color .2s, transform .2s; }
 .place-order-btn:hover { background: #333; }
 .place-order-btn:active { transform: translateY(1px); }
+.place-order-btn:disabled { background: #aaa; cursor: not-allowed; }
 .place-order-btn svg { width: 18px; }
 
 @media (max-width: 1024px) {

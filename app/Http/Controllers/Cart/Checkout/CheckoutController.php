@@ -106,36 +106,14 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $request->merge([
-            'card_number' => preg_replace('/\D+/', '', (string) $request->input('card_number')),
-        ]);
+        if (! config('services.manual_payment.card_number')) {
+            return redirect()->back()->withErrors([
+                'checkout' => 'Номер картки для оплати ще не налаштовано.',
+            ]);
+        }
 
         $request->validate([
-            'cardholder_name' => ['required', 'string', 'max:120'],
-            'card_number' => [
-                'bail',
-                'required',
-                'digits_between:13,19',
-                function (string $attribute, mixed $value, \Closure $fail): void {
-                    if (! $this->passesLuhnCheck((string) $value)) {
-                        $fail('Номер картки недійсний.');
-                    }
-                },
-            ],
-            'expiry' => [
-                'bail',
-                'required',
-                'regex:/^(0[1-9]|1[0-2])\/\d{2}$/',
-                function (string $attribute, mixed $value, \Closure $fail): void {
-                    [$month, $year] = array_map('intval', explode('/', (string) $value));
-                    $expiry = now()->setDate(2000 + $year, $month, 1)->endOfMonth();
-
-                    if ($expiry->isPast()) {
-                        $fail('Термін дії картки минув.');
-                    }
-                },
-            ],
-            'cvv' => ['required', 'digits_between:3,4'],
+            'payment_confirmed' => ['accepted'],
         ]);
 
         try {
@@ -143,12 +121,12 @@ class CheckoutController extends Controller
             $this->checkoutService->confirmPayment(
                 $order,
                 PaymentMethod::card,
-                'local',
-                'local-'.Str::uuid(),
+                'manual-card-transfer',
+                'manual-'.Str::uuid(),
             );
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput(
-                $request->except(['card_number', 'expiry', 'cvv'])
+                $request->except('payment_confirmed')
             );
         }
 
@@ -189,25 +167,4 @@ class CheckoutController extends Controller
         ]);
     }
 
-    private function passesLuhnCheck(string $number): bool
-    {
-        $sum = 0;
-        $double = false;
-
-        for ($index = strlen($number) - 1; $index >= 0; $index--) {
-            $digit = (int) $number[$index];
-
-            if ($double) {
-                $digit *= 2;
-                if ($digit > 9) {
-                    $digit -= 9;
-                }
-            }
-
-            $sum += $digit;
-            $double = ! $double;
-        }
-
-        return $sum > 0 && $sum % 10 === 0;
-    }
 }

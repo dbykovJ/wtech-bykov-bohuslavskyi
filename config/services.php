@@ -39,6 +39,11 @@ return [
         'private_key' => env('LIQPAY_PRIVATE_KEY'),
     ],
 
+    'manual_payment' => [
+        'card_number' => env('PAYMENT_CARD_NUMBER'),
+        'card_holder' => env('PAYMENT_CARD_HOLDER'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
