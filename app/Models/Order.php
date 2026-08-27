@@ -26,6 +26,8 @@ class Order extends Model
         'delivery_fee',
         'total',
         'shipping_method',
+        'delivery_carrier',
+        'tracking_number',
         'shipping_full_name',
         'shipping_email',
         'shipping_phone',
@@ -34,12 +36,16 @@ class Order extends Model
         'shipping_postal_code',
         'shipping_country',
         'paid_at',
+        'shipped_at',
+        'delivered_at',
         'payment_method',
         'payment_transaction_id',
     ];
 
     protected $casts = [
         'paid_at' => 'datetime',
+        'shipped_at' => 'datetime',
+        'delivered_at' => 'datetime',
         'shipping_method' => DeliveryMethod::class,
         'payment_method' => PaymentMethod::class,
     ];

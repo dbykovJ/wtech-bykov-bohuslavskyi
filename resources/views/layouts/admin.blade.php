@@ -15,7 +15,7 @@
             <nav class="sidebar__nav">
                 <a href="{{ route('admin.dashboard') }}" class="sidebar__link {{ request()->routeIs('admin.dashboard') ? 'sidebar__link--active' : '' }}">Панель</a>
                 <a href="{{ route('admin.products.index') }}" class="sidebar__link {{ request()->routeIs('admin.products*') ? 'sidebar__link--active' : '' }}">Товари</a>
-                <a href="{{ route('admin.orders') }}" class="sidebar__link {{ request()->routeIs('admin.orders') ? 'sidebar__link--active' : '' }}">Список замовлень</a>
+                <a href="{{ route('admin.orders') }}" class="sidebar__link {{ request()->routeIs('admin.orders*') ? 'sidebar__link--active' : '' }}">Список замовлень</a>
             </nav>
 
             <form action="{{ route('logout') }}" method="POST" style="padding: 16px;">

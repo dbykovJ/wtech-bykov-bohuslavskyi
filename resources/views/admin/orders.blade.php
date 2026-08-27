@@ -151,6 +151,7 @@
                 <th>ТИП</th>
                 <th>ЦІНА</th>
                 <th>СТАТУС</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -171,10 +172,11 @@
                 <td>{{ $category }}</td>
                 <td>${{ number_format($order->total, 2) }}</td>
                 <td><span class="badge {{ $badge }}">{{ $label }}</span></td>
+                <td><a class="admin-action-link" href="{{ route('admin.orders.show', $order) }}">Керувати</a></td>
             </tr>
             @empty
             <tr>
-                <td colspan="7" style="text-align:center;color:#9ca3af;padding:32px 0;">Замовлень не знайдено.</td>
+                <td colspan="8" style="text-align:center;color:#9ca3af;padding:32px 0;">Замовлень не знайдено.</td>
             </tr>
             @endforelse
         </tbody>
